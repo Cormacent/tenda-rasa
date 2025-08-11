@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "vite-plugin-svg-loader": "^1.0.0"
+  },
+  "dependencies": {
+    "vue-router": "^4.5.1"
+  }
+}

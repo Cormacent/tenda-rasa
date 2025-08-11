@@ -1,0 +1,16 @@
+.btn-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--el-color-primary) 0%,
+    var(--el-color-primary-light-3) 100%
+  );
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: 0.2s ease;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+}

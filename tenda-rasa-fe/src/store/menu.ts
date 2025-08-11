@@ -1,0 +1,49 @@
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
+import axios from 'axios'
+import { IMenu } from '@/models/IMenu'
+
+export const useMenuStore = defineStore('menu', () => {
+    const url = import.meta.env.VITE_API_BACKEND + '/menus';
+    const menu = ref<IMenu>()
+    const loading = ref(false)
+    const error = ref<string | null>(null)
+    const menuList = ref<IMenu[]>([])
+    const getMenuById = async (menuId: number): Promise<IMenu | null> => {
+        loading.value = true
+        error.value = null
+        try {
+            const res = await axios.get(`${url}/menus/${menuId}`)
+            menu.value = res.data || {}
+            return menu.value || null
+        } catch (err: any) {
+            error.value = err.message || 'Failed to fetch menu'
+            return null
+        } finally {
+            loading.value = false
+        }
+    }
+    const getAllMenus = async (): Promise<IMenu[]> => {
+        loading.value = true
+        error.value = null
+        try {
+            const res = await axios.get(`${url}`)
+            menuList.value = res.data || []
+            return menuList.value
+        } catch (err: any) {
+            error.value = err.message || 'Failed to fetch menus'
+            return []
+        } finally {
+            loading.value = false
+        }
+    }
+
+    return {
+        menu,
+        loading,
+        error,
+        getAllMenus,
+        getMenuById,
+        menuList
+    }
+})

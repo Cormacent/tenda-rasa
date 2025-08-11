@@ -1,0 +1,61 @@
+.btn-gradient {
+  background: linear-gradient(90deg, var(--el-color-primary) 0%, var(--el-color-primary-light-3) 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border: none;
+
+  &:hover {
+    filter: brightness(1.05);
+  }
+}
+
+
+.custom-swiper {
+
+  // Swiper wrapper
+  .swiper-wrapper {
+    overflow: visible;
+  }
+
+  // Swiper Slide
+  .swiper-slide {
+    transition: transform 0.3s ease;
+  }
+
+  // Pagination styling via :deep
+  :deep(.swiper-dot),
+  :deep(.swiper-pagination-bullet) {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #ccc;
+    border-radius: 9999px;
+    margin: 0 4px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+  }
+
+  :deep(.swiper-dot-active),
+  :deep(.swiper-pagination-bullet-active) {
+    width: 20px;
+    height: 6px;
+    background-color: var(--el-color-primary);
+  }
+}
+
+// Layout wrapper
+.swiper-layout-wrapper {
+  width: 100%;
+  max-width: none;
+  overflow: visible;
+}
+
+// Pagination container
+.swiper-pagination {
+  bottom: 3rem;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}

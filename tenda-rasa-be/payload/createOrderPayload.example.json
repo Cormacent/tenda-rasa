@@ -1,0 +1,15 @@
+{
+  "booth_id": 1,
+  "name": "Zaki",
+  "email": "zakimaulana08@gmail.com",
+  "orderItems": [
+    {
+      "menu_id": 1,
+      "quantity": 1
+    },
+    {
+      "menu_id": 2,
+      "quantity": 1
+    }
+  ]
+}

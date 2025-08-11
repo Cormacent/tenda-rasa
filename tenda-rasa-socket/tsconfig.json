@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",          // ⬅ hasil build ke folder dist
+    "rootDir": "src",          // ⬅ sumber file TypeScript dari folder src
+    "target": "ES2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": ["src"]
+}
