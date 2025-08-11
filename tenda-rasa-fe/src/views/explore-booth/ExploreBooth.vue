@@ -1,5 +1,5 @@
 <template>
-    <section id="ExploreBooth" class="relative min-h-screen pb-20 bg-gradient-to-b from-white/20 to-white">
+    <section id="ExploreBooth" class="relative bg-gradient-to-b from-white/20 to-white">
         <!-- Title & Search -->
         <div class="px-4 pt-6">
             <h2 class="text-2xl font-bold text-black mb-2">
@@ -26,14 +26,11 @@
                 </div>
             </el-card>
         </div>
-        <!-- Bottom Navigation -->
-        <BottomNavbar />
     </section>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import BottomNavbar from '@/components/bottom-navbar/BottomNavbar.vue'
 import type { IMenu } from '@/models/IMenu'
 
 const search = ref('')

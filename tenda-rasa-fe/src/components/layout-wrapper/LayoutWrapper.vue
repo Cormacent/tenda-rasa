@@ -14,9 +14,9 @@
         <main class="flex-1">
             <slot />
         </main>
-
         <Footer v-if="showFooter">
-            <p class="text-center py-4 text-sm text-gray-500">
+            <BottomNavbar v-if="showButtonNavigation" />
+            <p v-if="!showButtonNavigation" class="text-center py-4 text-sm text-gray-500">
                 © 2023 Tenda Rasa. All rights reserved.
             </p>
         </Footer>
@@ -32,15 +32,15 @@ import Footer from '../footer-section/Footer.vue';
 // 🧩 State Variables & Stores
 //----------------------------------------
 const route = useRoute();
-
-const showHeader = computed(() => route.meta?.showHeader !== false);
-const showFooter = computed(() => route.meta?.showFooter !== false);
-const showBackground = computed(() => route.meta?.showBackground !== false);
 const isMounted = ref<boolean>(false);
 
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
+const showHeader = computed(() => route.meta?.showHeader !== false);
+const showFooter = computed(() => route.meta?.showFooter !== false);
+const showBackground = computed(() => route.meta?.showBackground !== false);
+const showButtonNavigation = computed(() => route.meta?.showButtonNavigation !== false);
 
 //----------------------------------------
 // 🎯 Watchers

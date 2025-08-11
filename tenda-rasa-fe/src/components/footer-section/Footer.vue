@@ -1,16 +1,13 @@
 <template>
-  <footer id="Footer" class="bg-gray-100 text-center text-sm text-gray-600 py-4">
+  <footer id="Footer">
     <slot>
-      © {{ new Date().getFullYear() }} MyApp. All rights reserved.
     </slot>
   </footer>
 </template>
 <script lang="ts" setup>
-
 //----------------------------------------
 // 🧩 State Variables & Stores
 //----------------------------------------
-
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
