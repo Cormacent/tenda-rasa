@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Main from '@/views/Main.vue';
 import { onMounted, ref } from 'vue';
 
 const loading = ref(true)
@@ -13,11 +12,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="app">
-    <div id="background"></div>
-    <div id="header-section"></div>
-    <Main />
-    <div id="footer-section"></div>
+  <div id="App">
+    <LayoutWrapper>
+      <RouterView />
+    </LayoutWrapper>
   </div>
 
 </template>

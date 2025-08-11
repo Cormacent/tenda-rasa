@@ -1,6 +1,5 @@
 <template>
-    <section id="Introduction"
-        class="relative w-screen h-screen overflow-hidden flex flex-col justify-center items-center">
+    <section id="Introduction" class="relative overflow-hidden flex flex-col justify-center items-center">
         <div
             class="relative z-10 flex flex-col justify-center items-center px-6 text-center w-full max-w-screen-md mx-auto">
             <h1 class="text-2xl md:text-4xl font-bold mb-6 text-black">Temukan Makanan Favorit kamu!</h1>
