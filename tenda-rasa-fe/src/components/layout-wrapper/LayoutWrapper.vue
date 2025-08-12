@@ -11,9 +11,10 @@
             </div>
         </Header>
 
-        <main class="flex-1">
+        <main class="flex-1 flex flex-col">
             <slot />
         </main>
+
         <Footer v-if="showFooter">
             <BottomNavbar v-if="showButtonNavigation" />
             <p v-if="!showButtonNavigation" class="text-center py-4 text-sm text-gray-500">

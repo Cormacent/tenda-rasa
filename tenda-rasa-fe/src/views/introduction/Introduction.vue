@@ -1,5 +1,5 @@
 <template>
-    <section id="Introduction" class="relative overflow-hidden flex flex-col justify-center items-center">
+    <section id="Introduction" class="flex-1 flex flex-col justify-center items-center ">
         <div
             class="relative z-10 flex flex-col justify-center items-center px-6 text-center w-full max-w-screen-md mx-auto">
             <h1 class="text-2xl md:text-4xl font-bold mb-6 text-black">Temukan Makanan Favorit kamu!</h1>
@@ -14,7 +14,7 @@
                         bulletClass: 'swiper-dot',
                         bulletActiveClass: 'swiper-dot-active'
                     }" class="custom-swiper">
-                    <SwiperSlide v-for="menu in menus" :key="menu.id">
+                    <SwiperSlide v-for="menu in menuList" :key="menu.id">
                         <div class="bg-white shadow rounded-xl p-4 mb-5 flex flex-col items-center">
                             <img :src="menu.image_url" :alt="menu.menu_name"
                                 class="w-40 h-40 object-cover rounded-md mb-4" />
@@ -23,7 +23,7 @@
                         </div>
                     </SwiperSlide>
                 </Swiper>
-                <div class="flex align-center justify-center background-transparent">
+                <div class="flex align-center justify-center background-transparent mt-4">
                     <RouterLink :to="{ name: 'explore-booths' }">
                         <el-button class="btn-gradient" size="large">Jelajahi</el-button>
                     </RouterLink>
@@ -48,7 +48,7 @@
     </section>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, } from 'vue'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
@@ -57,7 +57,6 @@ import 'swiper/css/pagination'
 import { Navigation, Pagination } from 'swiper/modules'
 
 import { useMenuStore } from '@/store/menu'
-import { on } from 'events'
 
 //----------------------------------------
 // 🧩 State Variables & Stores
@@ -69,8 +68,8 @@ const modules = [Navigation, Pagination]
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
-const menus = computed(() => menuStore.menuList)
-
+const menupageInfo = computed(() => menuStore.pageInfo)
+const menuList = computed(() => menuStore.pageInfo.data)
 //----------------------------------------
 // 🎯 Watchers
 //----------------------------------------
@@ -79,7 +78,9 @@ const menus = computed(() => menuStore.menuList)
 // 🚀 Lifecycle Hooks
 //----------------------------------------
 onMounted(async () => {
-    await menuStore.getAllMenus()
+    menupageInfo.value.limit = 4
+    await menuStore.getMenuPage()
+    console.log("🚀 ~ menuList:", menuList.value)
 })
 //----------------------------------------
 // 🛠️ Utility / Custom Functions

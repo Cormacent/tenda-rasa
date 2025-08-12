@@ -1,10 +1,10 @@
 import express from 'express';
-import { getAvailableMenus, getMenuById } from '../controllers/menu.controller';
+import { getAvailableMenus, getMenuById, getMenuPage } from '../controllers/menu.controller';
 
 const router = express.Router();
-console.log('📁 menuRoutes mounted');
 
 router.get('/', getAvailableMenus);
+router.post('/page', getMenuPage);
 router.get('/:id', getMenuById);
 
 export default router;

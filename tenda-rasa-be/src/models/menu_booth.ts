@@ -3,84 +3,87 @@ import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
 
 interface MenuBoothAttributes {
   id: number;
-  booth_name: string;
-  menu_name: string;
+  boothName: string;
+  menuName: string;
   description: string;
   price: number;
   tags: string[];
   category: string;
-  menu_type: string;
-  spiciness_level: number;
-  image_url: string;
+  menuType: string;
+  spicinessLevel: number;
+  imageUrl: string;
   stock: number;
-  is_available: boolean;
-  estimated_minutes: number;
-  is_favorite: boolean;
-  created_at: Date;
-  updated_at: Date;
-  created_by: string;
-  updated_by: string;
+  isAvailable: boolean;
+  estimatedMinutes: number;
+  isFavorite: boolean;
+  createdBy: string;
+  updatedBy: string;
 }
 
-interface MenuBoothCreationAttributes extends Optional<MenuBoothAttributes, 'id'> { }
+interface MenuBoothCreationAttributes extends Optional<MenuBoothAttributes, 'id'> {}
 
-class MenuBooth extends Model<MenuBoothAttributes, MenuBoothCreationAttributes>
+class MenuBooth
+  extends Model<MenuBoothAttributes, MenuBoothCreationAttributes>
   implements MenuBoothAttributes {
   public id!: number;
-  public booth_name!: string;
-  public menu_name!: string;
+  public boothName!: string;
+  public menuName!: string;
   public description!: string;
   public price!: number;
   public tags!: string[];
   public category!: string;
-  public menu_type!: string;
-  public spiciness_level!: number;
-  public image_url!: string;
+  public menuType!: string;
+  public spicinessLevel!: number;
+  public imageUrl!: string;
   public stock!: number;
-  public is_available!: boolean;
-  public estimated_minutes!: number;
-  public is_favorite!: boolean;
-  public created_at!: Date;
-  public updated_at!: Date;
-  public created_by!: string;
-  public updated_by!: string;
+  public isAvailable!: boolean;
+  public estimatedMinutes!: number;
+  public isFavorite!: boolean;
+  public createdBy!: string;
+  public updatedBy!: string;
 
   static associate(models: any) {
     MenuBooth.hasMany(models.OrderItems, {
       foreignKey: 'menu_id',
-      as: 'order_items', // optional: for cleaner eager loading
+      as: 'order_items'
     });
   }
 }
 
-export default (sequelize: Sequelize, DataTypes: typeof import('sequelize').DataTypes): typeof MenuBooth => {
+export default (
+  sequelize: Sequelize,
+  DataTypes: typeof import('sequelize').DataTypes
+): typeof MenuBooth => {
   MenuBooth.init(
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-      booth_name: { type: DataTypes.TEXT, allowNull: false },
-      menu_name: { type: DataTypes.TEXT, allowNull: false },
-      description: DataTypes.TEXT,
+
+      boothName: { type: DataTypes.TEXT, allowNull: false, field: 'booth_name' },
+      menuName: { type: DataTypes.TEXT, allowNull: false, field: 'menu_name' },
+      description: { type: DataTypes.TEXT },
+
       price: { type: DataTypes.INTEGER, allowNull: false },
-      tags: DataTypes.ARRAY(DataTypes.TEXT),
-      category: DataTypes.TEXT,
-      menu_type: DataTypes.TEXT,
-      spiciness_level: DataTypes.INTEGER,
-      image_url: DataTypes.TEXT,
-      stock: DataTypes.INTEGER,
-      is_available: DataTypes.BOOLEAN,
-      estimated_minutes: DataTypes.INTEGER,
-      is_favorite: DataTypes.BOOLEAN,
-      created_at: DataTypes.DATE,
-      updated_at: DataTypes.DATE,
-      created_by: DataTypes.TEXT,
-      updated_by: DataTypes.TEXT,
+      tags: { type: DataTypes.ARRAY(DataTypes.TEXT) },
+
+      category: { type: DataTypes.TEXT },
+      menuType: { type: DataTypes.TEXT, field: 'menu_type' },
+      spicinessLevel: { type: DataTypes.INTEGER, field: 'spiciness_level' },
+      imageUrl: { type: DataTypes.TEXT, field: 'image_url' },
+      stock: { type: DataTypes.INTEGER },
+
+      isAvailable: { type: DataTypes.BOOLEAN, field: 'is_available' },
+      estimatedMinutes: { type: DataTypes.INTEGER, field: 'estimated_minutes' },
+      isFavorite: { type: DataTypes.BOOLEAN, field: 'is_favorite' },
+
+      createdBy: { type: DataTypes.TEXT, field: 'created_by' },
+      updatedBy: { type: DataTypes.TEXT, field: 'updated_by' }
     },
     {
       sequelize,
       tableName: 'menu_booth',
       timestamps: true,
       underscored: true,
-      freezeTableName: true,
+      freezeTableName: true
     }
   );
 
