@@ -1,5 +1,13 @@
-.ExploreBooth {
-    h1 {
-        color: #0d6efd;
-    }
-}
+ :deep(.el-input__inner::placeholder) {
+     color: var(--el-color-primary-light-3);
+     opacity: 1;
+ }
+
+ :deep(.el-input__wrapper) {
+     background-color: var(--el-color-primary-light-1);
+ }
+
+ :deep(.el-input__wrapper)::before,
+ :deep(.el-input__wrapper)::after {
+     background-color: var(--el-color-primary-light-1) !important;
+ }

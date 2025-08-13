@@ -1,38 +1,26 @@
 <template>
-  <section id="BoothDetail" class="relative min-h-screen bg-white overflow-hidden">
-    <!-- Background Image (di belakang, pudar bawah) -->
-    <img
-      :src="importImage('bg-tenda-rasa.svg')"
-      alt="Background Tenda Rasa"
-      class="absolute inset-0 w-full h-full object-cover z-0"
-      style="mask-image: linear-gradient(to bottom, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 80%)"
-      @error="console.error('Image not found:', importImage('bg-tenda-rasa.svg'))"
-    />
-
+  <section id="BoothDetail" class="relative min-h-screen  ite overflow-hidden">
     <!-- Content -->
     <div class="relative z-10 max-w-2xl mx-auto px-6 py-10 bg-white/90 rounded-xl shadow-md">
       <!-- Header -->
-      <h2 class="text-2xl font-bold text-primary mb-4">Sate Khas Senayan</h2>
+      <h2 class="text-2xl font-bold text-primary mb-4">{{ menuDetail.boothName }}</h2>
+      <h2 class="text-xl font-bold text-secondary mb-4">{{ menuDetail.menuName }}</h2>
 
       <!-- Menu Image -->
-      <img
-        :src="menu.image_url"
-        alt="Sate Ayam"
+      <img :src="menuDetail.imageUrl ? menuDetail.imageUrl : importImage('default.jpg')" alt="Sate Ayam"
         class="w-full h-60 object-cover rounded-lg mb-4"
-        @error="console.error('Image not found:', menu.image_url)"
-      />
+        @error="console.error('Image not found:', menuDetail.imageUrl)" />
 
       <!-- Description -->
       <p class="text-gray-700 mb-4">
-        {{ menu.description }}
+        {{ menuDetail.description }}
       </p>
 
       <!-- Details List -->
       <ul class="text-sm text-gray-600 space-y-1 mb-6">
-        <li>⏱️ Estimasi: {{ menu.estimated_minutes }} menit</li>
-        <li>🍽️ Cocok untuk makan siang atau malam</li>
-        <li>🌶️ Pedas: {{ menu.spiciness_level }}/5</li>
-        <li>🧄 Pilihan bumbu: Bumbu kacang / Bumbu kecap</li>
+        <li>⏱️ Estimasi: {{ menuDetail.estimatedMinutes }} menit</li>
+        <li>🍽️ Cocok untuk {{ menuDetail.category == 'makanan' ? 'makan' : 'minum' }} siang atau malam</li>
+        <li v-if="menuDetail.category == 'makanan'">🌶️ Pedas: {{ menuDetail.spicinessLevel }}/5</li>
       </ul>
 
       <!-- CTA Button -->
@@ -45,31 +33,41 @@
 
 <script lang="ts" setup>
 import { importImage } from '@/utils/helper'
-import type { IMenu } from '@/models/IMenu'
-import { ref } from 'vue'
+import { useMenuStore } from '@/store/menu'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+const menuStore = useMenuStore()
+const menuId = ref<string>()
+const route = useRoute()
 
-// Contoh 1 data menu, bisa disambungkan ke API/store
-const menu = ref<IMenu>({
-  id: 1,
-  booth_name: 'Sate Khas Senayan',
-  menu_name: 'Sate Ayam',
-  description:
-    'Potongan ayam empuk, dibakar di atas bara, disajikan dengan bumbu kacang kental dan bawang goreng. Bisa dinikmati dengan lontong atau nasi.',
-  price: 35000,
-  tags: ['sate', 'ayam', 'indonesia'],
-  category: 'Main',
-  menu_type: 'Food',
-  spiciness_level: 2,
-  image_url: importImage('menu-sate-senayan.jpg'),
-  stock: 10,
-  is_available: true,
-  estimated_minutes: 15,
-  is_favorite: false,
-  created_at: '',
-  updated_at: '',
-  created_by: '',
-  updated_by: '',
+
+//----------------------------------------
+// 🧩 State Variables & Stores
+//----------------------------------------
+
+//----------------------------------------
+// 🔍 Computed Properties
+//----------------------------------------
+const menuDetail = computed(() => menuStore.menuDetail || {})
+
+//----------------------------------------
+// 🎯 Watchers
+//----------------------------------------
+
+//----------------------------------------
+// 🚀 Lifecycle Hooks
+//----------------------------------------
+onMounted(async () => {
+  menuId.value = route.params.menuId as string
+  if (menuId.value) {
+    await menuStore.getMenuById(+menuId.value)
+  }
 })
+//----------------------------------------
+// 🛠️ Utility / Custom Functions
+//----------------------------------------
+
+
 </script>
 
 <style lang="scss" scoped src="./BoothDetail.scss" />

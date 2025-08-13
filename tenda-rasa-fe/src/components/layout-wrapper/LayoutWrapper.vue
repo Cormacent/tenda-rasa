@@ -25,7 +25,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
-import { RouteRecordName, useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { importImage } from '@/utils/helper';
 import Header from '../header-section/Header.vue';
 import Footer from '../footer-section/Footer.vue';

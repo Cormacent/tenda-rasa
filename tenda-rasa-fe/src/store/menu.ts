@@ -6,7 +6,7 @@ import { usePageRequest } from '@/utils/helper'
 
 export const useMenuStore = defineStore('menu', () => {
     const url = import.meta.env.VITE_API_BACKEND + '/menus';
-    const menu = ref<IMenu>()
+    const menuDetail = ref<IMenu>({})
     const loading = ref(false)
     const error = ref<string | null>(null)
     const menuList = ref<IMenu[]>([])
@@ -15,12 +15,16 @@ export const useMenuStore = defineStore('menu', () => {
 
 
     const getMenuById = async (menuId: number): Promise<IMenu | null> => {
+        if (!menuId) {
+            error.value = 'Menu ID is required'
+            return null
+        }
         loading.value = true
         error.value = null
         try {
-            const res = await axios.get(`${url}/menus/${menuId}`)
-            menu.value = res.data || {}
-            return menu.value || null
+            const res = await axios.get(`${url}/${menuId}`)
+            menuDetail.value = res.data || {}
+            return menuDetail.value || null
         } catch (err: any) {
             error.value = err.message || 'Failed to fetch menu'
             return null
@@ -60,11 +64,11 @@ export const useMenuStore = defineStore('menu', () => {
     }
 
     return {
-        menu,
+        menuDetail,
         loading,
         error,
         getAllMenus,
         getMenuById,
-        menuList, getMenuPage, pageInfo
+        menuList, getMenuPage, pageInfo, resetFilters
     }
 })

@@ -16,9 +16,9 @@
                     }" class="custom-swiper">
                     <SwiperSlide v-for="menu in menuList" :key="menu.id">
                         <div class="bg-white shadow rounded-xl p-4 mb-5 flex flex-col items-center">
-                            <img :src="menu.image_url" :alt="menu.menu_name"
+                            <img :src="menu.imageUrl" :alt="menu.menuName"
                                 class="w-40 h-40 object-cover rounded-md mb-4" />
-                            <h3 class="text-xl font-semibold text-gray-900 mb-1">{{ menu.menu_name }}</h3>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-1">{{ menu.menuName }}</h3>
                             <p class="text-sm text-gray-500 mb-3">{{ menu.description }}</p>
                         </div>
                     </SwiperSlide>

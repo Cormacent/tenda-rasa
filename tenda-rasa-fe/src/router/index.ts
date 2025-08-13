@@ -14,11 +14,10 @@ const routes = [
         meta: { title: 'Explore Booth', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true, showButtonNavigation: true }
     },
 
-
     {
-        path: '/booth-detail/:boothId',
+        path: '/booth-detail/:menuId',
         component: () => import('@/views/booth-detail/BoothDetail.vue'),
-        name: 'booth-detail/:boothId',
+        name: 'booth-detail',
         meta: { title: '', icon: 'ep:guide', showHeader: false, showFooter: false, showBackground: true }
     },
     {
