@@ -24,7 +24,7 @@
       </ul>
 
       <!-- CTA Button -->
-      <el-button type="danger" size="large" round>
+      <el-button type="danger" size="large" round @click="addToCart">
         Masukkan ke Keranjang
       </el-button>
     </div>
@@ -36,9 +36,11 @@ import { importImage } from '@/utils/helper'
 import { useMenuStore } from '@/store/menu'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useOrderStore } from '@/store/order'
 const menuStore = useMenuStore()
 const menuId = ref<string>()
 const route = useRoute()
+const orderStore = useOrderStore()
 
 
 //----------------------------------------
@@ -66,6 +68,10 @@ onMounted(async () => {
 //----------------------------------------
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
+const addToCart = () => {
+  if (!menuDetail.value.id) return
+  orderStore.addToCheckoutList(menuDetail.value)
+}
 
 
 </script>

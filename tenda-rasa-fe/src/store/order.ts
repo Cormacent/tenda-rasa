@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { IOrder } from '@/models/IOrder'
+import { IMenu } from '@/models/IMenu'
+import { IOrderItem } from '@/models/IOrderItem'
 
 export const useOrderStore = defineStore('order', () => {
     const url = import.meta.env.VITE_API_BACKEND + '/orders';
@@ -10,6 +12,7 @@ export const useOrderStore = defineStore('order', () => {
     const loading = ref(false)
     const error = ref<string | null>(null)
     const orderList = ref<IOrder[]>([])
+    const orderItems = ref<IOrderItem[]>([])
 
     const getOrderById = async (orderId: number): Promise<IOrder | null> => {
         loading.value = true
@@ -71,6 +74,42 @@ export const useOrderStore = defineStore('order', () => {
         }
     }
 
+    const addToCheckoutList = (menu: IMenu) => {
+        if (!menu.id) {
+            console.error('Menu ID is required to add to checkout list');
+            return;
+        }
+
+        const existingItem = orderItems.value.find(item => item.menuId === menu.id)
+        const price = menu.price ?? 0 // ✅ fallback ke 0 kalau undefined
+        const quantity = existingItem && existingItem.quantity ? existingItem.quantity + 1 : 1
+        if (existingItem) {
+            existingItem.quantity = quantity + 1
+            existingItem.subtotal = existingItem.quantity * price
+        } else {
+            orderItems.value.push({
+                menuId: menu.id,
+                quantity: 1,
+                price: price,
+                subtotal: price,
+                menuName: menu.menuName,
+                menuCategory: menu.category
+            })
+        }
+    }
+    const removeFromCheckoutList = (menu: IMenu) => {
+        const index = orderItems.value.findIndex(item => item.menuId === menu.id)
+        if (index !== -1) {
+            const item = orderItems.value[index]
+            if (item.quantity && item.quantity > 1) {
+                item.quantity -= 1
+                item.subtotal = item.quantity * (item.price ?? 0)
+            } else {
+                orderItems.value.splice(index, 1)
+            }
+        }
+    }
+
     return {
         loading,
         error,
@@ -79,6 +118,16 @@ export const useOrderStore = defineStore('order', () => {
         getAllOrdersByEmail,
         getOrderById,
         createOrder,
-        handlePayment
+        handlePayment,
+        orderItems,
+        addToCheckoutList, removeFromCheckoutList
     }
-})
+},
+    {
+        persist: {
+            key: 'order-store',
+            paths: ['orderItems'],
+            storage: localStorage
+        } as any
+    }
+)
