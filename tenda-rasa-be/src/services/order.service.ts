@@ -5,9 +5,7 @@ import models, { sequelize } from '../models';
 const { Orders, OrderItems, MenuBooth } = models;
 import { Transaction, } from 'sequelize';
 import QRCode from 'qrcode';
-import { ResponseMenuDto } from '../dtos/menu.dto';
-
-
+import { MenuDTO } from '../dtos/menu.dto';
 
 export const getAllOrdersByEmail = async (email: string) => {
   return await Orders.findAll({
@@ -32,7 +30,7 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
     });
 
     const menuMap = new Map<number, InstanceType<typeof MenuBooth>>();
-    menus.forEach((menu: ResponseMenuDto) => menuMap.set(menu.id, menu));
+    menus.forEach((menu: MenuDTO) => menuMap.set(menu.id, menu));
 
     // Step 2: Buat order awal
 

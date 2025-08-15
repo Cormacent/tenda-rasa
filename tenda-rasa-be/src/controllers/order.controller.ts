@@ -1,9 +1,13 @@
 import { Request, Response } from 'express';
 import * as OrderService from '../services/order.service';
 import { CreateOrderDto } from '../dtos/order.dto';
+import { Intent } from '../enumeration/intent.enum';
+import { Role } from '../enumeration/role.enum';
+import { saveMessage } from '../services/chat.service';
+import { getWebSocketServer } from '../websocket';
 
 export const getAllOrdersByEmail = async (req: Request, res: Response) => {
-  const { email } = req.body;
+  const { email, name } = req.body;
 
   if (!email) {
     return res.status(400).json({ message: 'Email is required in request body' });
@@ -14,8 +18,9 @@ export const getAllOrdersByEmail = async (req: Request, res: Response) => {
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: 'No orders found for this email' });
     }
+
     res.json(orders);
-  }  catch (err: Error | any) {
+  } catch (err: Error | any) {
     console.error('❌ Error fetching menus:', err);
     res.status(500).json({
       message: 'Error fetching menus',
@@ -32,6 +37,31 @@ export const createOrder = async (req: Request, res: Response) => {
 
   try {
     const order = await OrderService.createOrder(orderDto);
+    const chatData = {
+      email: orderDto.email,
+      name: orderDto.name,
+      'message': {
+        chat: 'Order kamu sedang dalam proses, mohon tunggu sebentar.',
+        orders: [order],
+      },
+      role: Role.USER,
+      timestamp: new Date(),
+      intent: Intent.USER // Will be set after processing
+    };
+    const sendMessageResponse = await saveMessage(chatData);
+    // Push the message USER to WebSocket clients
+    const wss = getWebSocketServer();
+    const payload = sendMessageResponse.toJSON();
+
+    wss.clients.forEach(client => {
+      if (client.readyState === client.OPEN) {
+        client.send(JSON.stringify({
+          type: 'chat_sent',
+          payload
+        }));
+      }
+    });
+
     res.status(201).json(order);
   } catch (err: any) {
     console.error("❌ Error creating order:", err);

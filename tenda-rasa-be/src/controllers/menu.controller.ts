@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as MenuService from '../services/menu.service';
-import { MenuPageRequestDTO, ResponseMenuDto } from '../dtos/menu.dto';
+import { MenuPageRequestDTO, MenuDTO } from '../dtos/menu.dto';
 import { PaginatedResponseDTO, BaseResponse } from '../dtos/pagination.dto';
 
 export const getAvailableMenus = async (_req: Request, res: Response) => {
@@ -22,7 +22,7 @@ export const getAvailableMenus = async (_req: Request, res: Response) => {
 
 export const getMenuPage = async (
   req: Request<{}, {}, {}, MenuPageRequestDTO>,
-  res: Response<BaseResponse<PaginatedResponseDTO<ResponseMenuDto>>>
+  res: Response<BaseResponse<PaginatedResponseDTO<MenuDTO>>>
 ) => {
   try {
     const {
@@ -46,7 +46,7 @@ export const getMenuPage = async (
     });
     console.log("🚀 ~ getMenuPage ~ rows:", rows)
 
-    const menus: ResponseMenuDto[] = rows;
+    const menus: MenuDTO[] = rows;
     res.json({
       success: true,
       data: {

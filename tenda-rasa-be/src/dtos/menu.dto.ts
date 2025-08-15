@@ -1,4 +1,4 @@
-export interface ResponseMenuDto {
+export interface MenuDTO {
   id: number;
   boothName: string;
   menuName: string;
@@ -22,5 +22,5 @@ export interface MenuPageRequestDTO {
   offset?: number;
   sortBy?: 'price' | 'name' | 'spiciness_level' | 'stock' | 'estimated_minutes' | 'createdAt';
   sortOrder?: 'asc' | 'desc';
-  filters?: ResponseMenuDto; // Filters can be applied based on the ResponseMenuDto structure
+  filters?: MenuDTO; // Filters can be applied based on the ResponseMenuDto structure
 }
