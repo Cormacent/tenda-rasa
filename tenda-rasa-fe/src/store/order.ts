@@ -18,7 +18,7 @@ export const useOrderStore = defineStore('order', () => {
         loading.value = true
         error.value = null
         try {
-            const res = await axios.get(`${url}/orders/${orderId}`)
+            const res = await axios.get(`${url}/${orderId}`)
             orderDetail.value = res.data || {}
             return orderDetail.value || null
         } catch (err: any) {
@@ -33,7 +33,7 @@ export const useOrderStore = defineStore('order', () => {
         loading.value = true
         error.value = null
         try {
-            const res = await axios.get(`${url}/orders`, { params: { email } })
+            const res = await axios.get(`${url}/get-by-email`, { params: { email } })
             orderList.value = res.data || []
             return orderList.value
         } catch (err: any) {
@@ -49,9 +49,8 @@ export const useOrderStore = defineStore('order', () => {
         loading.value = true
         error.value = null
         try {
-            await axios.post(`${url}/orders`, order)
+            await axios.post(`${url}/create-order`, order)
         } catch (err: any) {
-            console.log("🚀 ~ createOrder ~ err:", err)
             error.value = err.message || 'Failed to send order'
         } finally {
             loading.value = false
@@ -66,7 +65,6 @@ export const useOrderStore = defineStore('order', () => {
             return res.data || {}
         }
         catch (err: any) {
-            console.log("🚀 ~ handlePayment ~ err:", err)
             error.value = err.message || 'Failed to process payment'
             return {}
         } finally {
@@ -79,18 +77,17 @@ export const useOrderStore = defineStore('order', () => {
             console.error('Menu ID is required to add to checkout list');
             return;
         }
-
         const existingItem = orderItems.value.find(item => item.menuId === menu.id)
-        const price = menu.price ?? 0 // ✅ fallback ke 0 kalau undefined
-        const quantity = existingItem && existingItem.quantity ? existingItem.quantity + 1 : 1
+        const price = menu.price ?? 0
+
         if (existingItem) {
-            existingItem.quantity = quantity + 1
+            existingItem.quantity = (existingItem.quantity ?? 0) + 1
             existingItem.subtotal = existingItem.quantity * price
         } else {
             orderItems.value.push({
                 menuId: menu.id,
                 quantity: 1,
-                price: price,
+                price,
                 subtotal: price,
                 menuName: menu.menuName,
                 menuCategory: menu.category

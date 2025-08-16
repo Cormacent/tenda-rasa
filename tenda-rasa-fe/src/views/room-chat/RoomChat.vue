@@ -15,39 +15,8 @@
       <!-- Messages area -->
       <div class="flex-1 overflow-y-auto p-4 pb-32 space-y-4 custom-scrollbar">
         <div v-for="(msg, idx) in messages" :key="idx"
-          :class="msg.role === 'user' ? 'flex items-end gap-2 justify-end' : 'flex items-start gap-2'">
-          <img v-if="msg.role !== 'user'" :src="importImage('robot.svg')" alt="Robot" class="w-8 h-8 rounded-full" />
-          <div :class="msg.role === 'user'
-            ? 'bg-primary text-white rounded-2xl px-4 py-2 shadow text-sm max-w-xs'
-            : 'bg-white rounded-2xl px-4 py-2 shadow text-sm max-w-xs'">
-            <!-- User message -->
-            <template v-if="msg.role === 'user'">
-              {{ msg.message.prompt }}
-            </template>
-            <!-- Assistant reply -->
-            <template v-else>
-              {{ msg.message.reply }}
-              <!-- Optionally render menu if available -->
-              <div v-if="msg.message.menu && msg.message.menu.length" class="mt-2">
-                <ul>
-                  <li v-for="(menuItem, menuIdx) in msg.message.menu" :key="menuIdx"
-                    class="mb-2 p-2 rounded border bg-gray-50">
-                    <div class="font-semibold">{{ menuItem.menu_name }}</div>
-                    <div class="text-xs text-gray-500">{{ menuItem.booth_name }} &bull; {{ menuItem.category }}</div>
-                    <div class="text-sm">{{ menuItem.description }}</div>
-                    <div class="text-xs mt-1">
-                      <span class="font-bold text-primary">Rp{{ menuItem.price.toLocaleString() }}</span>
-                      <span v-if="menuItem.spiciness_level" class="ml-2">🌶️ Level {{ menuItem.spiciness_level }}</span>
-                      <span v-if="menuItem.is_available" class="ml-2 text-green-600">Tersedia</span>
-                      <span v-else class="ml-2 text-red-600">Habis</span>
-                    </div>
-                    <img v-if="menuItem.image_url" :src="menuItem.image_url" alt="Menu Image"
-                      class="w-16 h-16 mt-2 rounded object-cover" />
-                  </li>
-                </ul>
-              </div>
-            </template>
-          </div>
+          :class="msg.role === 'user' ? 'flex items-end justify-end' : 'flex items-start  '">
+          <BubbleContainer :chat="msg" />
         </div>
       </div>
       <!-- Input area fixed at bottom -->
@@ -64,29 +33,53 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoomChat } from './RoomChat.logic';
-import { importImage } from '@/utils/helper';
+import { formatPrice, importImage } from '@/utils/helper';
 import { useChatbotStore } from '@/store/chatbot';
-import { socket } from '@/plugins/socket';
-import { IChatbot } from '@/models/IChatbot';
+import { useChatSocket } from '@/plugins/socket';
+import BubbleContainer from './components/bubble-container/BubbleContainer.vue';
 
+
+
+//----------------------------------------
+// 🧩 State Variables & Stores
+//----------------------------------------
 const { message, mounted } = useRoomChat();
-const messages = ref<Array<IChatbot>>([]);
 const chatbotStore = useChatbotStore()
+const { socket } = useChatSocket();
+const { messages } = useRoomChat();
+
+//----------------------------------------
+// 🔍 Computed Properties
+//----------------------------------------
+
+
+//----------------------------------------
+// 🎯 Watchers
+//----------------------------------------
+
+//----------------------------------------
+// 🚀 Lifecycle Hooks
+//----------------------------------------
+
+onMounted(() => {
+  mounted.value = true;
+  getAllChat()
+});
+onBeforeUnmount(() => {
+  socket.value?.disconnect()
+})
+//----------------------------------------
+// 🛠️ Utility / Custom Functions
+//----------------------------------------
 
 const sendMessage = async () => {
   if (!message.value.trim()) return;
   await chatbotStore.sendPrompt(message.value);
 };
 
-onMounted(() => {
-  socket.on("chat-message", (data: IChatbot) => {
-    messages.value.push(data);
-  });
-  mounted.value = true;
-  getAllChat()
-});
+
 const getAllChat = async () => {
   const response = await chatbotStore.getAllChatByEmail('zakimaulana08@gmail.com');
   if (response) {

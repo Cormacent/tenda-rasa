@@ -13,4 +13,5 @@ export interface IOrderItem {
     spicinessLevel?: number;
     imageUrl?: string;
     estimatedMinutes?: number;
+    remarks?: string; // Optional, used for order items
 }

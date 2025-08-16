@@ -1,0 +1,78 @@
+<template>
+    <section id="BubbleContainer" class="relative" :class="bubbleClass">
+        <!-- Dynamic Bubble Content -->
+        <component :is="bubbleComponent" :chat="chat" />
+
+        <!-- Timestamp -->
+        <span class="text-xs mt-2 self-end">
+            {{ formatDate(chat.createdAt) }}
+        </span>
+    </section>
+</template>
+
+<script lang="ts" setup>
+import { IChatbot } from '@/models/IChatbot'
+import { computed } from 'vue';
+import BubbleOrderPayment from '../bubble-order-payment/BubbleOrderPayment.vue';
+
+import { Intent } from '../../../../enums/intent';
+import { Role } from '../../../../enums/role';
+
+//----------------------------------------
+// 🧩 State Variables & Stores
+//----------------------------------------
+const props = defineProps<{ chat: IChatbot }>()
+
+//----------------------------------------
+// 🔍 Computed Properties
+//----------------------------------------
+const bubbleClass = computed(() => {
+    return [
+        'mb-4',
+        'p-4',
+        'rounded-lg',
+        'shadow-md',
+        'border',
+        'border-gray-200',
+        'hover:shadow-lg',
+        'transition-shadow',
+        'duration-200',
+        'cursor-pointer',
+        props.chat.role === Role.USER ? 'bg-primary text-white' : 'bg-white text-black  '
+    ]
+})
+const bubbleComponent = computed(() => {
+    switch (props.chat.intent) {
+        case Intent.ORDER_STATUS:
+            return 'OrderBubble'
+        case Intent.ORDER_PAYMENT:
+            return BubbleOrderPayment
+        case Intent.RECOMMENDATION:
+            return 'MenuBubble'
+        default:
+            return 'TextBubble'
+    }
+})
+//----------------------------------------
+// 🎯 Watchers
+//----------------------------------------
+
+//----------------------------------------
+// 🚀 Lifecycle Hooks
+//----------------------------------------
+
+//----------------------------------------
+// 🛠️ Utility / Custom Functions
+//----------------------------------------
+
+function formatDate(dateStr: string): string {
+    const date = new Date(dateStr)
+    return date.toLocaleString('id-ID', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    })
+} 
+</script>

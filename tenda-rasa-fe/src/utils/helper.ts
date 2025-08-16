@@ -106,7 +106,6 @@ export function usePageRequest<T extends object>(
     pageInfo.value.pagination = res.pagination;
   }
 
-
   return {
     pageInfo,
     requestPayload,
@@ -115,3 +114,7 @@ export function usePageRequest<T extends object>(
     updatePageInfoFromResponse
   };
 }
+
+export
+  const formatPrice = (value: number) =>
+    value.toLocaleString('id-ID', { minimumFractionDigits: 0 })

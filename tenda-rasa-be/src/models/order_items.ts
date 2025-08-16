@@ -2,40 +2,42 @@ import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
 
 interface OrderItemAttributes {
   id: number;
-  order_id: number;
-  menu_id: number;
+  orderId: number;
+  menuId: number;
   quantity: number;
   price: number;
   subtotal: number;
-  menu_name: string;
-  menu_category?: string;
-  menu_type?: string;
-  spiciness_level?: number;
-  image_url?: string;
-  estimated_minutes?: number;
-  created_at: Date;
-  updated_at: Date;
+  menuName: string;
+  menuCategory?: string;
+  menuType?: string;
+  spicinessLevel?: number;
+  imageUrl?: string;
+  estimatedMinutes?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  remarks?: string; // Optional, used for order items
 }
 
 interface OrderItemCreationAttributes
-  extends Optional<OrderItemAttributes, 'id' | 'subtotal' | 'menu_category' | 'menu_type' | 'spiciness_level' | 'image_url' | 'estimated_minutes'> {}
+  extends Optional<OrderItemAttributes, 'id' | 'subtotal' | 'menuCategory' | 'menuType' | 'spicinessLevel' | 'imageUrl' | 'estimatedMinutes'> { }
 
 class OrderItems extends Model<OrderItemAttributes, OrderItemCreationAttributes>
   implements OrderItemAttributes {
   public id!: number;
-  public order_id!: number;
-  public menu_id!: number;
+  public orderId!: number;
+  public menuId!: number;
   public quantity!: number;
   public price!: number;
   public subtotal!: number;
-  public menu_name!: string;
-  public menu_category?: string;
-  public menu_type?: string;
-  public spiciness_level?: number;
-  public image_url?: string;
-  public estimated_minutes?: number;
-  public created_at!: Date;
-  public updated_at!: Date;
+  public menuName!: string;
+  public menuCategory?: string;
+  public menuType?: string;
+  public spicinessLevel?: number;
+  public imageUrl?: string;
+  public estimatedMinutes?: number;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public remarks?: string | undefined;
 
   static associate(models: any) {
     OrderItems.belongsTo(models.Orders, {
@@ -58,13 +60,15 @@ export default (sequelize: Sequelize, DataTypes: typeof import('sequelize').Data
         autoIncrement: true,
         primaryKey: true
       },
-      order_id: {
+      orderId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        field: 'order_id'
       },
-      menu_id: {
+      menuId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        field: 'menu_id'
       },
       quantity: {
         type: DataTypes.INTEGER,
@@ -78,17 +82,19 @@ export default (sequelize: Sequelize, DataTypes: typeof import('sequelize').Data
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      menu_name: {
+      menuName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        field: 'menu_name'
       },
-      menu_category: DataTypes.STRING,
-      menu_type: DataTypes.STRING,
-      spiciness_level: DataTypes.INTEGER,
-      image_url: DataTypes.STRING,
-      estimated_minutes: DataTypes.INTEGER,
-      created_at: DataTypes.DATE,
-      updated_at: DataTypes.DATE
+      menuCategory: { type: DataTypes.STRING, field: 'menu_category' },
+      menuType: { type: DataTypes.STRING, field: 'menu_type' },
+      spicinessLevel: { type: DataTypes.INTEGER, field: 'spiciness_level' },
+      imageUrl: { type: DataTypes.STRING, field: 'image_url' },
+      estimatedMinutes: { type: DataTypes.INTEGER, field: 'estimated_minutes' },
+      createdAt: { type: DataTypes.DATE, field: 'created_at', defaultValue: DataTypes.NOW },
+      updatedAt: { type: DataTypes.DATE, field: 'updated_at', defaultValue: DataTypes.NOW },
+      remarks: DataTypes.STRING // Optional, used for order items
     },
     {
       sequelize,

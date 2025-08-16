@@ -44,9 +44,9 @@ export const createOrder = async (req: Request, res: Response) => {
         chat: 'Order kamu sedang dalam proses, mohon tunggu sebentar.',
         orders: [order],
       },
-      role: Role.USER,
+      role: Role.ASSISTANT,
       timestamp: new Date(),
-      intent: Intent.USER // Will be set after processing
+      intent: Intent.ORDER_STATUS // Will be set after processing
     };
     const sendMessageResponse = await saveMessage(chatData);
     // Push the message USER to WebSocket clients

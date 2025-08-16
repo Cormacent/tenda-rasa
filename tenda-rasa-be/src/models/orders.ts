@@ -7,12 +7,12 @@ interface OrdersAttributes {
   email: string;
   qrcode: string;
   status: string;
-  estimated_minutes: number;
-  total_price: number;
-  created_at: Date;
-  updated_at: Date;
-  created_by: string;
-  updated_by: string;
+  estimatedMinutes: number;
+  totalPrice: number;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: string;
+  updatedBy: string;
 }
 
 interface OrdersCreationAttributes extends Optional<OrdersAttributes, 'id'> { }
@@ -23,12 +23,12 @@ class Orders extends Model<OrdersAttributes, OrdersCreationAttributes>
   public email!: string;
   public qrcode!: string;
   public status!: string;
-  public estimated_minutes!: number;
-  public total_price!: number;
-  public created_at!: Date;
-  public updated_at!: Date;
-  public created_by!: string;
-  public updated_by!: string;
+  public estimatedMinutes!: number;
+  public totalPrice!: number;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public createdBy!: string;
+  public updatedBy!: string;
 
   // ✨ Optional: tempat definisi relasi
   static associate(models: any) {
@@ -50,12 +50,12 @@ export default (sequelize: Sequelize, DataTypes: typeof import('sequelize').Data
       },
       qrcode: DataTypes.STRING,
       status: DataTypes.STRING,
-      estimated_minutes: DataTypes.INTEGER,
-      total_price: DataTypes.DECIMAL,
-      created_at: DataTypes.DATE,
-      updated_at: DataTypes.DATE,
-      created_by: DataTypes.STRING,
-      updated_by: DataTypes.STRING
+      estimatedMinutes: { type: DataTypes.INTEGER, field: 'estimated_minutes' },
+      totalPrice: { type: DataTypes.DECIMAL },
+      createdAt: { type: DataTypes.DATE, field: 'created_at', defaultValue: DataTypes.NOW },
+      updatedAt: { type: DataTypes.DATE, field: 'updated_at', defaultValue: DataTypes.NOW },
+      createdBy: { type: DataTypes.STRING, field: 'created_by' },
+      updatedBy: { type: DataTypes.STRING, field: 'updated_by' }
     },
     {
       sequelize,

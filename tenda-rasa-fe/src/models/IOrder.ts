@@ -2,9 +2,14 @@ import { IOrderItem } from "./IOrderItem";
 
 export interface IOrder {
     id?: number;
-    booth_id: number;
-    name: string;
-    email: string;
-    estimated_minutes: number;
+    email?: string;
+    qrcode?: string;
+    status?: string;
+    estimatedMinutes?: number;
     orderItems: IOrderItem[];
+    totalPrice: number;
+    createdAt?: Date;
+    updatedAt?: Date;
+    createdBy?: string;
+    updatedBy?: string;
 }

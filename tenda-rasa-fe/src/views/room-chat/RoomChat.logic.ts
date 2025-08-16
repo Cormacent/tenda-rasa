@@ -1,7 +1,10 @@
+import { IChatbot } from '@/models/IChatbot';
 import { ref } from 'vue';
 
 export function useRoomChat() {
   const mounted = ref(false);
   const message = ref('');
-  return { message, mounted };
+  const messages = ref<Array<IChatbot>>([]);
+
+  return { message, mounted, messages };
 }

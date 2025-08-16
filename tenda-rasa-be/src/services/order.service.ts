@@ -25,7 +25,7 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
 
     // Step 1: Validasi semua menu dulu
     const menus = await MenuBooth.findAll({
-      where: { id: orderItems.map(i => i.menu_id) },
+      where: { id: orderItems.map(i => i.menuId) },
       transaction: t
     });
 
@@ -40,11 +40,9 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
     const itemsToCreate: CreateOrderItemDto[] = [];
 
     for (const item of orderItems) {
-      const menu = menuMap.get(item.menu_id);
-      console.log("🧪 image_url length:", menu.image_url?.length);
-      console.log("🧪 description length:", menu.description?.length);
+      const menu = menuMap.get(item.menuId);
       if (!menu || menu.stock < item.quantity) {
-        throw new Error(`❌ Menu ID ${item.menu_id} tidak tersedia atau stok kurang`);
+        throw new Error(`❌ Menu ID ${item.menuId} tidak tersedia atau stok kurang`);
       }
 
       const newStock = menu.stock - item.quantity;
@@ -59,17 +57,18 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
       );
 
       itemsToCreate.push({
-        menu_id: item.menu_id,
+        menuId: item.menuId,
         quantity: item.quantity,
         price: menu.price,
         subtotal: menu.price * item.quantity,
-        order_id: order.id,
-        menu_name: menu.menu_name,
-        menu_category: menu.category,
-        menu_type: menu.menu_type,
-        spiciness_level: menu.spiciness_level,
-        image_url: menu.image_url,
-        estimated_minutes: menu.estimated_minutes
+        orderId: order.id,
+        menuName: menu.menuName,
+        menuCategory: menu.category,
+        menuType: menu.menu_type,
+        spicinessLevel: menu.spicinessLevel,
+        imageUrl: menu.image_url,
+        estimatedMinutes: menu.estimatedMinutes,
+        remarks: item.remarks
       });
     }
 
@@ -92,30 +91,15 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
     // Step 3: Response lengkap
     const response: ResponseOrderDto = {
       id: order.id,
-      booth_id: order.booth_id,
+      boothId: order.boothId,
       name: order.name,
       email: order.email,
       qrcode: qrcodeData,
       status: order.status,
-      estimated_minutes: order.estimated_minutes,
-      total_price: totalPrice,
-      created_at: order.createdAt,
-      orderItems: createdItems.map((item: ResponseOrderItemDto) => ({
-        id: item.id,
-        menu_id: item.menu_id,
-        quantity: item.quantity,
-        price: item.price,
-        subtotal: item.subtotal,
-        order_id: item.order_id,
-        created_at: item.created_at,
-        updated_at: item.updated_at,
-        menu_name: item.menu_name,
-        menu_category: item.menu_category,
-        menu_type: item.menu_type,
-        spiciness_level: item.spiciness_level,
-        image_url: item.image_url,
-        estimated_minutes: item.estimated_minutes
-      }))
+      estimatedMinutes: order.estimatedMinutes,
+      totalPrice: totalPrice,
+      createdAt: order.createdAt,
+      orderItems: createdItems
     };
 
     return response;
