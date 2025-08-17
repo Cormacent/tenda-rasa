@@ -15,21 +15,30 @@ export function useChatSocket() {
         (email) => {
             if (!email || socket.value) return
 
-            socket.value = io(import.meta.env.VITE_API_WEBSOCKET, {
-                path: '/ws',
-                query: { email },
-                transports: ['websocket']
-            })
+            const socketUrl = `${import.meta.env.VITE_API_WEBSOCKET}/ws`;
 
-            socket.value.on('connect', () => {
-                console.log('✅ Connected to socket:', socket.value?.id)
-            })
+            socket.value = io(socketUrl, {
+                transports: ['websocket'],
+                query: {
+                    email: 'zakimaulana08@gmail.com',
+                },
+            });
+            if (socket.value) {
+                socket.value.on('open', () => {
+                    console.log('✅ WebSocket opened');
+                });
+                socket.value.on('message', (data: IChatbot) => {
+                    messages.value.push(data)
+                })
+                socket.value.on('close', () => {
+                    console.error('❌ close');
+                });
+            }
 
-            socket.value.on('message', (data: IChatbot) => {
-                messages.value.push(data)
-            })
+
+
         },
-        { immediate: true }
+        { immediate: true, deep: true }
     )
 
     // Emit message

@@ -4,7 +4,8 @@ import { CreateOrderDto } from '../dtos/order.dto';
 import { Intent } from '../enumeration/intent.enum';
 import { Role } from '../enumeration/role.enum';
 import { saveMessage } from '../services/chat.service';
-import { getWebSocketServer } from '../websocket';
+import { Status } from '../enumeration/status.enum';
+import { getClientByEmail } from '../socket/socketServer';
 
 export const getAllOrdersByEmail = async (req: Request, res: Response) => {
   const { email, name } = req.body;
@@ -37,6 +38,7 @@ export const createOrder = async (req: Request, res: Response) => {
 
   try {
     const order = await OrderService.createOrder(orderDto);
+    order.status = Status.PENDING;
     const chatData = {
       email: orderDto.email,
       name: orderDto.name,
@@ -46,21 +48,16 @@ export const createOrder = async (req: Request, res: Response) => {
       },
       role: Role.ASSISTANT,
       timestamp: new Date(),
-      intent: Intent.ORDER_STATUS // Will be set after processing
+      intent: Intent.ORDER_PAYMENT // Will be set after processing
     };
     const sendMessageResponse = await saveMessage(chatData);
+    
     // Push the message USER to WebSocket clients
-    const wss = getWebSocketServer();
     const payload = sendMessageResponse.toJSON();
-
-    wss.clients.forEach(client => {
-      if (client.readyState === client.OPEN) {
-        client.send(JSON.stringify({
-          type: 'chat_sent',
-          payload
-        }));
-      }
-    });
+    const socket = getClientByEmail(orderDto.email);
+    if (socket) {
+      socket.emit('message', { type: 'chat_sent', payload: JSON.stringify(payload) });
+    }
 
     res.status(201).json(order);
   } catch (err: any) {

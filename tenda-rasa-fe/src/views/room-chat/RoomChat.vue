@@ -22,8 +22,8 @@
       <!-- Input area fixed at bottom -->
       <div class="p-4 bg-white flex items-center gap-2 border-t absolute left-0 right-0 bottom-0">
         <el-input v-model="message" placeholder="Ketik pesan..." class="flex-1" size="large" clearable
-          @keyup.enter="sendMessage" />
-        <el-button type="primary" size="large" @click="sendMessage">
+          @keyup.enter="onSendMessage" />
+        <el-button type="primary" size="large" @click="onSendMessage">
           <icon-ep-position class="text-white" />
         </el-button>
       </div>
@@ -37,8 +37,11 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoomChat } from './RoomChat.logic';
 import { formatPrice, importImage } from '@/utils/helper';
 import { useChatbotStore } from '@/store/chatbot';
-import { useChatSocket } from '@/plugins/socket';
 import BubbleContainer from './components/bubble-container/BubbleContainer.vue';
+import { useChatSocket } from '@/composables/useChatSocket';
+import { useUserStore } from '@/store/user';
+import { Role } from '@/enums/role';
+import { Intent } from '@/enums/intent';
 
 
 
@@ -47,8 +50,9 @@ import BubbleContainer from './components/bubble-container/BubbleContainer.vue';
 //----------------------------------------
 const { message, mounted } = useRoomChat();
 const chatbotStore = useChatbotStore()
-const { socket } = useChatSocket();
-const { messages } = useRoomChat();
+const { messages, sendMessage } = useChatSocket();
+const { userInfo } = useUserStore()
+
 
 //----------------------------------------
 // 🔍 Computed Properties
@@ -67,18 +71,26 @@ onMounted(() => {
   mounted.value = true;
   getAllChat()
 });
-onBeforeUnmount(() => {
-  socket.value?.disconnect()
-})
+
 //----------------------------------------
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
 
-const sendMessage = async () => {
-  if (!message.value.trim()) return;
-  await chatbotStore.sendPrompt(message.value);
-};
 
+const onSendMessage = () => {
+  if (!message.value.trim()) return;
+  sendMessage({
+    name: userInfo?.name ?? '',
+    email: userInfo.email ?? '',
+    message: {
+      chat: message.value,
+      intent: Intent.USER
+    },
+    role: Role.USER,
+    intent: Intent.USER
+  });
+  message.value = '';
+};
 
 const getAllChat = async () => {
   const response = await chatbotStore.getAllChatByEmail('zakimaulana08@gmail.com');

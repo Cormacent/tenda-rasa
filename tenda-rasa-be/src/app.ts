@@ -4,7 +4,7 @@ import cors from 'cors';
 import sequelize from './db';
 import v1Routes from './routes';
 import { errorHandler } from './middleware/errorHandlers';
-import { setupWebSocketServer } from './websocket';
+import { setupSocketIO } from './socket/socketServer';
 
 const app = express();
 const server = http.createServer(app);
@@ -34,8 +34,8 @@ const init = async () => {
     // Optional: Sync models (disable in production!)
     // await sequelize.sync({ alter: true });
 
-    // 🚀 Start WebSocket Server
-    setupWebSocketServer(server);
+    // 🚀 Start Socket IO Server
+    setupSocketIO(server);
 
     // 🟢 Start HTTP Server
     const PORT = process.env.PORT || 3000;

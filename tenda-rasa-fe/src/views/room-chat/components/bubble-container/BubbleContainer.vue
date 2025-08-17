@@ -4,9 +4,9 @@
         <component :is="bubbleComponent" :chat="chat" />
 
         <!-- Timestamp -->
-        <span class="text-xs mt-2 self-end">
-            {{ formatDate(chat.createdAt) }}
-        </span>
+        <p class="text-xs mt-2 text-right">
+            {{ formatDate(chat?.createdAt ?? '') }}
+        </p>
     </section>
 </template>
 
@@ -17,6 +17,8 @@ import BubbleOrderPayment from '../bubble-order-payment/BubbleOrderPayment.vue';
 
 import { Intent } from '../../../../enums/intent';
 import { Role } from '../../../../enums/role';
+import BubbleMessage from '../bubble-message/BubbleMessage.vue';
+import BubbleMenus from '../bubble-menus/BubbleMenus.vue';
 
 //----------------------------------------
 // 🧩 State Variables & Stores
@@ -48,9 +50,9 @@ const bubbleComponent = computed(() => {
         case Intent.ORDER_PAYMENT:
             return BubbleOrderPayment
         case Intent.RECOMMENDATION:
-            return 'MenuBubble'
+            return BubbleMenus
         default:
-            return 'TextBubble'
+            return BubbleMessage
     }
 })
 //----------------------------------------

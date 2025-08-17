@@ -10,13 +10,13 @@ export interface IMessage {
 }
 
 export interface IChatbot {
-    id: number
-    email: string
-    name: string
-    message: IMessage
-    role: 'user' | 'system' | 'assistant' // bisa disesuaikan dengan enum role yang kamu pakai
-    timestamp: string // ISO date string
-    intent: string // bisa dijadikan enum kalau ada daftar intent
-    createdAt: string
-    updatedAt: string
+    id?: number
+    email?: string
+    name?: string
+    message?: IMessage
+    role?: 'user' | 'system' | 'assistant' // bisa disesuaikan dengan enum role yang kamu pakai
+    timestamp?: string // ISO date string
+    intent?: string // bisa dijadikan enum kalau ada daftar intent
+    createdAt?: string
+    updatedAt?: string
 }

@@ -6,7 +6,7 @@ export interface ChatDTO {
     id?: number;
     email: string;
     name: string;
-    message: any; // JSONB
+    message: ChatMessageDTO; // JSONB
     role: string;
     timestamp: Date;
     intent?: string;

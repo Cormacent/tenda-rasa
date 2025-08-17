@@ -1,17 +1,43 @@
 import { Request, Response } from 'express';
 import { confirmPayment } from '../services/payment.service';
+import { } from '../services/order.service';
+import { Intent } from '../enumeration/intent.enum';
+import { saveMessage } from '../services/chat.service';
+import { Role } from '../enumeration/role.enum';
+import { getClientByEmail } from '../socket/socketServer';
 
 export const handlePayment = async (req: Request, res: Response) => {
-  const { order_id, email } = req.params;
+  const { orderId, email } = req.params;
 
   try {
-    const order = await confirmPayment(order_id, email);
+    const order = await confirmPayment(orderId, email);
 
     if (!order) {
       return res.status(404).json({
         message: '❌ Order tidak ditemukan atau email tidak cocok.'
       });
     }
+
+
+    const chatData = {
+      email: order.email,
+      name: order.name,
+      'message': {
+        chat: `✅ Pembayaran untuk order ID ${order.id} berhasil diproses.`,
+        orders: [order],
+      },
+      role: Role.ASSISTANT,
+      timestamp: new Date(),
+      intent: Intent.ORDER_PAYMENT
+    };
+    const sendMessageResponse = await saveMessage(chatData);
+    // Push the message USER to WebSocket clients
+    const payload = sendMessageResponse.toJSON();
+    const socket = getClientByEmail(email);
+    if (socket) {
+      socket.emit('message', { type: 'chat_sent', payload: JSON.stringify(payload) });
+    }
+
 
     return res.status(200).json({
       message: order.status === 'PAID'

@@ -31,17 +31,14 @@ export async function generateChatResponse({ name, email, message, menus }: Chat
 
   const prompt = `
 User bernama ${name} (${email}) bertanya: '${message}'
-
 Berikut adalah daftar menu yang tersedia (beserta ID dan tag):
 ${daftarMenu}
-
 Tentukan apakah permintaan user termasuk:
 - INTENT: GREETING → jika user hanya menyapa (seperti 'halo', 'hai', 'Selamat Pagi', dll)
 - INTENT: ORDER_STATUS → jika user bertanya tentang status pesanannya
-- INTENT: RECOMMENDATION → jika user meminta saran makanan
+- INTENT: RECOMMENDATION → jika user meminta saran makanan atau daftar menu
 - INTENT: EXPLANATION → jika user ingin penjelasan menu tertentu
 - INTENT: OTHER → jika tidak berkaitan dengan daftar menu
-
 Instruksi:
 - Jika respon kamu memberikan judul menu, gausah kirim beserta ID
 - Jika intent GREETING, balas ramah dan akrab seperti bot menyapa kembali.
@@ -51,7 +48,6 @@ Instruksi:
 - Jika intent OTHER, berikan semacam kalimat maaf pertanyaan hanya seputar Menu Tenda Rasa.
 - Gunakan nama user agar lebih akrab.
 - Jangan pernah tambahkan menu yang tidak ada di daftar.
-
 Format hasil akhir:
 - Jawaban utama di atas.
 - Baris baru, lalu:

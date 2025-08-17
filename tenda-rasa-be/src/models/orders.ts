@@ -48,7 +48,7 @@ export default (sequelize: Sequelize, DataTypes: typeof import('sequelize').Data
         type: DataTypes.STRING,
         allowNull: false
       },
-      qrcode: DataTypes.STRING,
+      qrcode: DataTypes.TEXT,
       status: DataTypes.STRING,
       estimatedMinutes: { type: DataTypes.INTEGER, field: 'estimated_minutes' },
       totalPrice: { type: DataTypes.DECIMAL },

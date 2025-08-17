@@ -7,6 +7,7 @@ import { getAvailableMenus } from '../services/menu.service';
 import { MenuDTO } from '../dtos/menu.dto';
 import { ChatDTO } from '../dtos/chat.dto';
 import { Role } from '../enumeration/role.enum';
+import { Socket } from 'socket.io';
 
 
 export const getConversation = async (req: Request, res: Response) => {
@@ -28,8 +29,8 @@ export const getConversation = async (req: Request, res: Response) => {
 };
 
 
-export async function handleChatEvent(socket: WebSocket, payload: any) {
-  const { name, email = '', message = '' } = payload;
+export async function handleChatEvent(socket: Socket, payload: ChatDTO) {
+  const { email, name, message, } = payload;
 
   try {
 
@@ -46,7 +47,7 @@ export async function handleChatEvent(socket: WebSocket, payload: any) {
     const chatData = {
       email,
       name,
-      message,
+      message: message,
       role: Role.USER,
       timestamp: new Date(),
       intent: Intent.USER // Will be set after processing
@@ -59,9 +60,10 @@ export async function handleChatEvent(socket: WebSocket, payload: any) {
       payload: sendMessageResponse.toJSON() || sendMessageResponse
     }));
 
+
     // Process the message with Gemini
     const menus = await getAvailableMenus();
-    const result = await ChatService.generateChatResponse({ name, email, message, menus });
+    const result = await ChatService.generateChatResponse({ name, email, message: message.chat, menus });
 
     // Prepare saved message for WebSocket response
     const { intent, menuIds, chat } = result
