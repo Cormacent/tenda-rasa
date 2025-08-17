@@ -21,15 +21,28 @@ const routes = [
         meta: { title: '', icon: 'ep:guide', showHeader: false, showFooter: false, showBackground: true }
     },
     {
+        path: '/checkout',
+        component: () => import('@/views/checkout/Checkout.vue'),
+        name: 'checkout',
+        meta: { title: '', icon: 'ep:guide', showHeader: false, showFooter: false, showBackground: true }
+    },
+    
+    {
+        path: '/order-list',
+        component: () => import('@/views/order/OrderList.vue'),
+        name: 'order-list',
+        meta: { title: '', icon: 'ep:guide', showHeader: false, showFooter: false, showBackground: true }
+    },
+    {
         path: '/order-detail',
-        component: () => import('@/views/order/OrderDetail.vue'),
+        component: () => import('@/views/order/order-detail/OrderDetail.vue'),
         name: 'order-detail',
         meta: { title: '', icon: 'ep:guide', showHeader: false, showFooter: false, showBackground: true }
     },
     {
-        path: '/order-status',
-        component: () => import('@/views/order-status/OrderStatus.vue'),
-        name: 'order-status',
+        path: '/order-detail/:orderId',
+        component: () => import('@/views/order/order-detail/OrderDetail.vue'),
+        name: 'order-detail-by-id',
         meta: { title: '', icon: 'ep:guide', showHeader: false, showFooter: false, showBackground: true }
     },
     {

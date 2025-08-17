@@ -37,7 +37,7 @@
             <el-button circle size="small" @click="addToCart" class="border border-primary text-primary">
               <icon-ep-plus />
             </el-button>
-            <router-link :to="{ name: 'order-detail' }" class="ml-2">
+            <router-link :to="{ name: 'checkout' }" class="ml-2">
               <el-button type="primary" circle size="small">
                 <icon-ep-shopping-cart class="text-white" />
               </el-button>

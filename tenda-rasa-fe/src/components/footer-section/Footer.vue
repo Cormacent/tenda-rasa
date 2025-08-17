@@ -1,5 +1,5 @@
 <template>
-  <footer id="Footer">
+  <footer id="Footer" class='h-[3rem]'>
     <slot>
     </slot>
   </footer>

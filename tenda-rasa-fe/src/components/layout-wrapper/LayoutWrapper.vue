@@ -11,15 +11,12 @@
             </div>
         </Header>
 
-        <main class="flex-1 flex flex-col">
+        <main class="flex-1 flex flex-col overflow-hidden">
             <slot />
         </main>
 
         <Footer v-if="showFooter">
             <BottomNavbar v-if="showButtonNavigation" />
-            <p v-if="!showButtonNavigation" class="text-center py-4 text-sm text-gray-500">
-                © 2023 Tenda Rasa. All rights reserved.
-            </p>
         </Footer>
     </section>
 </template>

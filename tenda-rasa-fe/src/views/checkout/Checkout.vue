@@ -1,5 +1,5 @@
 <template>
-  <section id="OrderStatus" class="min-h-screen bg-white px-4 py-6 sm:px-6 lg:px-8">
+  <section id="Checkout" class="min-h-screen bg-white px-4 py-6 sm:px-6 lg:px-8">
     <h2 class="text-xl font-bold text-primary mb-6 text-center sm:text-left">Rincian Pesanan</h2>
 
     <!-- Daftar Item -->
@@ -65,15 +65,7 @@ const total = computed(() => orderItems.value.reduce((sum, item) => sum + ((item
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
 const createOrder = async () => {
-  await orderStore.createOrder({
-    orderItems: orderItems.value,
-    totalPrice: total.value,
-    email: userStore.userInfo.email || '',
-  }).then(() => {
-    router.push({ name: 'room-chat' })
-  }).catch((error) => {
-    console.error('Error creating order:', error)
-  })
+  router.push({ name: 'order-detail' })
 }
 
 </script>

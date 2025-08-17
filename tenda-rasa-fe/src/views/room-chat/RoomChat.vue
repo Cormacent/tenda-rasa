@@ -1,7 +1,8 @@
 <template>
-  <section id="room-chat" class="flex flex-col mt-16" ref="RoomChat">
-    <h1 class="text-2xl font-bold p-4 pb-0">Chat</h1>
-    <div class="card p-4 rounded flex flex-row gap-4 items-center bg-white mx-4 mt-4">
+  <section id="room-chat" class="relative h-[calc(100vh-7rem)] container mx-auto px-4" ref="RoomChat">
+    <!-- Header -->
+    <h1 class="text-2xl font-bold">Chat</h1>
+    <div class="card p-4 rounded flex gap-4 items-center bg-white">
       <img :src="importImage('robot.svg')" alt="Robot" class="w-16 h-16" />
       <div class="flex flex-col justify-center items-center h-16">
         <h3 class="mb-1 text-lg font-semibold">TerraBot</h3>
@@ -11,29 +12,28 @@
         </p>
       </div>
     </div>
-    <div class="flex-1 flex flex-col rounded mt-4 mx-4 mb-4 shadow overflow-hidden relative">
-      <!-- Messages area -->
-      <div class="flex-1 overflow-y-auto p-4 pb-32 space-y-4 custom-scrollbar">
-        <div v-for="(msg, idx) in messages" :key="idx"
-          :class="msg.role === 'user' ? 'flex items-end justify-end' : 'flex items-start  '">
-          <BubbleContainer :chat="msg" />
-        </div>
-      </div>
-      <!-- Input area fixed at bottom -->
-      <div class="p-4 bg-white flex items-center gap-2 border-t absolute left-0 right-0 bottom-0">
-        <el-input v-model="message" placeholder="Ketik pesan..." class="flex-1" size="large" clearable
-          @keyup.enter="onSendMessage" />
-        <el-button type="primary" size="large" @click="onSendMessage">
-          <icon-ep-position class="text-white" />
-        </el-button>
+
+    <!-- Messages area -->
+    <div class="absolute left-0 right-0 overflow-y-auto px-4   space-y-4" :style="{ top: '140px', bottom: '60px' }"
+      ref="RoomChatMessages">
+      <div v-for="(msg, idx) in messages" :key="idx"
+        :class="msg.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
+        <BubbleContainer :chat="msg" />
       </div>
     </div>
+
+    <!-- Input area -->
+    <div class="absolute bottom-0 left-0 right-0 px-4 py-2 border-t flex gap-2 items-center bg-white">
+      <el-input v-model="message" placeholder="Ketik pesan..." class="flex-1" size="large" clearable
+        @keyup.enter="onSendMessage" />
+      <el-button type="primary" size="large" @click="onSendMessage">
+        <icon-ep-position class="text-white" />
+      </el-button>
+    </div>
   </section>
-
 </template>
-
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useRoomChat } from './RoomChat.logic';
 import { formatPrice, importImage } from '@/utils/helper';
 import { useChatbotStore } from '@/store/chatbot';
@@ -52,7 +52,7 @@ const { message, mounted } = useRoomChat();
 const chatbotStore = useChatbotStore()
 const { messages, sendMessage } = useChatSocket();
 const { userInfo } = useUserStore()
-
+const RoomChatMessages = ref<HTMLElement | null>(null);
 
 //----------------------------------------
 // 🔍 Computed Properties
@@ -63,19 +63,30 @@ const { userInfo } = useUserStore()
 // 🎯 Watchers
 //----------------------------------------
 
+watch(messages, async () => {
+  scrollToBottom()
+});
+
 //----------------------------------------
 // 🚀 Lifecycle Hooks
 //----------------------------------------
 
-onMounted(() => {
+onMounted(async () => {
   mounted.value = true;
-  getAllChat()
+  await getAllChat()
+  scrollToBottom()
 });
 
 //----------------------------------------
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
-
+const scrollToBottom = async () => {
+  await nextTick();
+  RoomChatMessages.value?.scrollTo({
+    top: RoomChatMessages.value.scrollHeight,
+    behavior: 'smooth',
+  });
+}
 
 const onSendMessage = () => {
   if (!message.value.trim()) return;
