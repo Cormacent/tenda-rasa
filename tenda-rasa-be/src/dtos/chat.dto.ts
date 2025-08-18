@@ -10,7 +10,6 @@ export interface ChatDTO {
     role: string;
     timestamp: Date;
     intent?: string;
-    menuIds?: number[];
 }
 
 export interface ChatMessageDTO {
@@ -19,4 +18,5 @@ export interface ChatMessageDTO {
     orders?: ResponseOrderDto[];
     intent?: string;
     menuIds?: number[];
+    orderIds?: number[]
 }

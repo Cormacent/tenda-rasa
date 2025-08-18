@@ -1,7 +1,7 @@
 <template>
     <section id="BubbleContainer" class="relative" :class="bubbleClass">
         <!-- Dynamic Bubble Content -->
-        <component :is="bubbleComponent" :chat="chat" />
+        <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
 
         <!-- Timestamp -->
         <p class="text-xs mt-2 text-right">
@@ -19,11 +19,15 @@ import { Intent } from '../../../../enums/intent';
 import { Role } from '../../../../enums/role';
 import BubbleMessage from '../bubble-message/BubbleMessage.vue';
 import BubbleMenus from '../bubble-menus/BubbleMenus.vue';
+import { IMenu } from '@/models/IMenu';
 
+const props = defineProps<{ chat: IChatbot }>()
+const emit = defineEmits<{
+    (e: 'select-menu', menu: IMenu): void
+}>()
 //----------------------------------------
 // 🧩 State Variables & Stores
 //----------------------------------------
-const props = defineProps<{ chat: IChatbot }>()
 
 //----------------------------------------
 // 🔍 Computed Properties

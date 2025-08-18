@@ -6,8 +6,9 @@ const { Orders, OrderItems, MenuBooth } = models;
 import { Transaction, } from 'sequelize';
 import QRCode from 'qrcode';
 import { MenuDTO } from '../dtos/menu.dto';
+import { Op } from 'sequelize'
 
-export const getAllOrdersByEmail = async (email: string) => {
+export const getAllOrdersByEmail = async (email: string): Promise<ResponseOrderDto[]> => {
   return await Orders.findAll({
     where: { email },
     include: [
@@ -41,6 +42,19 @@ export const updateOrder = async (id: number, updates: Partial<CreateOrderDto>):
 
   return orderWithItems as ResponseOrderDto;
 };
+export async function getOrderByIds(orderIds: number[]): Promise<ResponseOrderDto[]> {
+  if (!orderIds || orderIds.length === 0) return []
+
+  const orders = await Orders.findAll({
+    where: {
+      id: {
+        [Op.in]: orderIds
+      }
+    }
+  })
+
+  return orders
+}
 
 
 export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrderDto> => {

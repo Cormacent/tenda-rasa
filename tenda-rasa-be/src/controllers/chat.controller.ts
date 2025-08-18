@@ -1,24 +1,38 @@
 import { Request, Response } from 'express';
 import * as ChatService from '../services/chat.service';
 import { Intent } from '../enumeration/intent.enum';
-import { getAllOrdersByEmail } from '../services/order.service';
+import { getAllOrdersByEmail, getOrderByIds } from '../services/order.service';
 import { getAvailableMenus } from '../services/menu.service';
 import { MenuDTO } from '../dtos/menu.dto';
 import { ChatDTO } from '../dtos/chat.dto';
 import { Role } from '../enumeration/role.enum';
-import { Socket } from 'socket.io';
 import { getClientByEmail } from '../socket/socketServer';
-
-
 export const getConversation = async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
-    const history = await ChatService.getConversationByEmail(email);
-    res.json(history);
+    const histories = await ChatService.getConversationByEmail(email);
+    const allOrders = await getAllOrdersByEmail(email);
+    const allMenus = await getAvailableMenus();
+
+    for (const history of histories) {
+      const { message } = history;
+      if (!message) continue;
+      const { orderIds = [], menuIds = [] } = message;
+
+      if (orderIds.length > 0) {
+        message.orders = allOrders.filter(order => orderIds.includes(order.id));
+      }
+
+      if (menuIds.length > 0) {
+        message.menus = allMenus.filter((menu: MenuDTO) => menuIds.includes(menu.id));
+      }
+    }
+
+    res.json(histories);
   } catch (err: Error | any) {
-    console.error('❌ Error fetching menus:', err);
+    console.error('❌ Error fetching conversation:', err);
     res.status(500).json({
-      message: 'Error fetching menus',
+      message: 'Error fetching conversation',
       error: {
         name: err.name,
         message: err.message,
@@ -26,7 +40,7 @@ export const getConversation = async (req: Request, res: Response) => {
       }
     });
   }
-};
+}
 
 
 export async function handleChatEvent(payload: ChatDTO) {
@@ -51,7 +65,7 @@ export async function handleChatEvent(payload: ChatDTO) {
       timestamp: new Date(),
       intent: Intent.USER // Will be set after processing
     };
-    const sendMessageResponse = await ChatService.saveMessage(chatData);
+    const sendMessageResponse = await ChatService.saveMessage(chatData)
 
     // Push the message USER to WebSocket clients
     socket.send({
@@ -88,12 +102,21 @@ export async function handleChatEvent(payload: ChatDTO) {
       timestamp: new Date(),
       intent: intent || Intent.OTHER
     };
-    const chatHistory = await ChatService.saveMessage(payload);
+    const chatResponse = await ChatService.saveMessage(payload);
 
+    const payloadMesageResponse: ChatDTO = sendMessageResponse
+    if (
+      payloadMesageResponse.intent === Intent.ORDER_STATUS &&
+      payloadMesageResponse.message &&
+      Array.isArray(payloadMesageResponse.message.orderIds) &&
+      payloadMesageResponse.message.orderIds.length > 0
+    ) {
+      payloadMesageResponse.message.orders = await getOrderByIds(payloadMesageResponse.message.orderIds)
+    }
 
     // push the response to WebSocket clients
     socket.send({
-      type: 'chat_response', payload: chatHistory
+      type: 'chat_response', payload: chatResponse
     });
 
   } catch (err) {

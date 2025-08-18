@@ -7,6 +7,7 @@ import { saveMessage } from '../services/chat.service';
 import { Status } from '../enumeration/status.enum';
 import { getClientByEmail } from '../socket/socketServer';
 import { orderQueue } from '../job/queues/orderQueue';
+import { ChatDTO } from '../dtos/chat.dto';
 
 export const getAllOrdersByEmail = async (req: Request, res: Response) => {
   const { email, name } = req.body;
@@ -41,19 +42,22 @@ export const createOrder = async (req: Request, res: Response) => {
 
   try {
     const order = await OrderService.createOrder(orderDto);
-    const job = await orderQueue.add('expire-order', { orderId: order.id }, {
-      delay: 1000 * 60 * orderDto.estimatedMinutes, 
+
+    // REDIS JOB
+    await orderQueue.add('expire-order', { orderId: order.id }, {
+      delay: 1000 * 60 * orderDto.estimatedMinutes,
       removeOnComplete: true,
       removeOnFail: true,
     });
 
 
-    const chatData = {
+    const chatData: ChatDTO = {
       email: orderDto.email,
       name: orderDto.name,
       'message': {
         chat: 'Lanjutkan pembayaran agar order kamu bisa di proses.',
         orders: [order],
+        orderIds: [order.id]
       },
       role: Role.ASSISTANT,
       timestamp: new Date(),
@@ -63,7 +67,8 @@ export const createOrder = async (req: Request, res: Response) => {
     const sendMessageResponse = await saveMessage(chatData);
 
     // Push the message USER to WebSocket clients
-    const payload = sendMessageResponse
+    const payload: ChatDTO = sendMessageResponse
+    payload.message.orders = [order]
     const socket = getClientByEmail(orderDto.email);
     if (socket) {
       socket.emit('message', { type: 'chat_sent', payload });

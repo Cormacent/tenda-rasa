@@ -4,6 +4,7 @@ import { Intent } from '../enumeration/intent.enum';
 import { saveMessage } from '../services/chat.service';
 import { Role } from '../enumeration/role.enum';
 import { getClientByEmail } from '../socket/socketServer';
+import { ChatDTO } from '../dtos/chat.dto';
 
 export const handlePayment = async (req: Request, res: Response) => {
   const { orderId, email } = req.params;
@@ -18,23 +19,22 @@ export const handlePayment = async (req: Request, res: Response) => {
     }
 
 
-    const chatData = {
+    // Push receipt 
+    const chatOrderPaymentCompleted: ChatDTO = {
       email: order.email,
       name: order.name,
       'message': {
         chat: `✅ Pembayaran untuk order ID ${order.id} berhasil diproses.`,
-        orders: [order],
+        orderIds: [order.id]
       },
       role: Role.ASSISTANT,
       timestamp: new Date(),
-      intent: Intent.ORDER_PAYMENT
+      intent: Intent.ORDER_STATUS
     };
-
-    
-    const sendMessageResponse = await saveMessage(chatData);
+    const sendMessageResponse = await saveMessage(chatOrderPaymentCompleted);
     // Push the message USER to WebSocket clients
-    const payload = sendMessageResponse
-    console.log("🚀 ~ handlePayment ~ payload:", payload)
+    const payload: ChatDTO = sendMessageResponse
+    payload.message.orders = [order]
     const socket = getClientByEmail(email);
     if (socket) {
       socket.emit('message', { type: 'chat_sent', payload });

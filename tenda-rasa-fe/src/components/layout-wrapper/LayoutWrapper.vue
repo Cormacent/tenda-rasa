@@ -1,5 +1,5 @@
 <template>
-    <section id="LayoutWrapper" class="flex flex-col min-h-screen">
+    <section id="LayoutWrapper" class="flex flex-col h-screen">
         <Teleport to="#background">
             <div v-if="showBackground && isMounted" class="bg-fade"
                 :style="{ backgroundImage: `url(${importImage('bg-tenda-rasa.svg')})` }"></div>
@@ -11,7 +11,7 @@
             </div>
         </Header>
 
-        <main class="flex-1 flex flex-col overflow-hidden">
+        <main class="flex-1 overflow-y-auto">
             <slot />
         </main>
 

@@ -11,7 +11,7 @@ const routes = [
         path: '/explore-booths',
         component: () => import('@/views/explore-booth/ExploreBooth.vue'),
         name: 'explore-booths',
-        meta: { title: 'Explore Booth', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true, showButtonNavigation: true }
+        meta: { title: '', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true, showButtonNavigation: true }
     },
 
     {
@@ -24,32 +24,32 @@ const routes = [
         path: '/checkout',
         component: () => import('@/views/checkout/Checkout.vue'),
         name: 'checkout',
-        meta: { title: '', icon: 'ep:guide', showHeader: true, showFooter: false, showBackground: false }
+        meta: { title: 'Keranjang', icon: 'ep:guide', showHeader: true, showFooter: false, showBackground: false }
     },
 
     {
         path: '/order-list',
         component: () => import('@/views/order/OrderList.vue'),
         name: 'order-list',
-        meta: { title: '', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
+        meta: { title: 'Daftar Pesanan', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
     },
     {
         path: '/order-detail',
         component: () => import('@/views/order/order-detail/OrderDetail.vue'),
         name: 'order-detail',
-        meta: { title: '', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
+        meta: { title: 'Rincian Pesanan', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
     },
     {
         path: '/order-detail/:orderId',
         component: () => import('@/views/order/order-detail/OrderDetail.vue'),
         name: 'order-detail-by-id',
-        meta: { title: '', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
+        meta: { title: 'Rincian Pesanan', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
     },
     {
         path: '/room-chat',
         component: () => import('@/views/room-chat/RoomChat.vue'),
         name: 'room-chat',
-        meta: { title: '', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
+        meta: { title: 'Chat', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
     }
 ]
 export default createRouter({

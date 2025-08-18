@@ -1,23 +1,32 @@
 <template>
-  <header id="Header" class="sticky top-0 z-50 p-4 flex justify-between items-center h-[4rem]">
-    <!-- Logo atau judul -->
-    <slot name="left">
-      <el-button @click="goToParent()">
-        <icon-ep-arrow-left-bold class="text-primary" />
-      </el-button>
-    </slot>
+  <header id="Header" class="sticky top-0 z-50 p-4 flex items-center h-[4rem] bg-white">
+    <!-- Left slot -->
+    <div class="flex-shrink-0">
+      <slot name="left">
+        <el-button @click="goToParent()">
+          <icon-ep-arrow-left-bold class="text-primary" />
+        </el-button>
+      </slot>
+    </div>
 
-    <!-- Navigasi atau tombol -->
-    <slot name="right">
-      <!-- <nav class="space-x-4">
-        <a href="/" class="text-blue-600 hover:underline">Home</a>
-        <a href="/about" class="text-blue-600 hover:underline">About</a>
-      </nav> -->
-    </slot>
+    <!-- Center title -->
+    <div class="flex-1 text-center">
+      <p class="text-2xl font-bold">
+        <span class=" ml-[-3rem]">
+          {{ headerTitle }}
+        </span>
+      </p>
+    </div>
+
+    <!-- Right slot -->
+    <div class="flex-shrink-0">
+      <slot name="right" />
+    </div>
   </header>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 import { useRoute, useRouter, RouteRecordName } from 'vue-router';
 
 
@@ -27,10 +36,10 @@ import { useRoute, useRouter, RouteRecordName } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
+const headerTitle = computed(() => route.meta?.title);
 
 //----------------------------------------
 // 🎯 Watchers
@@ -45,10 +54,12 @@ const router = useRouter();
 //----------------------------------------
 const goToParent = () => {
   const segments = route.path.split('/').filter(Boolean); // remove empty segments
-  if (segments.length > 0) {
-    router.back();
+
+  console.log("🚀 ~ goToParent ~ window.history.length:", window.history.length)
+  if (window.history.length > 1 || segments.length > 0) {
+    router.back(); // go to previous history
   } else {
-    router.replace({ name: 'explore-booths' as RouteRecordName });
+    router.replace({ name: 'explore-booths' as RouteRecordName }); // fallback
   }
 };
 </script>

@@ -1,9 +1,10 @@
 import { Op } from 'sequelize';
 import models from '../models';
 import { Status } from '../enumeration/status.enum';
+import { ResponseOrderDto } from '../dtos/order.dto';
 const { Orders } = models;
 
-export const confirmPayment = async (order_id: string, email: string) => {
+export const confirmPayment = async (order_id: string, email: string): Promise<ResponseOrderDto> => {
     const order = await Orders.findOne({
         where: {
             id: order_id,

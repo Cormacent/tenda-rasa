@@ -9,7 +9,7 @@ export const saveMessage = async (chatData: ChatDTO) => {
   return await ChatHistory.create(chatData);
 };
 
-export const getConversationByEmail = async (email: string) => {
+export const getConversationByEmail = async (email: string): Promise<ChatDTO[]> => {
   return await ChatHistory.findAll({
     where: { email },
     order: [['timestamp', 'ASC']]
