@@ -19,6 +19,25 @@ export const getAllOrdersByEmail = async (email: string): Promise<ResponseOrderD
     ]
   });
 };
+export const getActiveOrdersByEmail = async (email: string): Promise<ResponseOrderDto[]> => {
+  const orders = await Orders.findAll({
+    where: {
+      email,
+      status: {
+        [Op.in]: ['PAID', 'PENDING'],
+      },
+    },
+    include: [
+      {
+        model: OrderItems,
+        as: 'orderItems',
+      },
+    ],
+  });
+
+  return orders ?? [];
+};
+
 export const getOrderById = async (id: number): Promise<ResponseOrderDto> => {
   const order = await Orders.findByPk(id);
   if (!order) throw new Error('Order not found');

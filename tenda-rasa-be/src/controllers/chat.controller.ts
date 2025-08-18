@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as ChatService from '../services/chat.service';
 import { Intent } from '../enumeration/intent.enum';
-import { getAllOrdersByEmail, getOrderByIds } from '../services/order.service';
+import { getAllOrdersByEmail, getOrderByIds, getActiveOrdersByEmail } from '../services/order.service';
 import { getAvailableMenus } from '../services/menu.service';
 import { MenuDTO } from '../dtos/menu.dto';
 import { ChatDTO } from '../dtos/chat.dto';
@@ -113,7 +113,9 @@ export async function handleChatEvent(payload: ChatDTO) {
 
     // Process the message with Gemini
     const menus = await getAvailableMenus();
+    const orders = await getActiveOrdersByEmail(email)
     sendMessageResponse.message.menus = menus
+    sendMessageResponse.message.orders = orders
     const result = await ChatService.generateChatResponse(sendMessageResponse);
 
     // Prepare saved message for WebSocket response
@@ -121,9 +123,7 @@ export async function handleChatEvent(payload: ChatDTO) {
 
     if (intent === Intent.GREETING) {
     } else if (intent === Intent.ORDER_STATUS) {
-      await getAllOrdersByEmail(email).then(orders => {
-        result.orders = orders;
-      });
+      result.orders = orders
     }
     else if (intent === Intent.RECOMMENDATION && menuIds && menuIds.length > 0) {
       result.menus = menus.filter((menu: MenuDTO) => menuIds?.includes(menu.id));

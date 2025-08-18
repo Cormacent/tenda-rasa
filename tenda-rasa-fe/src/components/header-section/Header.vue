@@ -14,7 +14,7 @@
     <!-- Center title -->
     <div class="flex-1 text-center">
       <p class="text-2xl font-bold">
-        <span class=" ml-[-3rem]">
+        <span class="ml-[-3rem]">
           {{ headerTitle }}
         </span>
       </p>

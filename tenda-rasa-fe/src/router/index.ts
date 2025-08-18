@@ -11,7 +11,7 @@ const routes = [
         path: '/explore-booths',
         component: () => import('@/views/explore-booth/ExploreBooth.vue'),
         name: 'explore-booths',
-        meta: { title: '', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true, showButtonNavigation: true }
+        meta: { title: '', icon: 'ep:guide', showHeader: false, showFooter: true, showBackground: true, showButtonNavigation: true }
     },
 
     {
@@ -24,7 +24,7 @@ const routes = [
         path: '/checkout',
         component: () => import('@/views/checkout/Checkout.vue'),
         name: 'checkout',
-        meta: { title: 'Keranjang', icon: 'ep:guide', showHeader: true, showFooter: false, showBackground: false }
+        meta: { title: 'Keranjang', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: false }
     },
 
     {

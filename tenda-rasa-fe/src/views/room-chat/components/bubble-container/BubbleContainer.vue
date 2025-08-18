@@ -49,8 +49,8 @@ const bubbleClass = computed(() => {
 })
 const bubbleComponent = computed(() => {
     switch (props.chat.intent) {
-        case Intent.ORDER_STATUS:
-            return 'OrderBubble'
+        // case Intent.ORDER_STATUS:
+        //     return 'OrderBubble'
         case Intent.ORDER_PAYMENT:
             return BubbleOrderPayment
         case Intent.RECOMMENDATION:
