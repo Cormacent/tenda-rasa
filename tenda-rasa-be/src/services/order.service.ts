@@ -18,10 +18,38 @@ export const getAllOrdersByEmail = async (email: string) => {
     ]
   });
 };
+export const getOrderById = async (id: number): Promise<ResponseOrderDto> => {
+  const order = await Orders.findByPk(id);
+  if (!order) throw new Error('Order not found');
+  return order;
+};
+
+export const updateOrder = async (id: number, updates: Partial<CreateOrderDto>): Promise<ResponseOrderDto> => {
+  const order = await Orders.findByPk(id);
+  if (!order) throw new Error('Order not found');
+
+  await order.update(updates);
+
+  const orderWithItems = await Orders.findByPk(id, {
+    include: [
+      {
+        model: OrderItems,
+        as: 'orderItems'
+      }
+    ]
+  });
+
+  return orderWithItems as ResponseOrderDto;
+};
+
 
 export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrderDto> => {
   return await sequelize.transaction(async (t: Transaction) => {
     const { orderItems, email } = payload;
+
+    if (!orderItems || !Array.isArray(orderItems) || orderItems.length === 0) {
+      throw new Error('Order items are required');
+    }
 
     // Step 1: Validasi semua menu dulu
     const menus = await MenuBooth.findAll({

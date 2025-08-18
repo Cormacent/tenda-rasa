@@ -1,11 +1,16 @@
+import { Status } from "../enumeration/status.enum";
 import { CreateOrderItemDto } from "./orderItem.dto";
 
 export interface CreateOrderDto {
     boothId: number;
     name: string;
     email: string;
+    qrcode: string;
+    status: Status;
     estimatedMinutes: number;
-    orderItems: CreateOrderItemDto[];
+    totalPrice: number;
+    createdAt: Date;
+    orderItems?: CreateOrderItemDto[];
 }
 export interface UpdateOrderDto {
     id: number;
@@ -13,7 +18,7 @@ export interface UpdateOrderDto {
     name?: string;
     email?: string;
     estimatedMinutes?: number;
-    status?: 'pending' | 'paid' | 'cancelled';
+    status?: Status
     orderItems?: CreateOrderItemDto[];
 }
 export interface ResponseOrderDto {
@@ -22,10 +27,9 @@ export interface ResponseOrderDto {
     name: string;
     email: string;
     qrcode: string;
-    status: string;
+    status: Status;
     estimatedMinutes: number;
     totalPrice: number;
     createdAt: Date;
     orderItems?: CreateOrderItemDto[];
 }
- 

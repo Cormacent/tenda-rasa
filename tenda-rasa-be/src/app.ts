@@ -31,9 +31,6 @@ const init = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to PostgreSQL');
 
-    // Optional: Sync models (disable in production!)
-    // await sequelize.sync({ alter: true });
-
     // 🚀 Start Socket IO Server
     setupSocketIO(server);
 

@@ -33,7 +33,7 @@ export function setupSocketIO(server: HttpServer) {
 
     socket.on('chat', (payload) => {
       try {
-        handleChatMessage(socket, payload);
+        handleChatMessage(payload);
       } catch (err) {
         console.error('❌ Chat handler error:', err);
         socket.emit('error', { message: 'Internal server error' });

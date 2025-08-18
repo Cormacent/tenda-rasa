@@ -9,6 +9,7 @@ export function useChatSocket() {
     const userStore = useUserStore();
     const socket = ref<Socket | null>(null);
     const { messages } = useRoomChat();
+    const isOnline = ref<Boolean>(false)
 
     // Connect when email is available
     watch(
@@ -23,10 +24,11 @@ export function useChatSocket() {
 
             socket.value.on('connect', () => {
                 console.log('✅ Connected to socket:', socket.value?.id);
+                isOnline.value = true
             });
 
             socket.value.on('message', (_data) => {
-                const { type, payload } = JSON.parse(_data)
+                const { type, payload } = _data
                 if (['chat_sent', 'chat_response'].includes(type)) {
                     messages.value.push(payload);
                 }
@@ -34,10 +36,12 @@ export function useChatSocket() {
 
             socket.value.on('disconnect', (reason) => {
                 console.warn('❌ Disconnected:', reason);
+                isOnline.value = false
             });
 
             socket.value.on('connect_error', (err) => {
                 console.error('❌ Connection error:', err.message);
+                isOnline.value = false
             });
         },
         { immediate: true }
@@ -56,5 +60,6 @@ export function useChatSocket() {
         socket,
         messages,
         sendMessage,
+        isOnline
     };
 }

@@ -25,7 +25,7 @@
     </div>
 
     <!-- Tombol -->
-    <div class="mt-8 max-w-md mx-auto sm:mx-0" v-if="orderId">
+    <div class="mt-8 max-w-md mx-auto sm:mx-0" v-if="!orderId">
       <el-button type="primary" size="large" class="w-full" @click="createOrder">
         Lanjut Pembayaran
       </el-button>

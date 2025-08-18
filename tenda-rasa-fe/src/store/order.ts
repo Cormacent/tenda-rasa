@@ -33,7 +33,7 @@ export const useOrderStore = defineStore('order', () => {
         loading.value = true
         error.value = null
         try {
-            const res = await axios.get(`${url}/get-by-email`, { params: { email } })
+            const res = await axios.post(`${url}/get-by-email`, { email })
             orderList.value = res.data || []
             return orderList.value
         } catch (err: any) {
@@ -53,6 +53,7 @@ export const useOrderStore = defineStore('order', () => {
         } catch (err: any) {
             error.value = err.message || 'Failed to send order'
         } finally {
+            orderItems.value = []
             loading.value = false
         }
     }

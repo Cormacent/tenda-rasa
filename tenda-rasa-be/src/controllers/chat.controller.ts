@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import * as ChatService from '../services/chat.service';
-import WebSocket from 'ws';
 import { Intent } from '../enumeration/intent.enum';
 import { getAllOrdersByEmail } from '../services/order.service';
 import { getAvailableMenus } from '../services/menu.service';
@@ -8,6 +7,7 @@ import { MenuDTO } from '../dtos/menu.dto';
 import { ChatDTO } from '../dtos/chat.dto';
 import { Role } from '../enumeration/role.enum';
 import { Socket } from 'socket.io';
+import { getClientByEmail } from '../socket/socketServer';
 
 
 export const getConversation = async (req: Request, res: Response) => {
@@ -29,17 +29,16 @@ export const getConversation = async (req: Request, res: Response) => {
 };
 
 
-export async function handleChatEvent(socket: Socket, payload: ChatDTO) {
+export async function handleChatEvent(payload: ChatDTO) {
   const { email, name, message, } = payload;
-
+  const socket = getClientByEmail(email);
+  if (!socket) {
+    throw Error('Missing socket')
+  }
   try {
-
     // validate required fields
     if (!name || !message) {
-      socket.send(JSON.stringify({
-        type: 'error',
-        message: 'Email Required.'
-      }));
+      socket.emit('message', { type: 'error', message: 'Email Required.' });
       return;
     }
 
@@ -55,10 +54,9 @@ export async function handleChatEvent(socket: Socket, payload: ChatDTO) {
     const sendMessageResponse = await ChatService.saveMessage(chatData);
 
     // Push the message USER to WebSocket clients
-    socket.send(JSON.stringify({
-      type: 'chat_sent',
-      payload: sendMessageResponse.toJSON() || sendMessageResponse
-    }));
+    socket.send({
+      type: 'chat_sent', payload: sendMessageResponse
+    });
 
 
     // Process the message with Gemini
@@ -94,15 +92,18 @@ export async function handleChatEvent(socket: Socket, payload: ChatDTO) {
 
 
     // push the response to WebSocket clients
-    socket.send(JSON.stringify({
-      type: 'chat_response',
-      payload: chatHistory.toJSON() || chatHistory
-    }));
+    socket.send({
+      type: 'chat_response', payload: chatHistory
+    });
+
   } catch (err) {
     console.error('Chat controller error:', err);
-    socket.send(JSON.stringify({
+
+    socket.emit('message', {
       type: 'error',
       message: 'Gagal memproses pesan.'
-    }));
+
+    });
+
   }
 }

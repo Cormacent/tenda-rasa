@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { confirmPayment } from '../services/payment.service';
-import { } from '../services/order.service';
 import { Intent } from '../enumeration/intent.enum';
 import { saveMessage } from '../services/chat.service';
 import { Role } from '../enumeration/role.enum';
@@ -30,12 +29,15 @@ export const handlePayment = async (req: Request, res: Response) => {
       timestamp: new Date(),
       intent: Intent.ORDER_PAYMENT
     };
+
+    
     const sendMessageResponse = await saveMessage(chatData);
     // Push the message USER to WebSocket clients
-    const payload = sendMessageResponse.toJSON();
+    const payload = sendMessageResponse
+    console.log("🚀 ~ handlePayment ~ payload:", payload)
     const socket = getClientByEmail(email);
     if (socket) {
-      socket.emit('message', { type: 'chat_sent', payload: JSON.stringify(payload) });
+      socket.emit('message', { type: 'chat_sent', payload });
     }
 
 

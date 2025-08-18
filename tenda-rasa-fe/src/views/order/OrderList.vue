@@ -3,10 +3,14 @@
         <h1 class="text-2xl font-bold">Status Pesanan</h1>
 
         <div class="absolute left-0 right-0 overflow-y-auto px-4  space-y-4" :style="{ top: '140px', bottom: '0' }">
-            <el-card shadow="hover" v-for="order in orderList" :key="order.id">
-                <div class="text-sm text-gray-600">{{ order.id }}</div>
-                <div class="text-xs text-gray-400 mb-2">{{ order.createdAt }}</div>
-            </el-card>
+            <router-link v-for="order in orderList" :key="order.id"
+            class="flex flex-col gap-4"
+                :to="{ name: 'order-detail-by-id', params: { orderId: order.id } }">
+                <el-card shadow="hover">
+                    <div class="text-sm text-gray-600">{{ order.id }}</div>
+                    <div class="text-xs text-gray-400 mb-2">{{ order.createdAt }}</div>
+                </el-card>
+            </router-link>
 
         </div>
 

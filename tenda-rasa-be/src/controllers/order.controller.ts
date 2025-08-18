@@ -6,6 +6,7 @@ import { Role } from '../enumeration/role.enum';
 import { saveMessage } from '../services/chat.service';
 import { Status } from '../enumeration/status.enum';
 import { getClientByEmail } from '../socket/socketServer';
+import { orderQueue } from '../job/queues/orderQueue';
 
 export const getAllOrdersByEmail = async (req: Request, res: Response) => {
   const { email, name } = req.body;
@@ -35,28 +36,37 @@ export const getAllOrdersByEmail = async (req: Request, res: Response) => {
 };
 export const createOrder = async (req: Request, res: Response) => {
   const orderDto: CreateOrderDto = req.body;
+  orderDto.status = Status.PENDING;
+  orderDto.estimatedMinutes = 2
 
   try {
     const order = await OrderService.createOrder(orderDto);
-    order.status = Status.PENDING;
+    const job = await orderQueue.add('expire-order', { orderId: order.id }, {
+      delay: 1000 * 60 * orderDto.estimatedMinutes, 
+      removeOnComplete: true,
+      removeOnFail: true,
+    });
+
+
     const chatData = {
       email: orderDto.email,
       name: orderDto.name,
       'message': {
-        chat: 'Order kamu sedang dalam proses, mohon tunggu sebentar.',
+        chat: 'Lanjutkan pembayaran agar order kamu bisa di proses.',
         orders: [order],
       },
       role: Role.ASSISTANT,
       timestamp: new Date(),
       intent: Intent.ORDER_PAYMENT // Will be set after processing
+
     };
     const sendMessageResponse = await saveMessage(chatData);
-    
+
     // Push the message USER to WebSocket clients
-    const payload = sendMessageResponse.toJSON();
+    const payload = sendMessageResponse
     const socket = getClientByEmail(orderDto.email);
     if (socket) {
-      socket.emit('message', { type: 'chat_sent', payload: JSON.stringify(payload) });
+      socket.emit('message', { type: 'chat_sent', payload });
     }
 
     res.status(201).json(order);

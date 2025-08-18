@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <nav class="w-full h-full bg-white border-t shadow-md flex justify-around py-2 z-50">
+    <div class="w-screen h-full bg-white border-t shadow z-50 align-center flex">
+        <nav class="flex justify-around my-auto w-full">
 
             <el-button plain @click="openLink('explore-booths')" :class="[
                 'flex items-center gap-2 px-3 py-2 rounded',
@@ -76,7 +76,7 @@ const userInfo = computed(() => userStore.userInfo)
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
 const openLink = (name: string) => {
-    if (name !== 'explore-booth' && !userStore.userInfo || userStore.userInfo.name === '' || userStore.userInfo.email === '') {
+    if (name !== 'explore-booths' && (!userStore.userInfo || userStore.userInfo.name === '' || userStore.userInfo.email === '')) {
         visibleModal.value = true
         savedLink.value = name
         return

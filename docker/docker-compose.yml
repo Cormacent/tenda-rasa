@@ -77,9 +77,20 @@ services:
       NODE_ENV: development
       POSTGRES_HOST: ${POSTGRES_HOST}
     restart: unless-stopped
+  
+  redis:
+    image: redis:7
+    container_name: redis_app
+    ports:
+      - "6379:6379"
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
 
 
 volumes:
   postgres-data:
   postgres-n8n-data:
   n8n-data:
+  redis-data:

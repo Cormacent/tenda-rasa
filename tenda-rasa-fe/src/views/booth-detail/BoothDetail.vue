@@ -1,19 +1,22 @@
 <template>
-  <section id="BoothDetail" class="relative min-h-screen  ite overflow-hidden">
+  <section id="BoothDetail"
+    class="relative bg-gradient-to-b from-white/20 via-white/60 to-white h-[calc(100vh-7rem)] container mx-auto px-4">
     <!-- Content -->
-    <div class="relative z-10 max-w-2xl mx-auto px-6 py-10 bg-white/90 rounded-xl shadow-md">
-      <!-- Header -->
-      <h2 class="text-2xl font-bold text-primary mb-4">{{ menuDetail.boothName }}</h2>
-      <h2 class="text-xl font-bold text-secondary mb-4">{{ menuDetail.menuName }}</h2>
+    <!-- Header -->
+    <h2 class="text-2xl font-bold text-primary ">{{ menuDetail.boothName }}</h2>
+    <h2 class="text-xl font-bold text-secondary mb-4">{{ menuDetail.menuName }}</h2>
 
-      <!-- Menu Image -->
-      <img :src="menuDetail.imageUrl ? menuDetail.imageUrl : importImage('default.jpg')" :alt="menuDetail.menuName"
-        class="w-full h-60 object-cover rounded-lg mb-4"
-        @error="console.error('Image not found:', menuDetail.imageUrl)" />
+    <!-- Menu Image -->
+    <img :src="menuDetail.imageUrl ? menuDetail.imageUrl : importImage('default.jpg')" :alt="menuDetail.menuName"
+      class="w-full h-60 object-cover rounded-lg mb-4"
+      @error="console.error('Image not found:', menuDetail.imageUrl)" />
 
+    <div class="absolute left-0 right-0 overflow-y-auto px-4  gap-4" :style="{ top: '140px', bottom: '5px' }">
       <!-- Description -->
       <p class="text-gray-700 mb-4">
-        {{ menuDetail.description }}
+        {{ menuDetail.description }} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo corrupti cum
+        impedit ab? Ad necessitatibus architecto veritatis, enim porro eligendi repudiandae quas cum, dicta totam
+        nostrum praesentium accusamus error asperiores.
       </p>
 
       <!-- Details List -->
@@ -23,34 +26,35 @@
         <li v-if="menuDetail.category == 'makanan'">🌶️ Pedas: {{ menuDetail.spicinessLevel }}/5</li>
       </ul>
 
-      <!-- CTA Button -->
-      <div class="flex flex-col items-center">
-        <!-- Quantity Control -->
-        <div class="flex items-center gap-5" v-if="menuInOrderItemsCount > 0">
-          <div class="flex items-center gap-2">
-            <el-button circle size="small" @click="removeFromCart" class="border border-primary text-primary">
-              <icon-ep-minus />
-            </el-button>
+    </div>
 
-            <span class="text-lg font-semibold">{{ menuInOrderItemsCount }}</span>
-
-            <el-button circle size="small" @click="addToCart" class="border border-primary text-primary">
-              <icon-ep-plus />
-            </el-button>
-            <router-link :to="{ name: 'checkout' }" class="ml-2">
-              <el-button type="primary" circle size="small">
-                <icon-ep-shopping-cart class="text-white" />
-              </el-button>
-            </router-link>
-          </div>
-
-
-        </div>
-
-        <!-- Main Add to Cart Button -->
-        <el-button v-else type="danger" size="large" round @click="addToCart" class="px-6">
-          Masukkan ke Keranjang
+    <!-- CTA Button -->
+    <div class="absolute bottom-0 left-0 right-0 px-4 py-2 border-t flex items-center justify-center">
+      <div class="flex flex-col items-center w-full">
+      <!-- Quantity Control -->
+      <div class="w-full flex justify-center" v-if="menuInOrderItemsCount > 0">
+        <div class="flex items-center gap-5 justify-center w-full">
+        <el-button circle size="small" @click="removeFromCart" class="border border-primary text-primary">
+          <icon-ep-minus />
         </el-button>
+
+        <span class="text-lg font-semibold">{{ menuInOrderItemsCount }}</span>
+
+        <el-button circle size="small" @click="addToCart" class="border border-primary text-primary">
+          <icon-ep-plus />
+        </el-button>
+        <router-link :to="{ name: 'checkout' }" class="ml-2">
+          <el-button type="primary" circle size="small">
+          <icon-ep-shopping-cart class="text-white" />
+          </el-button>
+        </router-link>
+        </div>
+      </div>
+
+      <!-- Main Add to Cart Button -->
+      <el-button class="w-full" v-else type="danger" size="large" round @click="addToCart">
+        Masukkan ke Keranjang
+      </el-button>
       </div>
     </div>
     <ModalUserInfo v-model:visible="visibleModal" @submit="addToCart" />

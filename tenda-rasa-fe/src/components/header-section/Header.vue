@@ -44,11 +44,12 @@ const router = useRouter();
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
 const goToParent = () => {
-  if (route.meta.parentRoute) {
-    router.push({ name: 'dashboard-home' as RouteRecordName })
+  const segments = route.path.split('/').filter(Boolean); // remove empty segments
+  if (segments.length > 0) {
+    router.back();
+  } else {
+    router.replace({ name: 'explore-booths' as RouteRecordName });
   }
-
 };
-
 </script>
 <style lang="scss" scoped src="./Header.scss" />

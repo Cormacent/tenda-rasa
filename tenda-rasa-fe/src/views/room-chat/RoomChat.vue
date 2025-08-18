@@ -7,14 +7,17 @@
       <div class="flex flex-col justify-center items-center h-16">
         <h3 class="mb-1 text-lg font-semibold">TerraBot</h3>
         <p class="text-sm">
-          <span class="inline-block w-3 h-3 rounded-full bg-primary border-2 border-white" title="Online"></span>
-          <span class="ml-1 text-xs font-medium">Online</span>
+          <span class="inline-block w-3 h-3 rounded-full  border-2 border-white" :class="{
+            'bg-success': isOnline,
+            'bg-primary': !isOnline
+          }" title="Online"></span>
+          <span class="ml-1 text-xs font-medium">{{ isOnline ? 'Online' : 'Offline' }}</span>
         </p>
       </div>
     </div>
 
     <!-- Messages area -->
-    <div class="absolute left-0 right-0 overflow-y-auto px-4   space-y-4" :style="{ top: '140px', bottom: '60px' }"
+    <div class="absolute left-0 right-0 overflow-y-auto px-4 space-y-4" :style="{ top: '140px', bottom: '60px' }"
       ref="RoomChatMessages">
       <div v-for="(msg, idx) in messages" :key="idx"
         :class="msg.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
@@ -50,7 +53,7 @@ import { Intent } from '@/enums/intent';
 //----------------------------------------
 const { message, mounted } = useRoomChat();
 const chatbotStore = useChatbotStore()
-const { messages, sendMessage } = useChatSocket();
+const { messages, sendMessage, isOnline } = useChatSocket();
 const { userInfo } = useUserStore()
 const RoomChatMessages = ref<HTMLElement | null>(null);
 
@@ -65,7 +68,7 @@ const RoomChatMessages = ref<HTMLElement | null>(null);
 
 watch(messages, async () => {
   scrollToBottom()
-});
+}, { deep: true });
 
 //----------------------------------------
 // 🚀 Lifecycle Hooks
