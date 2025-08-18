@@ -38,7 +38,7 @@
                     justifyContent: 'center'
                 }">
                     <img :src="menu.imageUrl ? menu.imageUrl : importImage('default.jpg')" alt="menu image"
-                        class="w-24 h-24 object-cover rounded-full mb-4 bg-primary" />
+                        class="w-24 h-24 object-cover rounded-lg mb-4 bg-primary" />
                     <h3 class="text-lg font-semibold text-gray-800 text-center whitespace-normal break-words w-full">
                         {{ menu.menuName }}
                     </h3>

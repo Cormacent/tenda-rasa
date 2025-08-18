@@ -3,7 +3,7 @@
         <div class="flex justify-between items-center">
             <div>
                 <h5 class="  font-semibold text-gray-800">ID Pesanan</h5>
-                <p class="text-sm text-gray-600">#{{ order?.id }}</p>
+                <p class="text-sm text-gray-600">#{{ order?.name }}-{{ order?.id }}</p>
             </div>
             <div>
                 <h5 class=" text-right font-semibold text-gray-800">Tanggal</h5>
@@ -11,19 +11,23 @@
             </div>
         </div>
 
-        <div class="flex justify-between text-sm text-gray-600">
-
-        </div>
-
-
-        <div class="flex flex-col justify-center">
+        <div class="flex flex-col justify-center align-center">
             <p class="text-center ">QR Code</p>
-            <img :src="order?.qrcode" alt="QR Code" class="w-40 h-auto object-contain rounded-md shadow" />
+            <img :src="order?.qrcode" alt="QR Code" class="w-full h-auto object-contain rounded-md shadow" />
         </div>
-        <div class="flex justify-center align-center mt-4">
-            <el-tag type="warning" size="small" v-if="order?.status == Status.PENDING">Menunggu Pembayaran</el-tag>
-            <el-tag type="success" size="small" v-if="order?.status == Status.PAID">Pembayaran Berhasil</el-tag>
+        <div class="mt-4">
+            <div class="flex justify-between align-center mt-4 " v-if="order?.status == Status.PENDING">
+                <el-tag type="warning" size="small">Menunggu Pembayaran</el-tag>
+                <span>00:59</span>
+            </div>
+            <div class="flex justify-center align-center mt-4 " v-if="order?.status == Status.PAID">
+                <el-tag type="success" size="small">Pembayaran Berhasil</el-tag>
+            </div>
+            <div class="flex justify-center align-center mt-4 " v-if="order?.status == Status.CANCELLED">
+                <el-tag type="danger" size="small">Pembayaran Dibatalkan</el-tag>
+            </div>
         </div>
+
 
         <div class="flex justify-between items-center border-t pt-4">
             <span class="text-sm text-gray-600">Total Pesanan</span>
@@ -49,7 +53,7 @@ const props = defineProps<{ chat: IChatbot }>()
 // 🔍 Computed Properties
 //----------------------------------------
 const order = computed(() => props.chat?.message?.orders?.[0] ?? null)
- 
+
 const formattedDate = computed(() => {
     const d = new Date(order.value?.createdAt || Date.now())
     const day = String(d.getDate()).padStart(2, '0')
@@ -76,4 +80,8 @@ const formattedDate = computed(() => {
 
 
 </script>
-<style lang="scss" scoped src="./BubbleOrderPayment.scss" />
+<style lang="scss" scoped>
+#BubbleOrderPayment{
+    width: 50vw;
+}
+</style>

@@ -5,6 +5,7 @@ import sequelize from './db';
 import v1Routes from './routes';
 import { errorHandler } from './middleware/errorHandlers';
 import { setupSocketIO } from './socket/socketServer';
+import './job/workers/order.worker';
 
 const app = express();
 const server = http.createServer(app);

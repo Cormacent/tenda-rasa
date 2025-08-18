@@ -3,7 +3,9 @@
     <!-- Left slot -->
     <div class="flex-shrink-0">
       <slot name="left">
-        <el-button @click="goToParent()">
+        <el-button @click="goToParent()"
+        class="rounded-lg"
+          style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary-light-3);">
           <icon-ep-arrow-left-bold class="text-primary" />
         </el-button>
       </slot>
@@ -55,7 +57,6 @@ const headerTitle = computed(() => route.meta?.title);
 const goToParent = () => {
   const segments = route.path.split('/').filter(Boolean); // remove empty segments
 
-  console.log("🚀 ~ goToParent ~ window.history.length:", window.history.length)
   if (window.history.length > 1 || segments.length > 0) {
     router.back(); // go to previous history
   } else {

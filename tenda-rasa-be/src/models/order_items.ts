@@ -7,6 +7,7 @@ interface OrderItemAttributes {
   quantity: number;
   price: number;
   subtotal: number;
+  boothName: string;
   menuName: string;
   menuCategory?: string;
   menuType?: string;
@@ -29,6 +30,7 @@ class OrderItems extends Model<OrderItemAttributes, OrderItemCreationAttributes>
   public quantity!: number;
   public price!: number;
   public subtotal!: number;
+  public boothName!: string;
   public menuName!: string;
   public menuCategory?: string;
   public menuType?: string;
@@ -81,6 +83,11 @@ export default (sequelize: Sequelize, DataTypes: typeof import('sequelize').Data
       subtotal: {
         type: DataTypes.INTEGER,
         allowNull: false
+      },
+      boothName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        field: 'booth_name'
       },
       menuName: {
         type: DataTypes.STRING,

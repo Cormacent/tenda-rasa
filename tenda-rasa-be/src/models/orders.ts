@@ -5,6 +5,7 @@ import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
 interface OrdersAttributes {
   id: number;
   email: string;
+  name: string;
   qrcode: string;
   status: string;
   estimatedMinutes: number;
@@ -21,6 +22,7 @@ class Orders extends Model<OrdersAttributes, OrdersCreationAttributes>
   implements OrdersAttributes {
   public id!: number;
   public email!: string;
+  public name!: string;
   public qrcode!: string;
   public status!: string;
   public estimatedMinutes!: number;
@@ -45,6 +47,10 @@ export default (sequelize: Sequelize, DataTypes: typeof import('sequelize').Data
         primaryKey: true
       },
       email: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      name: {
         type: DataTypes.STRING,
         allowNull: false
       },

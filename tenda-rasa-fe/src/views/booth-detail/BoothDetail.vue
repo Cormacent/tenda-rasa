@@ -31,30 +31,31 @@
     <!-- CTA Button -->
     <div class="absolute bottom-0 left-0 right-0 px-4 py-2 border-t flex items-center justify-center">
       <div class="flex flex-col items-center w-full">
-      <!-- Quantity Control -->
-      <div class="w-full flex justify-center" v-if="menuInOrderItemsCount > 0">
-        <div class="flex items-center gap-5 justify-center w-full">
-        <el-button circle size="small" @click="removeFromCart" class="border border-primary text-primary">
-          <icon-ep-minus />
-        </el-button>
+        <!-- Quantity Control -->
+        <div class="w-full flex justify-center" v-if="menuInOrderItemsCount > 0 && menuDetail.stock">
+          <div class="flex items-center gap-5 justify-center w-full">
+            <el-button circle size="small" @click="removeFromCart" class="border border-primary text-primary">
+              <icon-ep-minus />
+            </el-button>
 
-        <span class="text-lg font-semibold">{{ menuInOrderItemsCount }}</span>
+            <span class="text-lg font-semibold">{{ menuInOrderItemsCount }}</span>
 
-        <el-button circle size="small" @click="addToCart" class="border border-primary text-primary">
-          <icon-ep-plus />
-        </el-button>
-        <router-link :to="{ name: 'checkout' }" class="ml-2">
-          <el-button type="primary" circle size="small">
-          <icon-ep-shopping-cart class="text-white" />
-          </el-button>
-        </router-link>
+            <el-button circle size="small" :disabled="menuInOrderItemsCount >= menuDetail.stock" @click="addToCart"
+              class="border border-primary text-primary">
+              <icon-ep-plus />
+            </el-button>
+            <router-link :to="{ name: 'checkout' }" class="ml-2">
+              <el-button type="primary" circle size="small">
+                <icon-ep-shopping-cart class="text-white" />
+              </el-button>
+            </router-link>
+          </div>
         </div>
-      </div>
 
-      <!-- Main Add to Cart Button -->
-      <el-button class="w-full" v-else type="danger" size="large" round @click="addToCart">
-        Masukkan ke Keranjang
-      </el-button>
+        <!-- Main Add to Cart Button -->
+        <el-button class="w-full" v-else type="danger" size="large" round @click="addToCart">
+          Masukkan ke Keranjang
+        </el-button>
       </div>
     </div>
     <ModalUserInfo v-model:visible="visibleModal" @submit="addToCart" />

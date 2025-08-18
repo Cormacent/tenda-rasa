@@ -105,6 +105,7 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
         subtotal: menu.price * item.quantity,
         orderId: order.id,
         menuName: menu.menuName,
+        boothName: menu.boothName,
         menuCategory: menu.category,
         menuType: menu.menu_type,
         spicinessLevel: menu.spicinessLevel,

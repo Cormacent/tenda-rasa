@@ -6,11 +6,11 @@ import { Role } from '../enumeration/role.enum';
 import { saveMessage } from '../services/chat.service';
 import { Status } from '../enumeration/status.enum';
 import { getClientByEmail } from '../socket/socketServer';
-import { orderQueue } from '../job/queues/orderQueue';
+import { orderQueue } from '../job/queues/order.queue';
 import { ChatDTO } from '../dtos/chat.dto';
 
 export const getAllOrdersByEmail = async (req: Request, res: Response) => {
-  const { email, name } = req.body;
+  const { email } = req.body;
 
   if (!email) {
     return res.status(400).json({ message: 'Email is required in request body' });

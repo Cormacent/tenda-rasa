@@ -90,8 +90,13 @@ export const useOrderStore = defineStore('order', () => {
                 quantity: 1,
                 price,
                 subtotal: price,
+                boothName: menu.boothName,
                 menuName: menu.menuName,
-                menuCategory: menu.category
+                menuCategory: menu.category,
+                menuType: menu.menuType,
+                spicinessLevel: menu.spicinessLevel,
+                imageUrl: menu.imageUrl,
+                estimatedMinutes: menu.estimatedMinutes
             })
         }
     }

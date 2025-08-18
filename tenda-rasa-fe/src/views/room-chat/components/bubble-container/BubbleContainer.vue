@@ -1,5 +1,5 @@
 <template>
-    <section id="BubbleContainer" class="relative" :class="bubbleClass">
+    <section id="BubbleContainer" class="relative" style="max-width: 70vw;" :class="bubbleClass">
         <!-- Dynamic Bubble Content -->
         <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
 

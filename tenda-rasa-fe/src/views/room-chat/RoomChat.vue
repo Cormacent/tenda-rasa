@@ -1,5 +1,5 @@
 <template>
-  <section id="room-chat" class="flex flex-col h-full container mx-auto px-4" ref="RoomChat">
+  <section id="room-chat" class="flex flex-col h-full " ref="RoomChat">
     <!-- Header -->
     <div class="shrink-0 mb-2">
       <div class="card rounded flex gap-4 items-center bg-white">
@@ -20,7 +20,7 @@
     </div>
 
     <!-- Messages area -->
-    <div class="flex-1 overflow-y-auto space-y-4" ref="RoomChatMessages">
+    <div class="flex-1 overflow-y-auto space-y-4 container mx-auto px-4" ref="RoomChatMessages">
       <div v-for="(msg, idx) in messages" :key="idx"
         :class="msg.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
         <BubbleContainer :chat="msg" @select-menu="addToCart" />
@@ -115,7 +115,7 @@ const onSendMessage = () => {
 };
 
 const getAllChat = async () => {
-  const response = await chatbotStore.getAllChatByEmail('zakimaulana08@gmail.com');
+  const response = await chatbotStore.getAllChatByEmail();
   if (response) {
     messages.value = response
   } else {

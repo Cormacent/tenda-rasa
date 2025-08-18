@@ -40,7 +40,6 @@ export const handlePayment = async (req: Request, res: Response) => {
       socket.emit('message', { type: 'chat_sent', payload });
     }
 
-
     return res.status(200).json({
       message: order.status === 'PAID'
         ? '✅ Order sudah dibayar sebelumnya.'

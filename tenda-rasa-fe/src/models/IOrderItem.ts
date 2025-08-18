@@ -7,6 +7,7 @@ export interface IOrderItem {
     orderId?: number;
     createdAt?: Date;
     updatedAt?: Date;
+    boothName?: string;
     menuName?: string;
     menuCategory?: string;
     menuType?: string;

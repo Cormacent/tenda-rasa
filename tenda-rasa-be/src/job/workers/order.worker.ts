@@ -15,3 +15,24 @@ export const orderWorker = new Worker('order', async job => {
 }, {
     connection: redisClient,
 });
+
+
+orderWorker.on('completed', job => {
+    if (!job) return;
+    console.log(`✅ Job ${job.id} completed and should be auto-removed.`);
+});
+
+orderWorker.on('failed', (job, err) => {
+    if (!job) {
+        console.error(`❌ Job failed but job is undefined:`, err);
+        return;
+    }
+    console.error(`❌ Job ${job.id} failed:`, err);
+});
+
+orderWorker.on('active', job => {
+    if (!job) return;
+    console.log(`🚀 Job ${job.id} is now active.`);
+});
+
+console.log('🎯 Order worker is running and listening for jobs...');

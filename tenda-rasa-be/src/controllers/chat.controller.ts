@@ -41,6 +41,44 @@ export const getConversation = async (req: Request, res: Response) => {
     });
   }
 }
+export const getConversationById = async (req: Request, res: Response) => {
+  const { id, email } = req.body
+
+  try {
+    const [allOrders, allMenus, history] = await Promise.all([
+      getAllOrdersByEmail(email),
+      getAvailableMenus(),
+      ChatService.getConversationById(id)
+    ])
+
+    if (!history || !history.message) {
+      return res.status(404).json({ message: 'Conversation not found or has no message.' })
+    }
+
+    const { message } = history
+    const { orderIds = [], menuIds = [] } = message
+
+    if (Array.isArray(orderIds) && orderIds.length > 0) {
+      message.orders = allOrders.filter(order => orderIds.includes(order.id))
+    }
+
+    if (Array.isArray(menuIds) && menuIds.length > 0) {
+      message.menus = allMenus.filter((menu: MenuDTO) => menuIds.includes(menu.id))
+    }
+
+    res.json(history)
+  } catch (err: Error | any) {
+    console.error('❌ Error fetching conversation:', err)
+    res.status(500).json({
+      message: 'Error fetching conversation',
+      error: {
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+      }
+    })
+  }
+}
 
 
 export async function handleChatEvent(payload: ChatDTO) {
@@ -75,7 +113,8 @@ export async function handleChatEvent(payload: ChatDTO) {
 
     // Process the message with Gemini
     const menus = await getAvailableMenus();
-    const result = await ChatService.generateChatResponse({ name, email, message: message.chat, menus });
+    sendMessageResponse.message.menus = menus
+    const result = await ChatService.generateChatResponse(sendMessageResponse);
 
     // Prepare saved message for WebSocket response
     const { intent, menuIds, chat } = result

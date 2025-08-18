@@ -5,7 +5,7 @@ import { callGemini } from '../utils/callGemini';
 
 const { ChatHistory, MenuBooth } = models;
 
-export const saveMessage = async (chatData: ChatDTO) => {
+export const saveMessage = async (chatData: ChatDTO): Promise<ChatDTO> => {
   return await ChatHistory.create(chatData);
 };
 
@@ -16,29 +16,30 @@ export const getConversationByEmail = async (email: string): Promise<ChatDTO[]> 
   });
 };
 
-interface ChatRequest {
-  name: string;
-  email: string;
-  message: string;
-  menus: MenuDTO[];
-}
+export const getConversationById = async (id: number): Promise<ChatDTO> => {
+  return await ChatHistory.findByPk(id)
+};
 
-export async function generateChatResponse({ name, email, message, menus }: ChatRequest): Promise<ChatMessageDTO> {
+export async function generateChatResponse({ name, email, message }: ChatDTO): Promise<ChatMessageDTO> {
+  const { menus = [], chat = '' } = message || {}
+
   const daftarMenu = menus.map((menu: MenuDTO) => {
-    const tags = menu.tags?.join(', ') || '';
-    return `- [ID:${menu.id}] ${menu.menuName} [${tags}]`;
-  }).join('\n');
+    const tags = menu.tags?.join(', ') || ''
+    return `- [ID:${menu.id}] ${menu.menuName} [${tags}]`
+  }).join('\n')
 
   const prompt = `
-User bernama ${name} (${email}) bertanya: '${message}'
+User bernama ${name} (${email}) bertanya: '${chat}'
 Berikut adalah daftar menu yang tersedia (beserta ID dan tag):
 ${daftarMenu}
+
 Tentukan apakah permintaan user termasuk:
 - INTENT: GREETING → jika user hanya menyapa (seperti 'halo', 'hai', 'Selamat Pagi', dll)
 - INTENT: ORDER_STATUS → jika user bertanya tentang status pesanannya
 - INTENT: RECOMMENDATION → jika user meminta saran makanan atau daftar menu
 - INTENT: EXPLANATION → jika user ingin penjelasan menu tertentu
 - INTENT: OTHER → jika tidak berkaitan dengan daftar menu
+
 Instruksi:
 - Jika respon kamu memberikan judul menu, gausah kirim beserta ID
 - Jika intent GREETING, balas ramah dan akrab seperti bot menyapa kembali.
@@ -48,16 +49,24 @@ Instruksi:
 - Jika intent OTHER, berikan semacam kalimat maaf pertanyaan hanya seputar Menu Tenda Rasa.
 - Gunakan nama user agar lebih akrab.
 - Jangan pernah tambahkan menu yang tidak ada di daftar.
+
 Format hasil akhir:
 - Jawaban utama di atas.
 - Baris baru, lalu:
 INTENT: [INTENT]
-menuIds: [1, 2, ...] (jika ada menu yang direkomendasikan)
-`;
-  const geminiResponse = await callGemini(prompt);
-  const { chat, intent, menuIds } = parseGeminiResponse(geminiResponse);
+menuIds: [1, 2, ...] (jika ada menu yang direkomendasikan jika intent berupa RECOMMENDATION)
+`
 
-  return { intent, chat, menuIds };
+  const geminiResponse = await callGemini(prompt)
+  console.log("🚀 ~ generateChatResponse ~ prompt:", prompt)
+  console.log("🚀 ~ generateChatResponse ~ geminiResponse:", geminiResponse)
+  const { chat: responseChat, intent, menuIds } = parseGeminiResponse(geminiResponse)
+ 
+  return {
+    intent,
+    chat: responseChat,
+    menuIds
+  }
 }
 
 function parseGeminiResponse(raw: string): ChatMessageDTO {

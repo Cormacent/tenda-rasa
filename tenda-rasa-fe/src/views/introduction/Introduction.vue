@@ -80,7 +80,6 @@ const menuList = computed(() => menuStore.pageInfo.data)
 onMounted(async () => {
     menupageInfo.value.limit = 4
     await menuStore.getMenuPage()
-    console.log("🚀 ~ menuList:", menuList.value)
 })
 //----------------------------------------
 // 🛠️ Utility / Custom Functions

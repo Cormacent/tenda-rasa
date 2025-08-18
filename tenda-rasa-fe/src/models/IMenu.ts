@@ -6,7 +6,7 @@ export interface IMenu {
     price?: number;
     tags?: string[];
     category?: string;
-    menu_type?: string;
+    menuType?: string;
     spicinessLevel?: number;
     imageUrl?: string;
     stock?: number;

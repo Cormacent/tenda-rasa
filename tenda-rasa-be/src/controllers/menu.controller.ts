@@ -44,7 +44,6 @@ export const getMenuPage = async (
       sortOrder: normalizedSortOrder,
       filters
     });
-    console.log("🚀 ~ getMenuPage ~ rows:", rows)
 
     const menus: MenuDTO[] = rows;
     res.json({
