@@ -18,7 +18,7 @@ const routes = [
         path: '/explore-booths/booth-detail/:menuId',
         component: () => import('@/views/booth-detail/BoothDetail.vue'),
         name: 'booth-detail',
-        meta: { title: '', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
+        meta: { title: '', icon: 'ep:guide', showHeader: false, showFooter: true, showBackground: true }
     },
     {
         path: '/checkout',

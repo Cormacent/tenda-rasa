@@ -7,9 +7,12 @@ import { Transaction, } from 'sequelize';
 import QRCode from 'qrcode';
 import { MenuDTO } from '../dtos/menu.dto';
 import { Op } from 'sequelize'
+import { normalizeSequelizeData } from '../utils/sequelizeNormalizer';
+
+
 
 export const getAllOrdersByEmail = async (email: string): Promise<ResponseOrderDto[]> => {
-  return await Orders.findAll({
+  const orders = await Orders.findAll({
     where: { email },
     include: [
       {
@@ -18,7 +21,10 @@ export const getAllOrdersByEmail = async (email: string): Promise<ResponseOrderD
       }
     ]
   });
+
+  return orders.map((order: any) => normalizeSequelizeData(order.get({ plain: true })));
 };
+
 export const getActiveOrdersByEmail = async (email: string): Promise<ResponseOrderDto[]> => {
   const orders = await Orders.findAll({
     where: {
@@ -126,9 +132,9 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
         menuName: menu.menuName,
         boothName: menu.boothName,
         menuCategory: menu.category,
-        menuType: menu.menu_type,
+        menuType: menu.menuType,
         spicinessLevel: menu.spicinessLevel,
-        imageUrl: menu.image_url,
+        imageUrl: menu.imageUrl,
         estimatedMinutes: menu.estimatedMinutes,
         remarks: item.remarks
       });
@@ -161,7 +167,10 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
       estimatedMinutes: order.estimatedMinutes,
       totalPrice: totalPrice,
       createdAt: order.createdAt,
-      orderItems: createdItems
+      orderItems: createdItems,
+      updatedAt: order.updatedAt,
+      createdBy: order.createdBy,
+      updatedBy: order.updatedBy
     };
 
     return response;

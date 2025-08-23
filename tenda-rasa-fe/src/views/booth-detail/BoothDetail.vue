@@ -1,63 +1,67 @@
 <template>
-  <section id="BoothDetail"
-    class="relative bg-gradient-to-b from-white/20 via-white/60 to-white h-[calc(100vh-7rem)] container mx-auto px-4">
-    <!-- Content -->
-    <!-- Header -->
-    <h2 class="text-2xl font-bold text-primary ">{{ menuDetail.boothName }}</h2>
-    <h2 class="text-xl font-bold text-secondary mb-4">{{ menuDetail.menuName }}</h2>
-
-    <!-- Menu Image -->
-    <img :src="menuDetail.imageUrl ? menuDetail.imageUrl : importImage('default.jpg')" :alt="menuDetail.menuName"
-      class="w-full h-60 object-cover rounded-lg mb-4"
-      @error="console.error('Image not found:', menuDetail.imageUrl)" />
-
-    <div class="absolute left-0 right-0 overflow-y-auto px-4  gap-4" :style="{ top: '140px', bottom: '5px' }">
-      <!-- Description -->
-      <p class="text-gray-700 mb-4">
-        {{ menuDetail.description }} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo corrupti cum
-        impedit ab? Ad necessitatibus architecto veritatis, enim porro eligendi repudiandae quas cum, dicta totam
-        nostrum praesentium accusamus error asperiores.
-      </p>
-
-      <!-- Details List -->
-      <ul class="text-sm text-gray-600 space-y-1 mb-6">
-        <li>⏱️ Estimasi: {{ menuDetail.estimatedMinutes }} menit</li>
-        <li>🍽️ Cocok untuk {{ menuDetail.category == 'makanan' ? 'makan' : 'minum' }} siang atau malam</li>
-        <li v-if="menuDetail.category == 'makanan'">🌶️ Pedas: {{ menuDetail.spicinessLevel }}/5</li>
-      </ul>
-
+  <section id="BoothDetail" class="flex flex-col h-full">
+    <div class="flex-shrink-0 z-10 p-5">
+      <el-button @click="goToParent()" class="rounded-lg"
+        style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary-light-3);">
+        <icon-ep-arrow-left-bold class="text-primary" />
+      </el-button>
     </div>
+    <!-- Gambar -->
+    <img :src="menuDetail.imageUrl || importImage('default.jpg')" :alt="menuDetail.menuName"
+      class="w-full h-80 object-cover -mt-[5rem]" @error="console.error('Image not found:', menuDetail.imageUrl)" />
 
-    <!-- CTA Button -->
-    <div class="absolute bottom-0 left-0 right-0 px-4 py-2 border-t flex items-center justify-center">
-      <div class="flex flex-col items-center w-full">
-        <!-- Quantity Control -->
-        <div class="w-full flex justify-center" v-if="menuInOrderItemsCount > 0 && menuDetail.stock">
-          <div class="flex items-center gap-5 justify-center w-full">
-            <el-button circle size="small" @click="removeFromCart" class="border border-primary text-primary">
-              <icon-ep-minus />
-            </el-button>
+    <!-- Card Wrapper -->
+    <div class="flex flex-col flex-1 bg-white rounded-t-2xl shadow-lg -mt-12 overflow-hidden">
+      <!-- Scrollable Content -->
+      <div class="overflow-y-auto px-4 pt-6 pb-4 flex-1">
+        <h2 class="text-xl font-bold text-primary">{{ menuDetail.boothName }}</h2>
+        <h3 class="text-base font-semibold text-secondary mb-2">{{ menuDetail.menuName }}</h3>
 
-            <span class="text-lg font-semibold">{{ menuInOrderItemsCount }}</span>
-
-            <el-button circle size="small" :disabled="menuInOrderItemsCount >= menuDetail.stock" @click="addToCart"
-              class="border border-primary text-primary">
-              <icon-ep-plus />
-            </el-button>
-            <router-link :to="{ name: 'checkout' }" class="ml-2">
-              <el-button type="primary" circle size="small">
-                <icon-ep-shopping-cart class="text-white" />
-              </el-button>
-            </router-link>
-          </div>
+        <div class="flex items-center text-sm text-gray-500 mb-4">
+          <icon-ep-clock class="mr-1" />
+          <span>{{ menuDetail.estimatedMinutes }} Menit</span>
         </div>
 
-        <!-- Main Add to Cart Button -->
+        <p class="text-gray-700 text-sm mb-4">
+          {{ menuDetail.description }}
+        </p>
+
+        <ul class="text-sm text-gray-600 space-y-1 mb-6">
+          <li>🍽️ Cocok untuk {{ menuDetail.category === 'makanan' ? 'makan' : 'minum' }} siang atau malam</li>
+          <li v-if="menuDetail.category === 'makanan'">🌶️ Pedas: {{ menuDetail.spicinessLevel }}/5</li>
+        </ul>
+      </div>
+
+      <!-- Sticky CTA -->
+      <div class="shrink-0 px-4 py-5 border-t">
+        <div class="flex items-center gap-5 justify-center w-full" v-if="menuInOrderItemsCount > 0 && menuDetail.stock">
+          <el-button
+            style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary);"
+            size="small" @click="removeFromCart" class="rounded-lg text-primary">
+            <icon-ep-minus />
+          </el-button>
+
+          <span class="text-lg font-semibold">{{ menuInOrderItemsCount }}</span>
+
+          <el-button
+            style="background-color: var(--el-color-primary); border-color: var(--el-color-primary) !important;"
+            size="small" :disabled="menuInOrderItemsCount >= (menuDetail.stock ?? 0)" @click="addToCart"
+            class="rounded-lg text-white">
+            <icon-ep-plus />
+          </el-button>
+
+          <router-link :to="{ name: 'checkout' }" class="ml-2">
+            <el-button type="primary" size="small" class="rounded-lg text-primary">
+              <icon-ep-shopping-cart class="text-white" />
+            </el-button>
+          </router-link>
+        </div>
         <el-button class="w-full" v-else type="danger" size="large" round @click="addToCart">
           Masukkan ke Keranjang
         </el-button>
       </div>
     </div>
+
     <ModalUserInfo v-model:visible="visibleModal" @submit="addToCart" />
   </section>
 </template>
@@ -66,7 +70,7 @@
 import { importImage } from '@/utils/helper'
 import { useMenuStore } from '@/store/menu'
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { RouteRecordName, useRoute, useRouter } from 'vue-router'
 import { useOrderStore } from '@/store/order'
 import ModalUserInfo from '@/components/modal-user-info/ModalUserInfo.vue'
 import { useUserStore } from '@/store/user'
@@ -79,6 +83,7 @@ const menuId = ref<string>()
 const route = useRoute()
 const orderStore = useOrderStore()
 const userStore = useUserStore()
+const router = useRouter()
 
 const visibleModal = ref<boolean>(false)
 
@@ -120,6 +125,15 @@ const removeFromCart = () => {
   if (!menuDetail.value.id) return
   orderStore.removeFromCheckoutList(menuDetail.value)
 }
+const goToParent = () => {
+  const segments = route.path.split('/').filter(Boolean); // remove empty segments
+
+  if (window.history.length > 1 || segments.length > 0) {
+    router.back(); // go to previous history
+  } else {
+    router.replace({ name: 'explore-booths' as RouteRecordName }); // fallback
+  }
+};
 </script>
 
 <style lang="scss" scoped src="./BoothDetail.scss" />

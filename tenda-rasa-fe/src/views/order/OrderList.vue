@@ -10,7 +10,7 @@
             <router-link v-for="order in orderList" :key="order.id" class="flex flex-col gap-4"
                 :to="{ name: 'order-detail-by-id', params: { orderId: order.id } }">
                 <el-card shadow="hover">
-                    <div class="text-sm text-gray-600">{{ order.id }}</div>
+                    <div class="text-sm text-gray-600">#{{ order.id }}</div>
                     <div class="text-xs text-gray-400 mb-2">{{ order.createdAt }}</div>
                 </el-card>
             </router-link>

@@ -32,4 +32,7 @@ export interface ResponseOrderDto {
     totalPrice: number;
     createdAt: Date;
     orderItems?: CreateOrderItemDto[];
+    updatedAt: Date;
+    createdBy: string;
+    updatedBy: string;
 }

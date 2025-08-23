@@ -5,6 +5,11 @@ import { saveMessage } from '../services/chat.service';
 import { Role } from '../enumeration/role.enum';
 import { getClientByEmail } from '../socket/socketServer';
 import { ChatDTO } from '../dtos/chat.dto';
+import { Status } from '../enumeration/status.enum';
+import { orderQueue } from '../job/queues/order.queue';
+import { OrderStatus } from '../enumeration/order.enum';
+
+const progressOrderMinutes = 5
 
 export const handlePayment = async (req: Request, res: Response) => {
   const { orderId, email } = req.params;
@@ -17,7 +22,24 @@ export const handlePayment = async (req: Request, res: Response) => {
         message: '❌ Order tidak ditemukan atau email tidak cocok.'
       });
     }
+    let message = '✅ Order sudah dibayar sebelumnya.'
+    if (order.status == Status.PAID) {
+      return res.status(200).json({
+        message,
+        order_id: order.id,
+        status: order.status
+      });
+    } else {
+      message = '✅ Status pembayaran berhasil diperbarui.'
+    }
 
+
+    // Progress JOB
+    await orderQueue.add(OrderStatus.ON_PROGRESS, { orderId: order.id }, {
+      delay: 1000 * 60 * progressOrderMinutes,
+      removeOnComplete: true,
+      removeOnFail: true,
+    });
 
     // Push receipt 
     const chatOrderPaymentCompleted: ChatDTO = {
@@ -37,13 +59,18 @@ export const handlePayment = async (req: Request, res: Response) => {
     payload.message.orders = [order]
     const socket = getClientByEmail(email);
     if (socket) {
-      socket.emit('message', { type: 'chat_sent', payload });
+      socket.emit('message', { type: 'chat_response', payload });
+
+      socket.emit('message', {
+        type: 'order_status_updated',
+        payload: {
+          order: order,
+        }
+      });
     }
 
     return res.status(200).json({
-      message: order.status === 'PAID'
-        ? '✅ Order sudah dibayar sebelumnya.'
-        : '✅ Status pembayaran berhasil diperbarui.',
+      message,
       order_id: order.id,
       status: order.status
     });

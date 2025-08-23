@@ -8,6 +8,7 @@ import { Status } from '../enumeration/status.enum';
 import { getClientByEmail } from '../socket/socketServer';
 import { orderQueue } from '../job/queues/order.queue';
 import { ChatDTO } from '../dtos/chat.dto';
+import { OrderStatus } from '../enumeration/order.enum';
 
 export const getAllOrdersByEmail = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -43,8 +44,8 @@ export const createOrder = async (req: Request, res: Response) => {
   try {
     const order = await OrderService.createOrder(orderDto);
 
-    // REDIS JOB
-    await orderQueue.add('expire-order', { orderId: order.id }, {
+    // Expire JOB
+    await orderQueue.add(OrderStatus.PAYMENT, { orderId: order.id }, {
       delay: 1000 * 60 * orderDto.estimatedMinutes,
       removeOnComplete: true,
       removeOnFail: true,

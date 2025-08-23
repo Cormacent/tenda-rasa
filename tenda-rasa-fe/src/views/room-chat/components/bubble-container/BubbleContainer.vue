@@ -2,7 +2,6 @@
     <section id="BubbleContainer" class="relative" style="max-width: 70vw;" :class="bubbleClass">
         <!-- Dynamic Bubble Content -->
         <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
-
         <!-- Timestamp -->
         <p class="text-xs mt-2 text-right">
             {{ formatDate(chat?.createdAt ?? '') }}
@@ -19,7 +18,9 @@ import { Intent } from '../../../../enums/intent';
 import { Role } from '../../../../enums/role';
 import BubbleMessage from '../bubble-message/BubbleMessage.vue';
 import BubbleMenus from '../bubble-menus/BubbleMenus.vue';
-import { IMenu } from '@/models/IMenu';
+import type { IMenu } from '@/models/IMenu';
+import { formatDate } from '@/utils/helper';
+import BubbleOrderStatus from '../bubble-order-status/BubbleOrderStatus.vue';
 
 const props = defineProps<{ chat: IChatbot }>()
 const emit = defineEmits<{
@@ -49,8 +50,8 @@ const bubbleClass = computed(() => {
 })
 const bubbleComponent = computed(() => {
     switch (props.chat.intent) {
-        // case Intent.ORDER_STATUS:
-        //     return 'OrderBubble'
+        case Intent.ORDER_STATUS:
+            return BubbleOrderStatus
         case Intent.ORDER_PAYMENT:
             return BubbleOrderPayment
         case Intent.RECOMMENDATION:
@@ -71,14 +72,4 @@ const bubbleComponent = computed(() => {
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
 
-function formatDate(dateStr: string): string {
-    const date = new Date(dateStr)
-    return date.toLocaleString('id-ID', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    })
-} 
 </script>

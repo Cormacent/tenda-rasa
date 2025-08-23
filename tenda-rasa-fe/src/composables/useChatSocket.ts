@@ -4,6 +4,7 @@ import { ref, onBeforeUnmount, watch } from 'vue';
 import { useUserStore } from '@/store/user';
 import { IChatbot } from '@/models/IChatbot';
 import { useRoomChat } from '@/views/room-chat/RoomChat.logic';
+import { IOrder } from '@/models/IOrder';
 
 export function useChatSocket() {
     const userStore = useUserStore();
@@ -32,6 +33,10 @@ export function useChatSocket() {
                 if (['chat_sent', 'chat_response'].includes(type)) {
                     messages.value.push(payload);
                 }
+                if (['order_status_updated'].includes(type)) {
+                    const { order } = payload
+                    patchOrderInMessages(order)
+                }
             });
 
             socket.value.on('disconnect', (reason) => {
@@ -55,6 +60,19 @@ export function useChatSocket() {
     onBeforeUnmount(() => {
         socket.value?.disconnect();
     });
+
+    const patchOrderInMessages = (updatedOrder: IOrder) => {
+        for (const msg of messages.value) {
+            if (msg.message?.orders) {
+                for (let i = 0; i < msg.message.orders.length; i++) {
+                    if (msg.message.orders[i].id === updatedOrder.id) {
+                        msg.message.orders[i] = { ...msg.message.orders[i], ...updatedOrder };
+                    }
+                }
+            }
+        }
+    };
+
 
     return {
         socket,

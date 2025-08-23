@@ -1,8 +1,14 @@
 <template>
   <section id="room-chat" class="flex flex-col h-full " ref="RoomChat">
+    <div class="absolute top-0 right-0 w-full h-full pointer-events-none -z-10" style="
+    mask-image: linear-gradient(to bottom, transparent 0%,   white 15%, white 100%);
+    mask-mode: alpha;
+    background-color: white;
+  "></div>
+
     <!-- Header -->
-    <div class="shrink-0 mb-2">
-      <div class="card rounded flex gap-4 items-center bg-white">
+    <div class="shrink-0 mb-2 container mx-auto px-4 ">
+      <div class="card rounded flex gap-4 items-center bg-white shadow">
         <img :src="importImage('robot.svg')" alt="Robot" class="w-16 h-16 p-3" />
         <div class="flex flex-col justify-center items-center h-16">
           <h3 class="text-lg font-semibold">TerraBot</h3>

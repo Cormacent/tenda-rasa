@@ -1,44 +1,44 @@
 <template>
-    <section id="BubbleOrderPayment">
-        <div class="flex justify-between items-center">
-            <div>
-                <h5 class="  font-semibold text-gray-800">ID Pesanan</h5>
-                <p class="text-sm text-gray-600">#{{ order?.name }}-{{ order?.id }}</p>
-            </div>
-            <div>
-                <h5 class=" text-right font-semibold text-gray-800">Tanggal</h5>
-                <p class="text-sm text-gray-600">{{ formattedDate }}</p>
-            </div>
+    <section id="BubbleOrderPayment" class="flex flex-col gap-4 w-fit max-w-full">
+        <!-- Header -->
+        <div>
+            <h5 class="font-semibold text-gray-800">ID Pesanan</h5>
+            <p class="text-sm text-gray-600">#{{ order?.name }}-{{ order?.id }}</p>
         </div>
 
-        <div class="flex flex-col justify-center align-center">
-            <p class="text-center ">QR Code</p>
-            <img :src="order?.qrcode" alt="QR Code" class="w-full h-auto object-contain rounded-md shadow" />
+
+        <!-- QR Code -->
+        <div class="flex flex-col items-center">
+            <p class="text-center">QR Code</p>
+            <img :src="order?.qrcode" alt="QR Code" class="w-[15rem] h-auto object-contain rounded-md shadow" />
         </div>
+
+        <!-- Status -->
         <div class="mt-4">
-            <div class="flex justify-between align-center mt-4 " v-if="order?.status == Status.PENDING">
+            <div class="flex justify-between items-center mt-4" v-if="order?.status === Status.PENDING">
                 <el-tag type="warning" size="small">Menunggu Pembayaran</el-tag>
                 <span>00:59</span>
             </div>
-            <div class="flex justify-center align-center mt-4 " v-if="order?.status == Status.PAID">
+            <div class="flex justify-center items-center mt-4" v-if="order?.status === Status.PAID">
                 <el-tag type="success" size="small">Pembayaran Berhasil</el-tag>
             </div>
-            <div class="flex justify-center align-center mt-4 " v-if="order?.status == Status.CANCELLED">
+            <div class="flex justify-center items-center mt-4" v-if="order?.status === Status.CANCELLED">
                 <el-tag type="danger" size="small">Pembayaran Dibatalkan</el-tag>
             </div>
         </div>
 
-
+        <!-- Total -->
         <div class="flex justify-between items-center border-t pt-4">
             <span class="text-sm text-gray-600">Total Pesanan</span>
-            <span class="text-lg font-bold text-gray-800">Rp {{ formatPrice(order?.totalPrice ?? 0) }}</span>
+            <span class="text-lg font-bold text-gray-800">
+                Rp {{ formatPrice(order?.totalPrice ?? 0) }}
+            </span>
         </div>
-
     </section>
 </template>
 
 <script lang="ts" setup>
-import { IChatbot } from '@/models/IChatbot';
+import type { IChatbot } from '@/models/IChatbot';
 import { formatPrice } from '@/utils/helper';
 import { computed } from 'vue';
 import { Status } from '@/enums/status';
@@ -81,7 +81,7 @@ const formattedDate = computed(() => {
 
 </script>
 <style lang="scss" scoped>
-#BubbleOrderPayment{
+#BubbleOrderPayment {
     width: 50vw;
 }
 </style>

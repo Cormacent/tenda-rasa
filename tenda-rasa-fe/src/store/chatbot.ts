@@ -10,24 +10,6 @@ export const useChatbotStore = defineStore('chatbot', () => {
     const loading = ref(false)
     const error = ref<string | null>(null)
     const { userInfo } = useUserStore()
-    const sendPrompt = async (prompt: string) => {
-        loading.value = true
-        error.value = null
-        try {
-            const body = {
-                name: 'Zaki',
-                email: 'zakimaulana08@gmail.com',
-                prompt,
-            }
-            // const res = await axios.post(urlAIChat, body)
-            // response.value = res.data?.response || ''
-        } catch (err: any) {
-            console.log("🚀 ~ sendPrompt ~ err:", err)
-            error.value = err.message || 'Failed to fetch response'
-        } finally {
-            loading.value = false
-        }
-    }
 
     const getAllChatByEmail = async (): Promise<IChatbot[]> => {
         const { email } = userInfo
@@ -36,8 +18,8 @@ export const useChatbotStore = defineStore('chatbot', () => {
         error.value = null
         try {
             const body = { email }
-            const res = await axios.post(urlGetAllChat + '/get-by-email', body)
-            return res.data as IChatbot[] || []
+            const res = await axios.post<IChatbot[]>(urlGetAllChat + '/get-by-email', body)
+            return res.data
         } catch (err: any) {
             error.value = err.message || 'Failed to fetch chats'
             return []
@@ -74,7 +56,6 @@ export const useChatbotStore = defineStore('chatbot', () => {
         response,
         loading,
         error,
-        sendPrompt,
         clearResponse,
         getAllChatByEmail,
         getChatById

@@ -27,6 +27,7 @@ declare module 'vue' {
     IconEpArrowRight: typeof import('~icons/ep/arrow-right')['default']
     IconEpBell: typeof import('~icons/ep/bell')['default']
     IconEpChatDotRound: typeof import('~icons/ep/chat-dot-round')['default']
+    IconEpClock: typeof import('~icons/ep/clock')['default']
     IconEpDocument: typeof import('~icons/ep/document')['default']
     IconEpEdit: typeof import('~icons/ep/edit')['default']
     IconEpEmail: typeof import('~icons/ep/email')['default']

@@ -118,3 +118,14 @@ export function usePageRequest<T extends object>(
 export
   const formatPrice = (value: number) =>
     value.toLocaleString('id-ID', { minimumFractionDigits: 0 })
+
+export const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr)
+  return date.toLocaleString('id-ID', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+} 

@@ -35,4 +35,10 @@ onMounted(() => {
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
+
+ :deep(.el-input__inner:focus) {
+     border: none !important;
+     box-shadow: none !important;
+     outline: none !important;
+ }
 </style>

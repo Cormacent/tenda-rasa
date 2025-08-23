@@ -61,6 +61,7 @@
 import { useUserStore } from '@/store/user';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import ModalUserInfo from '../modal-user-info/ModalUserInfo.vue';
 
 //----------------------------------------
 // 🧩 State Variables & Stores
@@ -74,7 +75,6 @@ const savedLink = ref<string>()
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
-const userInfo = computed(() => userStore.userInfo)
 //----------------------------------------
 // 🎯 Watchers
 //----------------------------------------

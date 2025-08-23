@@ -6,21 +6,21 @@
         <div class="flex gap-2">
           <div class="flex">
             <img :src="item.imageUrl ? item.imageUrl : importImage('default.jpg')" alt="menu image"
-              class="w-24 h-24 object-cover rounded-lg bg-primary" />
+              class="w-20 h-20 object-cover rounded-lg" />
           </div>
           <div class="flex-1">
-            <h3 class="text-base font-semibold text-gray-800">
+            <h3 class="text-lg font-semibold text-gray-800">
               {{ item.boothName }}
             </h3>
-            <p class="text-gray-300">{{ item.menuName }}</p>
+            <p class="text-base text-gray-300">{{ item.menuName }}</p>
             <div class="flex justify-between gap-3">
-              <p class="text-base font-medium text-primary">
+              <p class="text-lg font-medium text-primary">
                 Rp {{ formatPrice(item.price ?? 0) }}
               </p>
               <div class="flex justify-center">
                 <div class="flex items-center gap-5 justify-center w-full">
                   <el-button
-                    style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary-light-3);"
+                    style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary);"
                     size="small" @click="removeFromCart(item)" class="rounded-lg text-primary">
                     <icon-ep-minus />
                   </el-button>

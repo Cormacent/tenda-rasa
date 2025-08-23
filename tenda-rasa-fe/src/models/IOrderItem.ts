@@ -5,7 +5,7 @@ export interface IOrderItem {
     price?: number;
     subtotal?: number;
     orderId?: number;
-    createdAt?: Date;
+    createdAt?: string;
     updatedAt?: Date;
     boothName?: string;
     menuName?: string;

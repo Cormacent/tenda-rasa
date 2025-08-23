@@ -7,10 +7,10 @@ export interface IOrder {
     qrcode?: string;
     status?: string;
     estimatedMinutes?: number;
-    orderItems: IOrderItem[];
+    orderItems?: IOrderItem[];
     totalPrice: number;
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt?: string;
+    updatedAt?: string;
     createdBy?: string;
     updatedBy?: string;
 }

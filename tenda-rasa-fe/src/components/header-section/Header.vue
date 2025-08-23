@@ -1,10 +1,9 @@
 <template>
-  <header id="Header" class="sticky top-0 z-50 p-4 flex items-center h-[4rem] bg-white">
+  <header id="Header" class="sticky top-0 z-50 p-4 flex items-center bg-transparent h-[4rem]">
     <!-- Left slot -->
     <div class="flex-shrink-0">
       <slot name="left">
-        <el-button @click="goToParent()"
-        class="rounded-lg"
+        <el-button @click="goToParent()" class="rounded-lg"
           style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary-light-3);">
           <icon-ep-arrow-left-bold class="text-primary" />
         </el-button>
@@ -42,7 +41,7 @@ const router = useRouter();
 // 🔍 Computed Properties
 //----------------------------------------
 const headerTitle = computed(() => route.meta?.title);
-
+const useTransparentHeader = computed(() => route.meta?.useTransparentHeader)
 //----------------------------------------
 // 🎯 Watchers
 //----------------------------------------

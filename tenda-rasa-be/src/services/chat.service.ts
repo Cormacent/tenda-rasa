@@ -11,10 +11,11 @@ export const saveMessage = async (chatData: ChatDTO): Promise<ChatDTO> => {
 };
 
 export const getConversationByEmail = async (email: string): Promise<ChatDTO[]> => {
-  return await ChatHistory.findAll({
+  const chats = await ChatHistory.findAll({
     where: { email },
     order: [['timestamp', 'ASC']]
   });
+  return chats.map((chat: any) => chat.toJSON() as ChatDTO);
 };
 
 export const getConversationById = async (id: number): Promise<ChatDTO> => {

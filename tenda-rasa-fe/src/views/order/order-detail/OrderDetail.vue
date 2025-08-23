@@ -1,24 +1,30 @@
 <template>
-  <section id="OrderStatus" class="flex flex-col h-full bg-white px-4 py-6 sm:px-6 lg:px-8">
+  <section id="OrderStatus" class="flex flex-col h-full px-4 py-6 sm:px-6 lg:px-8">
+    <div class="absolute top-0 right-0 w-full h-full pointer-events-none -z-10" style="
+    mask-image: linear-gradient(to bottom left, transparent 0%, transparent 25%, white 26%, white 100%);
+    mask-mode: alpha;
+    background-color: white;
+  "></div>
+
     <!-- Scrollable Daftar Item -->
     <div class="flex-1 overflow-y-auto space-y-4 pr-1">
       <div v-for="item in orderItems" :key="item.id" class="bg-white shadow-md rounded-lg p-4 flex gap-4 w-full">
         <div class="flex">
           <img :src="item.imageUrl ? item.imageUrl : importImage('default.jpg')" alt="menu image"
-            class="w-24 h-24 object-cover rounded-lg bg-primary" />
+            class="w-20 h-20 object-cover rounded-lg " />
         </div>
         <div class="flex-1">
-          <h3 class="text-base font-semibold text-gray-800">
+          <h3 class="text-lg font-semibold text-gray-800">
             {{ item.boothName }}
           </h3>
-          <p class="text-gray-300">{{ item.menuName }}</p>
+          <p class="text-base text-gray-300">{{ item.menuName }}</p>
           <div class="flex justify-between gap-3">
-            <div class="text-small">
+            <div class="text-base">
               <p>{{ item.quantity }}x</p>
               <p>{{ item.remarks }}</p>
             </div>
-            <p class="text-base font-medium text-primary">
-              Rp {{ formatPrice(item.price ?? 0) }}
+            <p class="text-lg font-medium text-primary">
+              Rp {{ formatPrice(item.subtotal ?? 0) }}
             </p>
           </div>
         </div>
@@ -28,7 +34,7 @@
     <!-- Ringkasan & Tombol -->
     <div class="shrink-0 pt-6 space-y-4 max-w-md mx-auto sm:mx-0 w-full bg-primary rounded-lg p-4">
       <div class="text-sm text-white">
-        <div class="flex justify-between font-bold text-white text-base">
+        <div class="flex justify-between font-bold text-white text-lg">
           <span>Total</span>
           <span>Rp {{ formatPrice(total ?? 0) }}</span>
         </div>

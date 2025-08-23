@@ -3,11 +3,32 @@
      opacity: 1;
  }
 
- :deep(.el-input__wrapper) {
-     background-color: var(--el-color-primary-light-1);
- }
 
  :deep(.el-input__wrapper)::before,
  :deep(.el-input__wrapper)::after {
      background-color: var(--el-color-primary-light-1) !important;
+ }
+
+ :deep(.el-input__wrapper.is-focus) {
+     box-shadow: none !important;
+     border-color: transparent !important;
+     background-color: var(--el-color-primary-light-1) !important;
+ }
+
+ :deep(.el-input__wrapper) {
+     border: none !important;
+     box-shadow: none !important;
+     background-color: var(--el-color-primary-light-1);
+ }
+
+
+ :deep(.el-input__inner:focus) {
+     border: none !important;
+     box-shadow: none !important;
+     outline: none !important;
+ }
+
+ :deep(.el-input__prefix-inner) {
+     color: var(--el-color-primary) !important;
+     fill: var(--el-color-primary) !important; // kalau ada SVG icon
  }
