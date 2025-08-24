@@ -1,9 +1,13 @@
 import { Redis } from 'ioredis';
 
+
 export const redisClient = new Redis({
-  host: process.env.REDIS_HOST || 'redis',
-  port: parseInt(process.env.REDIS_PORT || '6379', 10), // ✅ fix type
-  maxRetriesPerRequest: null, // ✅ wajib untuk BullMQ
+  host: process.env.REDIS_HOST!,
+  port: parseInt(process.env.REDIS_PORT || '6379', 10),
+  username: process.env.REDIS_USERNAME!,
+  password: process.env.REDIS_PASSWORD!,
+  tls: {}, // wajib untuk Upstash
+  maxRetriesPerRequest: null,
   enableReadyCheck: false,
   reconnectOnError: err => {
     const targetErrors = ['READONLY', 'ETIMEDOUT'];

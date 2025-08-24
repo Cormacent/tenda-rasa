@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -5,7 +8,7 @@ import sequelize from './db';
 import v1Routes from './routes';
 import { errorHandler } from './middleware/errorHandlers';
 import { setupSocketIO } from './socket/socketServer';
-import './job/workers/order.worker';
+import './job/workers/order.worker';  
 
 const app = express();
 const server = http.createServer(app);
@@ -23,7 +26,7 @@ app.use((req, res, next) => {
 // 📦 API Routes
 app.use('/api/v1', v1Routes);
 
-// 🚨 Global Error Handler (should be after routes)
+// 🚨 Global Error Handler
 app.use(errorHandler);
 
 // 🧨 DB Connection Init
@@ -32,24 +35,24 @@ const init = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to PostgreSQL');
 
-    // 🚀 Start Socket IO Server
+    // 🚀 Start Socket.IO
     setupSocketIO(server);
 
     // 🟢 Start HTTP Server
     const PORT = process.env.PORT || 3000;
     server.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log(`🚀 Server running at http://localhost:${PORT}`);
     });
 
   } catch (err) {
     console.error('❌ DB Connection Failed:', err);
-    process.exit(1); // Exit safely if DB fails
+    process.exit(1);
   }
 };
 
 init();
 
-// 🧹 Graceful Shutdown (optional)
+// 🧹 Graceful Shutdown
 process.on('SIGINT', () => {
   console.log('🛑 Server shutting down...');
   server.close(() => {

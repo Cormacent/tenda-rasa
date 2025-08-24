@@ -15,7 +15,7 @@ const commonConfig: DBConfig = {
   password: process.env.POSTGRES_PASSWORD || 'password',
   database: process.env.POSTGRES_DB || 'dev_db',
   host: process.env.POSTGRES_HOST || 'localhost',
-  port: Number(process.env.PG_PORT) || 5433,
+  port: Number(process.env.PG_PORT) || 5432,
   dialect: 'postgres',
 };
 

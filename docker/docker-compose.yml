@@ -47,22 +47,6 @@ services:
   #     - postgres_n8n
   #   restart: unless-stopped
 
-  # tenda-rasa-socket:
-  #   build:
-  #     context: ../tenda-rasa-socket  # Sesuaikan path ke folder back-end
-  #   container_name: tenda_rasa_socket
-  #   ports:
-  #     - "${BE_SOCKET_PORT}:3000"
-  #   volumes:
-  #     - ../tenda-rasa-socket:/app
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     NODE_ENV: development
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - postgres
-
   tenda-rasa-be:
     build:
       context: ../tenda-rasa-be  # Pastikan folder ini punya Dockerfile & source code
