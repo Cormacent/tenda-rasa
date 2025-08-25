@@ -1,35 +1,59 @@
 <template>
-    <section id="BubbleOrderStatus" class="flex flex-col gap-4">
-        <div class="-mt-[2rem]">
-            <el-tag type="warning" size="small" v-if="order?.status == Status.PAID">Pesananmu sedang di
-                siapkan!</el-tag>
-            <el-tag type="success" size="small" v-if="order?.status == Status.COMPLETED">Pesananmu telah
-                selesai!</el-tag>
+    <section id="BubbleOrderStatus" class="flex flex-col gap-2">
+        <div class="-mt-[2rem] -ml-[1rem]">
+            <div v-if="order?.status == Status.PAID">
+                <span class="bg-warning text-sm px-2 py-1 rounded text-white">
+                    Pesananmu sedang di
+                    siapkan!
+                </span>
+            </div>
+            <div v-else-if="order?.status == Status.COMPLETED">
+                <span class="bg-success text-sm px-2 py-1 rounded text-white">
+                    Pesananmu telah
+                    selesai!
+                </span>
+            </div>
+            <div v-else>
+                <span class="bg-danger text-sm px-2 py-1 rounded text-white">
+                    Pesananmu dibatalkan!
+                </span>
+            </div>
         </div>
-        <span class="text-lg font-semibold">#{{ order?.name }} - {{ order?.id }}</span>
-        <div v-if="orderItems.length > 0">
-            <div v-for="item in orderItems" :key="item.id" class="bg-white shadow-md rounded-lg p-2 flex gap-4 w-full">
+        <div class="flex justify-between items-center text-sm">
+            <span>ID Pesanan</span>
+            <span class="font-semibold">#{{ order?.name }}-{{ order?.id }}</span>
+        </div>
+
+        <div class="text-md text-center font-semibold w-100" v-if="countdown > 0">
+            <el-tag type="danger" class="text-info text-primary">
+                <span class="px-5">Estimated {{ formattedCountdown }}</span>
+            </el-tag>
+        </div>
+        <div v-if="order?.orderItems&& order?.orderItems.length > 0">
+            <div v-for="item in order.orderItems" :key="item.id" class="p-2 flex justify-between gap-2 w-full">
                 <div class="flex">
                     <img :src="item.imageUrl ? item.imageUrl : importImage('default.jpg')" alt="menu image"
                         class="w-20 h-20 object-cover rounded-lg " />
                 </div>
-                <div class="flex-1">
-                    <h3 class="text-lg font-semibold text-gray-800">
+
+                <div class="flex-1 bg-white rounded-lg p-2">
+                    <h3 class="text-sm font-semibold text-gray-800">
                         {{ item.boothName }}
                     </h3>
-                    <p class="text-base text-gray-300">{{ item.menuName }}</p>
+                    <p class="text-sm text-gray-300">{{ item.menuName }}</p>
                     <div class="flex justify-between gap-3">
-                        <div class="text-base">
+                        <div class="text-sm">
                             <p>{{ item.quantity }}x</p>
                             <p>{{ item.remarks }}</p>
                         </div>
-                        <p class="text-lg font-medium text-primary">
+                        <p class="text-base font-medium text-primary">
                             Rp {{ formatPrice(item.subtotal ?? 0) }}
                         </p>
                     </div>
                 </div>
             </div>
-            <router-link :to="{ name: 'order-list', }" class="text-xl text-primary text-center">
+
+            <router-link :to="{ name: 'order-list', }" class="text-md text-primary text-center font-semibold">
                 <p>Lihat Semua Pesanan</p>
             </router-link>
         </div>
@@ -39,7 +63,7 @@
 <script lang="ts" setup>
 import { IChatbot } from '@/models/IChatbot';
 import { formatPrice } from '@/utils/helper';
-import { computed } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { Status } from '@/enums/status';
 import { importImage } from '@/utils/helper';
 
@@ -48,36 +72,60 @@ import { importImage } from '@/utils/helper';
 // 🧩 State Variables & Stores
 //----------------------------------------
 const props = defineProps<{ chat: IChatbot }>()
+const countdown = ref(0);
+const intervalId = ref<number | null>(null);
+
 
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
-const order = computed(() => props.chat?.message?.orders?.[0] ?? null)
-const orderItems = computed(() => order.value?.orderItems?.splice(0.2) ?? [])
+const order = computed(() => props.chat?.message?.orders?.[props.chat?.message?.orders.length - 1] ?? null)
 
-const formattedDate = computed(() => {
-    const d = new Date(order.value?.createdAt || Date.now())
-    const day = String(d.getDate()).padStart(2, '0')
-    const month = String(d.getMonth() + 1).padStart(2, '0')
-    const year = String(d.getFullYear()).slice(-2)
-    const hour = String(d.getHours()).padStart(2, '0')
-    const minute = String(d.getMinutes()).padStart(2, '0')
-    return `${day}/${month}/${year} ${hour}:${minute}`
-})
+// Format ke MM:SS
+const formattedCountdown = computed(() => {
+    const minutes = Math.floor(countdown.value / 60).toString().padStart(2, '0');
+    const seconds = (countdown.value % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+});
+const targetTimestamp = computed(() => {
+    if (!order.value || !order.value?.createdAt || !order.value?.status) return null;
 
+    const created = new Date(order.value.createdAt).getTime();
+    const durationMinutes =
+        order.value.status === Status.PENDING ? 2 :
+            order.value.status === Status.PAID ? 1 : 0;
 
+    return created + durationMinutes * 60 * 1000;
+});
 
 //----------------------------------------
 // 🎯 Watchers
 //----------------------------------------
+watch(countdown, (val) => {
+    if (val === 0) {
+        console.log('⏰ Countdown selesai');
+        // emit('expired') atau trigger logic lain
+    }
+});
 
 //----------------------------------------
 // 🚀 Lifecycle Hooks
 //----------------------------------------
+onMounted(() => {
+    updateCountdown();
+    intervalId.value = window.setInterval(updateCountdown, 1000);
+});
 
 //----------------------------------------
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
+const updateCountdown = () => {
+    if (!targetTimestamp.value) return;
+
+    const now = Date.now();
+    const remainingMs = targetTimestamp.value - now;
+    countdown.value = Math.max(Math.floor(remainingMs / 1000), 0);
+};
 
 
 </script>

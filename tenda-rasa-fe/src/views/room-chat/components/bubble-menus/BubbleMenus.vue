@@ -1,14 +1,14 @@
 <template>
-    <section id="BubbleMenus" class="p-4 rounded-lg bg-gray-50 shadow-md max-w-md mx-auto">
-        <p class="text-sm text-gray-700 mb-3">
+    <section id="BubbleMenus" class="max-w-md mx-auto">
+        <p class="text-sm mb-3">
             {{ message }}
         </p>
 
-        <div v-if="menus?.length" class="flex flex-col gap-2">
-            <el-button v-for="menu in menus" :key="menu.id" type="primary"  size="small" class="justify-start" plain border-primary
-                @click="onSelect(menu)">
-                <span class="text-lg mr-2">{{ menu.menuName }}</span>
-                {{ menu.menuName }}
+        <div v-if="menus?.length" class="flex flex-wrap gap-2">
+            <el-button v-for="menu in menus" :key="menu.id" size="small" plain
+                class=" rounded-full bg-white border border-primary text-primary hover:bg-primary hover:text-white transition"
+                style="margin-left: 0 !important;" @click="onSelect(menu)">
+                <span class="text-md text-black">{{ menu.menuName }}</span>
             </el-button>
         </div>
     </section>

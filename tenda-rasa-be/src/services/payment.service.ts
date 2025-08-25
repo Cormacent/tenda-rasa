@@ -15,7 +15,10 @@ export const confirmPayment = async (order_id: string, email: string): Promise<R
     });
 
     if (!order) throw new Error('❌ Order tidak ditemukan atau email salah.');
-    if (order.status === Status.PAID) return order;
+    if (order.status === Status.PAID) {
+        order.status = Status.ALREADY_PAID
+        return order
+    };
 
     return await order.update({ status: Status.PAID });
 };

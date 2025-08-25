@@ -42,7 +42,10 @@ const openLink = (name) => {
         savedLink.value = name;
         return;
     }
-    router.push({ name });
+    router.replace({ name });
+};
+const openMenu = (menuId) => {
+    router.replace({ name: 'booth-detail', params: { menuId } });
 };
 debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
 const __VLS_ctx = {};
@@ -105,11 +108,21 @@ for (const [menu] of __VLS_getVForSourceType((__VLS_ctx.menuList))) {
     /** @type {[typeof __VLS_components.SwiperSlide, typeof __VLS_components.SwiperSlide, ]} */ ;
     // @ts-ignore
     const __VLS_5 = __VLS_asFunctionalComponent(__VLS_4, new __VLS_4({
+        ...{ 'onClick': {} },
         key: (menu.id),
     }));
     const __VLS_6 = __VLS_5({
+        ...{ 'onClick': {} },
         key: (menu.id),
     }, ...__VLS_functionalComponentArgsRest(__VLS_5));
+    let __VLS_8;
+    let __VLS_9;
+    let __VLS_10;
+    const __VLS_11 = {
+        onClick: (...[$event]) => {
+            __VLS_ctx.openMenu(menu.id);
+        }
+    };
     __VLS_7.slots.default;
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         ...{ class: "bg-white shadow rounded-xl mb-5 flex flex-col items-center overflow-hidden" },
@@ -133,30 +146,30 @@ var __VLS_3;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "flex align-center justify-center background-transparent mt-4" },
 });
-const __VLS_8 = {}.RouterLink;
+const __VLS_12 = {}.RouterLink;
 /** @type {[typeof __VLS_components.RouterLink, typeof __VLS_components.RouterLink, ]} */ ;
 // @ts-ignore
-const __VLS_9 = __VLS_asFunctionalComponent(__VLS_8, new __VLS_8({
-    to: ({ name: 'explore-booths' }),
-}));
-const __VLS_10 = __VLS_9({
-    to: ({ name: 'explore-booths' }),
-}, ...__VLS_functionalComponentArgsRest(__VLS_9));
-__VLS_11.slots.default;
-const __VLS_12 = {}.ElButton;
-/** @type {[typeof __VLS_components.ElButton, typeof __VLS_components.elButton, typeof __VLS_components.ElButton, typeof __VLS_components.elButton, ]} */ ;
-// @ts-ignore
 const __VLS_13 = __VLS_asFunctionalComponent(__VLS_12, new __VLS_12({
-    ...{ class: "btn-gradient" },
-    size: "large",
+    to: ({ name: 'explore-booths' }),
 }));
 const __VLS_14 = __VLS_13({
-    ...{ class: "btn-gradient" },
-    size: "large",
+    to: ({ name: 'explore-booths' }),
 }, ...__VLS_functionalComponentArgsRest(__VLS_13));
 __VLS_15.slots.default;
+const __VLS_16 = {}.ElButton;
+/** @type {[typeof __VLS_components.ElButton, typeof __VLS_components.elButton, typeof __VLS_components.ElButton, typeof __VLS_components.elButton, ]} */ ;
+// @ts-ignore
+const __VLS_17 = __VLS_asFunctionalComponent(__VLS_16, new __VLS_16({
+    ...{ class: "btn-gradient" },
+    size: "large",
+}));
+const __VLS_18 = __VLS_17({
+    ...{ class: "btn-gradient" },
+    size: "large",
+}, ...__VLS_functionalComponentArgsRest(__VLS_17));
+__VLS_19.slots.default;
+var __VLS_19;
 var __VLS_15;
-var __VLS_11;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "relative z-10 text-center pt-3  container mx-auto px-4" },
 });
@@ -171,23 +184,23 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.
 });
 /** @type {[typeof ModalUserInfo, ]} */ ;
 // @ts-ignore
-const __VLS_16 = __VLS_asFunctionalComponent(ModalUserInfo, new ModalUserInfo({
+const __VLS_20 = __VLS_asFunctionalComponent(ModalUserInfo, new ModalUserInfo({
     ...{ 'onSubmit': {} },
     visible: (__VLS_ctx.visibleModal),
 }));
-const __VLS_17 = __VLS_16({
+const __VLS_21 = __VLS_20({
     ...{ 'onSubmit': {} },
     visible: (__VLS_ctx.visibleModal),
-}, ...__VLS_functionalComponentArgsRest(__VLS_16));
-let __VLS_19;
-let __VLS_20;
-let __VLS_21;
-const __VLS_22 = {
+}, ...__VLS_functionalComponentArgsRest(__VLS_20));
+let __VLS_23;
+let __VLS_24;
+let __VLS_25;
+const __VLS_26 = {
     onSubmit: (...[$event]) => {
         __VLS_ctx.openLink(__VLS_ctx.savedLink ?? '');
     }
 };
-var __VLS_18;
+var __VLS_22;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-col']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-full']} */ ;
@@ -264,6 +277,7 @@ const __VLS_self = (await import('vue')).defineComponent({
             savedLink: savedLink,
             menuList: menuList,
             openLink: openLink,
+            openMenu: openMenu,
         };
     },
 });

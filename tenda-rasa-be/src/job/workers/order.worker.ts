@@ -5,14 +5,13 @@ import { Status } from '../../enumeration/status.enum';
 import { getClientByEmail } from '../../socket/socketServer';
 import { OrderStatus } from '../../enumeration/order.enum';
 import { ResponseOrderDto } from '../../dtos/order.dto';
-
+import { ChatType } from '../../enumeration/chatType.enum';
 export const orderWorker = new Worker('order', async job => {
-    if (job.name === OrderStatus.PAYMENT) {
-        orderPaymentExpired(job)
+    if (job.name === OrderStatus.EXPIRED_PAYMENT) {
+        await orderPaymentExpired(job);
     } else if (job.name === OrderStatus.ON_PROGRESS) {
-        orderCompleted(job)
+        await orderCompleted(job);
     }
-
 }, {
     connection: redisClient
 });
@@ -36,34 +35,36 @@ orderWorker.on('active', job => {
 });
 
 console.log('🎯 Order worker is running and listening for jobs...');
-
 const orderPaymentExpired = async (job: any) => {
     const { orderId } = job.data;
     const order = await getOrderById(orderId);
+
     if (!order) {
-        console.warn(`[${OrderStatus.PAYMENT}] Order ${orderId} not found.`);
+        console.warn(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} not found.`);
         return;
     }
 
-    if (order.status === Status.PAID) {
-        console.log(`[${OrderStatus.PAYMENT}] Order ${orderId} already paid.`);
+    const { status, id, email } = order;
+
+    if ([Status.PAID, Status.COMPLETED].includes(status)) {
+        console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} already paid.`);
         return;
     }
 
-    const orderUpdated = await updateOrder(order.id, {
-        status: Status.CANCELLED,
-    });
-
-    const socket = getClientByEmail(order.email);
-    if (socket) {
-        socket.emit('message', {
-            type: 'order_status_updated',
-            payload: { order: orderUpdated }
-        });
+    if (status === Status.CANCELLED) {
+        console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} cancelled.`);
+        return;
     }
-    pushSocketMessage(order.email, orderUpdated)
-}
 
+    if (status !== Status.PENDING) {
+        console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} has unexpected status: ${status}`);
+        return;
+    }
+
+    const orderUpdated = await updateOrder(id, { status: Status.CANCELLED });
+    pushSocketMessage(email, orderUpdated);
+    console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} expired and cancelled.`);
+};
 const orderCompleted = async (job: any) => {
     const { orderId } = job.data;
     const order = await getOrderById(orderId);
@@ -72,24 +73,21 @@ const orderCompleted = async (job: any) => {
         return;
     }
 
-    if (order.status === Status.PAID) {
-        console.log(`[${OrderStatus.ON_PROGRESS}] Order ${orderId} already paid.`);
+    if (order.status === Status.COMPLETED) {
+        console.log(`[${OrderStatus.ON_PROGRESS}] Order ${orderId} already completed.`);
         return;
     }
 
-    const orderUpdated = await updateOrder(order.id, {
-        status: Status.CANCELLED,
-    });
-
-    pushSocketMessage(order.email, orderUpdated)
-}
+    const orderUpdated = await updateOrder(order.id, { status: Status.COMPLETED });
+    pushSocketMessage(order.email, orderUpdated);
+};
 
 const pushSocketMessage = (email: string, order: ResponseOrderDto) => {
     const socket = getClientByEmail(email);
     if (socket) {
         socket.emit('message', {
-            type: 'order_status_updated',
+            type: ChatType.ORDER_STATUS_UPDATED,
             payload: { order }
         });
     }
-}
+};

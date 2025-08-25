@@ -7,6 +7,7 @@ import { MenuDTO } from '../dtos/menu.dto';
 import { ChatDTO } from '../dtos/chat.dto';
 import { Role } from '../enumeration/role.enum';
 import { getClientByEmail } from '../socket/socketServer';
+import { ChatType } from '../enumeration/chatType.enum';
 export const getConversation = async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
@@ -90,7 +91,7 @@ export async function handleChatEvent(payload: ChatDTO) {
   try {
     // validate required fields
     if (!name || !message) {
-      socket.emit('message', { type: 'error', message: 'Email Required.' });
+      socket.emit('message', { type: ChatType.ERROR, message: 'Email Required.' });
       return;
     }
 
@@ -107,7 +108,7 @@ export async function handleChatEvent(payload: ChatDTO) {
 
     // Push the message USER to WebSocket clients
     socket.send({
-      type: 'chat_sent', payload: sendMessageResponse
+      type: ChatType.CHAT_SENT, payload: sendMessageResponse
     });
 
 
@@ -155,14 +156,14 @@ export async function handleChatEvent(payload: ChatDTO) {
 
     // push the response to WebSocket clients
     socket.send({
-      type: 'chat_response', payload: chatResponse
+      type: ChatType.CHAT_RESPONSE, payload: chatResponse
     });
 
   } catch (err) {
     console.error('Chat controller error:', err);
 
     socket.emit('message', {
-      type: 'error',
+      type: ChatType.ERROR,
       message: 'Gagal memproses pesan.'
 
     });

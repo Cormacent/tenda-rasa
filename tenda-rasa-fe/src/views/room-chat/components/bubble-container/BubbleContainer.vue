@@ -1,5 +1,5 @@
 <template>
-    <section id="BubbleContainer" class="relative" style="max-width: 70vw;" :class="bubbleClass">
+    <section id="BubbleContainer" class="relative" :class="bubbleClass">
         <!-- Dynamic Bubble Content -->
         <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
         <!-- Timestamp -->
@@ -45,7 +45,7 @@ const bubbleClass = computed(() => {
         'transition-shadow',
         'duration-200',
         'cursor-pointer',
-        props.chat.role === Role.USER ? 'bg-primary text-white' : 'bg-white text-black  '
+        props.chat.role === Role.USER ? 'bg-primary text-white' : 'bg-gray-100 text-black'
     ]
 })
 const bubbleComponent = computed(() => {
@@ -73,3 +73,5 @@ const bubbleComponent = computed(() => {
 //----------------------------------------
 
 </script>
+<style lang="scss" scoped>
+</style>

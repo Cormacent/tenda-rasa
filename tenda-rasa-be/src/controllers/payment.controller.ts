@@ -8,8 +8,9 @@ import { ChatDTO } from '../dtos/chat.dto';
 import { Status } from '../enumeration/status.enum';
 import { orderQueue } from '../job/queues/order.queue';
 import { OrderStatus } from '../enumeration/order.enum';
+import { ChatType } from '../enumeration/chatType.enum';
 
-const progressOrderMinutes = 5
+const progressOrderMinutes = 1
 
 export const handlePayment = async (req: Request, res: Response) => {
   const { orderId, email } = req.params;
@@ -22,20 +23,18 @@ export const handlePayment = async (req: Request, res: Response) => {
         message: '❌ Order tidak ditemukan atau email tidak cocok.'
       });
     }
-    let message = '✅ Order sudah dibayar sebelumnya.'
-    if (order.status == Status.PAID) {
+    let message = '✅ Status pembayaran berhasil diperbarui.'
+    if (order.status == Status.ALREADY_PAID) {
+      message = '✅ Order sudah dibayar sebelumnya.'
       return res.status(200).json({
         message,
         order_id: order.id,
-        status: order.status
+        status: Status.PAID
       });
-    } else {
-      message = '✅ Status pembayaran berhasil diperbarui.'
     }
 
-
-    // Progress JOB
-    await orderQueue.add(OrderStatus.ON_PROGRESS, { orderId: order.id }, {
+    // Progress JOB (gapake await karna biar barengan)
+    orderQueue.add(OrderStatus.ON_PROGRESS, { orderId: order.id }, {
       delay: 1000 * 60 * progressOrderMinutes,
       removeOnComplete: true,
       removeOnFail: true,
@@ -59,10 +58,10 @@ export const handlePayment = async (req: Request, res: Response) => {
     payload.message.orders = [order]
     const socket = getClientByEmail(email);
     if (socket) {
-      socket.emit('message', { type: 'chat_response', payload });
+      socket.emit('message', { type: ChatType.CHAT_RESPONSE, payload });
 
       socket.emit('message', {
-        type: 'order_status_updated',
+        type: ChatType.ORDER_STATUS_UPDATED,
         payload: {
           order: order,
         }

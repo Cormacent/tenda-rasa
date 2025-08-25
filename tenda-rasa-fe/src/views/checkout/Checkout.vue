@@ -1,5 +1,10 @@
 <template>
-  <section id="Checkout" class="flex flex-col h-full bg-gradient-to-b from-white/20 to-white container mx-auto px-4">
+  <section id="Checkout" class="flex flex-col h-full container mx-auto px-4">
+    <div class="absolute top-0 right-0 w-full h-full pointer-events-none -z-10" style="
+    mask-image: linear-gradient(to bottom left, transparent 0%, white 45%, white 100%);
+    mask-mode: alpha;
+    background-color: white;
+  "></div>
     <!-- Scrollable Daftar Item -->
     <div class="flex-1 overflow-y-auto space-y-4">
       <div v-for="item in orderItems" :key="item.id" class="bg-white shadow-md rounded-lg p-4 flex gap-4 w-full">

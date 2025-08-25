@@ -1,4 +1,4 @@
 export const OrderStatus = {
-    PAYMENT: 'expire-order',
+    EXPIRED_PAYMENT: 'expire-order',
     ON_PROGRESS: 'order-on-progress'
 }

@@ -62,7 +62,7 @@ export const useOrderStore = defineStore('order', () => {
         loading.value = true
         error.value = null
         try {
-            const res = await axios.get(`${urlPayment}/payment`, { params: { orderId, email } })
+            const res = await axios.get(`${urlPayment}/${orderId}/${email}`)
             return res.data || {}
         }
         catch (err: any) {

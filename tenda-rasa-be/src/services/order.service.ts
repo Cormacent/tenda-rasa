@@ -8,6 +8,7 @@ import QRCode from 'qrcode';
 import { MenuDTO } from '../dtos/menu.dto';
 import { Op } from 'sequelize'
 import { normalizeSequelizeData } from '../utils/sequelizeNormalizer';
+import { Status } from '../enumeration/status.enum';
 
 
 
@@ -30,7 +31,7 @@ export const getActiveOrdersByEmail = async (email: string): Promise<ResponseOrd
     where: {
       email,
       status: {
-        [Op.in]: ['PAID', 'PENDING'],
+        [Op.in]: [Status.PAID, Status.PENDING],
       },
     },
     include: [
@@ -45,10 +46,22 @@ export const getActiveOrdersByEmail = async (email: string): Promise<ResponseOrd
 };
 
 export const getOrderById = async (id: number): Promise<ResponseOrderDto> => {
-  const order = await Orders.findByPk(id);
-  if (!order) throw new Error('Order not found');
+  const order = await Orders.findByPk(id, {
+    include: [
+      {
+        model: OrderItems,
+        as: 'orderItems',
+      },
+    ],
+  });
+
+  if (!order) {
+    throw new Error(`Order with ID ${id} not found`);
+  }
+
   return order;
 };
+
 
 export const updateOrder = async (id: number, updates: Partial<CreateOrderDto>): Promise<ResponseOrderDto> => {
   const order = await Orders.findByPk(id);
@@ -84,7 +97,7 @@ export async function getOrderByIds(orderIds: number[]): Promise<ResponseOrderDt
 
 export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrderDto> => {
   return await sequelize.transaction(async (t: Transaction) => {
-    const { orderItems, email } = payload;
+    const { orderItems, email, name } = payload;
 
     if (!orderItems || !Array.isArray(orderItems) || orderItems.length === 0) {
       throw new Error('Order items are required');
@@ -150,8 +163,8 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
     const totalPrice = createdItems.reduce((sum: number, item: ResponseOrderItemDto) => sum + item.subtotal, 0);
     await order.update({ total_price: totalPrice }, { transaction: t });
 
-    const PORT = process.env.BE_PORT || 3000;
-    const paymentUrl = `http://localhost:${PORT}/v1/payment/${order.id}/${email}`;
+    const VUE_URL = process.env.VUE_URL || 'http://localhost:5173';
+    const paymentUrl = `${VUE_URL}/payment-gateway/${order.id}/${email}/${name}`;
     const qrcodeData = await QRCode.toDataURL(paymentUrl);
 
     await order.update({ qrcode: qrcodeData }, { transaction: t });

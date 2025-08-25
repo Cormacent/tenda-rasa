@@ -1,8 +1,7 @@
 export enum Status{
     PENDING = 'PENDING',
-    PROCESSING = 'PROCESSING',
     PAID = 'PAID',
     COMPLETED = 'COMPLETED',
-    FAILED = 'FAILED',
     CANCELLED = 'CANCELLED',
+    ALREADY_PAID = 'ALREADY_PAID',
 }

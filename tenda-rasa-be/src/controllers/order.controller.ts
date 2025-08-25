@@ -9,6 +9,7 @@ import { getClientByEmail } from '../socket/socketServer';
 import { orderQueue } from '../job/queues/order.queue';
 import { ChatDTO } from '../dtos/chat.dto';
 import { OrderStatus } from '../enumeration/order.enum';
+import { ChatType } from '../enumeration/chatType.enum';
 
 export const getAllOrdersByEmail = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -44,8 +45,8 @@ export const createOrder = async (req: Request, res: Response) => {
   try {
     const order = await OrderService.createOrder(orderDto);
 
-    // Expire JOB
-    await orderQueue.add(OrderStatus.PAYMENT, { orderId: order.id }, {
+    // Progress JOB (gapake await karna biar barengan)
+    orderQueue.add(OrderStatus.EXPIRED_PAYMENT, { orderId: order.id }, {
       delay: 1000 * 60 * orderDto.estimatedMinutes,
       removeOnComplete: true,
       removeOnFail: true,
@@ -72,7 +73,7 @@ export const createOrder = async (req: Request, res: Response) => {
     payload.message.orders = [order]
     const socket = getClientByEmail(orderDto.email);
     if (socket) {
-      socket.emit('message', { type: 'chat_sent', payload });
+      socket.emit('message', { type: ChatType.CHAT_SENT, payload });
     }
 
     res.status(201).json(order);
@@ -82,6 +83,34 @@ export const createOrder = async (req: Request, res: Response) => {
     res.status(500).json({
       message: "Error creating order",
       error: err?.message || JSON.stringify(err) || "Unknown error"
+    });
+  }
+};
+
+export const getOrderById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id || isNaN(Number(id))) {
+    return res.status(400).json({ message: 'Invalid or missing order ID in URL' });
+  }
+
+  try {
+    const order = await OrderService.getOrderById(Number(id));
+
+    if (!order) {
+      return res.status(404).json({ message: `Order with ID ${id} not found` });
+    }
+
+    res.json(order);
+  } catch (err: Error | any) {
+    console.error(`❌ Error fetching order ${id}:`, err);
+    res.status(500).json({
+      message: 'Error fetching order',
+      error: {
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+      },
     });
   }
 };

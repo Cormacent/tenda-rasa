@@ -1,9 +1,9 @@
 Set-Location 'C:\Users\zakim\Documents\project_egi\tenda-rasa\tenda-rasa-fe'
 
-Write-Host 'Membaca .env lokal...'
-$envFile = '.env'
+Write-Host 'Membaca .env.dev lokal...'
+$envFile = '.env.dev'
 if (-Not (Test-Path $envFile)) {
-    Write-Error 'File .env tidak ditemukan!'
+    Write-Error 'File .env.dev tidak ditemukan!'
     exit 1
 }
 

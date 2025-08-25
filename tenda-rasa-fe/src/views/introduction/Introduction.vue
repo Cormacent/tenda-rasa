@@ -13,7 +13,7 @@
                         bulletClass: 'swiper-dot',
                         bulletActiveClass: 'swiper-dot-active'
                     }" class="custom-swiper">
-                    <SwiperSlide v-for="menu in menuList" :key="menu.id">
+                    <SwiperSlide v-for="menu in menuList" :key="menu.id" @click="openMenu(menu.id)">
                         <div class="bg-white shadow rounded-xl mb-5 flex flex-col items-center overflow-hidden">
                             <img :src="menu.imageUrl ? menu.imageUrl : importImage('default.jpg')" :alt="menu.menuName"
                                 class="w-full h-40 md:h-60 object-cover rounded-t-xl mb-4" />
@@ -95,9 +95,11 @@ const openLink = (name: string) => {
         savedLink.value = name
         return
     }
-    router.push({ name })
+    router.replace({ name })
 }
-
+const openMenu = (menuId?: number) => {
+    router.replace({ name: 'booth-detail', params: { menuId } })
+}
 </script>
 <style scoped src="./Introduction.scss"></style>
 <style lang="scss">

@@ -24,7 +24,7 @@ const routes = [
         path: '/checkout',
         component: () => import('@/views/checkout/Checkout.vue'),
         name: 'checkout',
-        meta: { title: 'Keranjang', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: false }
+        meta: { title: 'Keranjang', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
     },
 
     {
@@ -50,6 +50,12 @@ const routes = [
         component: () => import('@/views/room-chat/RoomChat.vue'),
         name: 'room-chat',
         meta: { title: 'Chat', icon: 'ep:guide', showHeader: true, showFooter: true, showBackground: true }
+    },
+    {
+        path: '/payment-gateway/:orderId/:email/:name',
+        component: () => import('@/views/payment/Payment.vue'),
+        name: 'payment-gateway',
+        meta: { title: 'Chat', icon: 'ep:guide', showHeader: false, showFooter: false, showBackground: true }
     }
 ]
 export default createRouter({
