@@ -21,7 +21,7 @@ export const getConversation = async (req: Request, res: Response) => {
       const { orderIds = [], menuIds = [] } = message;
 
       if (orderIds.length > 0) {
-        message.orders = allOrders.filter(order => orderIds.includes(order.id));
+        message.orders = allOrders.filter((order: any) => orderIds.includes(order.id));
       }
 
       if (menuIds.length > 0) {

@@ -26,6 +26,30 @@ export const getAllOrdersByEmail = async (email: string): Promise<ResponseOrderD
   return orders.map((order: any) => normalizeSequelizeData(order.get({ plain: true })));
 };
 
+export const getAllActiveOrdersByEmail = async (
+  email: string
+): Promise<ResponseOrderDto[]> => {
+  const orders = await Orders.findAll({
+    where: {
+      email,
+      status: {
+        [Op.in]: [Status.PAID, Status.COMPLETED],
+      },
+    },
+    include: [
+      {
+        model: OrderItems,
+        as: 'orderItems',
+      },
+    ],
+  });
+
+  return orders.map((order: any) =>
+    normalizeSequelizeData(order.get({ plain: true }))
+  );
+};
+
+
 export const getActiveOrdersByEmail = async (email: string): Promise<ResponseOrderDto[]> => {
   const orders = await Orders.findAll({
     where: {

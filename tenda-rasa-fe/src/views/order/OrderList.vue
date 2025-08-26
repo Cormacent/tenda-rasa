@@ -21,17 +21,17 @@
                             class="w-20 h-20 object-cover rounded-lg" />
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-semibold text-black">
+                        <h3 class="text-base font-semibold text-black">
                             ID Pesanan #{{ order.name }}-{{ order.id }}
                         </h3>
                         <p class="text-base text-gray-500">
                             {{
                                 order.status === Status.PAID
                                     ? 'Restoran sedang menyiapkan pesananmu.'
-                                    : 'Pesanan kamu telah dibatalkan.'
+                                    : 'Pesanan kamu telah selesai.'
                             }}
                         </p>
-                        <p class="text-base text-primary font-semibold">Cek Status Pesanan</p>
+                        <p class="text-base text-primary font-semibold">Cek Pesanan</p>
                     </div>
                 </div>
             </router-link>
@@ -54,7 +54,6 @@ import { Status } from '@/enums/status';
 // 🧩 State Variables & Stores
 //----------------------------------------
 const orderStore = useOrderStore()
-const route = useRoute()
 const userStore = useUserStore()
 //----------------------------------------
 // 🔍 Computed Properties
@@ -75,9 +74,9 @@ onMounted(() => {
 //----------------------------------------
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
-const getOrderDetail = () => {
+const getOrderDetail = async () => {
     if (userInfo.value.email) {
-        orderStore.getAllOrdersByEmail(userInfo.value.email)
+        await orderStore.getAllActiveOrdersByEmail(userInfo.value.email);
     }
 }
 

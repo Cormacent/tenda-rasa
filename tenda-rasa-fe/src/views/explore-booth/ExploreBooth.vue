@@ -7,13 +7,13 @@
                 <h2 class="text-3xl font-bold text-black">
                     Temukan Makanan <br /> Favorit kamu!
                 </h2>
-                <div class="rounded-2xl bg-white shadow-md p-2 ml-2">
+                <!-- <div class="rounded-2xl bg-white shadow-md p-2 ml-2">
                     <icon-ep-bell class="text-primary text-3xl" />
-                </div>
+                </div> -->
             </div>
 
             <el-input v-model="menupageInfo.filters.menuName" placeholder="Apa yang mau kamu pesan?" clearable
-                @input="getMenuPage" class="custom-input w-full rounded-xl bg-secondary mt-4">
+                @input="getMenuPage" class="w-full mt-4" input-style="color: var(--el-color-primary);">
                 <template #prefix>
                     <icon-ep-search class="text-primary" />
                 </template>

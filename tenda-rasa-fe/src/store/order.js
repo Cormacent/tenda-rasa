@@ -25,22 +25,22 @@ export const useOrderStore = defineStore('order', () => {
             loading.value = false;
         }
     };
-    const getAllOrdersByEmail = async (email) => {
-        loading.value = true;
-        error.value = null;
+    const getAllActiveOrdersByEmail = async (email) => {
+        loading.value = true
+        error.value = null
         try {
-            const res = await axios.post(`${url}/get-by-email`, { email });
-            orderList.value = res.data || [];
-            return orderList.value;
+            const res = await axios.post(`${url}/get-by-email`, { email })
+            orderList.value = res.data || []
+            return orderList.value
+        } catch (err) {
+            error.value = err.message || 'Failed to fetch orders'
+            return []
+        } finally {
+            loading.value = false
         }
-        catch (err) {
-            error.value = err.message || 'Failed to fetch orders';
-            return [];
-        }
-        finally {
-            loading.value = false;
-        }
-    };
+    }
+
+
     const createOrder = async (order) => {
         loading.value = true;
         error.value = null;
@@ -115,7 +115,7 @@ export const useOrderStore = defineStore('order', () => {
         error,
         orderDetail,
         orderList,
-        getAllOrdersByEmail,
+        getAllActiveOrdersByEmail,
         getOrderById,
         createOrder,
         handlePayment,

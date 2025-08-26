@@ -29,7 +29,7 @@ export const useOrderStore = defineStore('order', () => {
         }
     }
 
-    const getAllOrdersByEmail = async (email: string): Promise<IOrder[]> => {
+    const getAllActiveOrdersByEmail = async (email: string) => {
         loading.value = true
         error.value = null
         try {
@@ -118,7 +118,7 @@ export const useOrderStore = defineStore('order', () => {
         error,
         orderDetail,
         orderList,
-        getAllOrdersByEmail,
+        getAllActiveOrdersByEmail,
         getOrderById,
         createOrder,
         handlePayment,

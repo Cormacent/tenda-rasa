@@ -11,7 +11,7 @@ import { ChatDTO } from '../dtos/chat.dto';
 import { OrderStatus } from '../enumeration/order.enum';
 import { ChatType } from '../enumeration/chatType.enum';
 
-export const getAllOrdersByEmail = async (req: Request, res: Response) => {
+export const getAllActiveOrdersByEmail = async (req: Request, res: Response) => {
   const { email } = req.body;
 
   if (!email) {
@@ -19,7 +19,7 @@ export const getAllOrdersByEmail = async (req: Request, res: Response) => {
   }
 
   try {
-    const orders = await OrderService.getAllOrdersByEmail(email);
+    const orders = await OrderService.getAllActiveOrdersByEmail(email);
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: 'No orders found for this email' });
     }
