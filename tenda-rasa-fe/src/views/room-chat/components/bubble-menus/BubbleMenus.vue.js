@@ -16,15 +16,15 @@ let __VLS_directives;
 // CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.section, __VLS_intrinsicElements.section)({
     id: "BubbleMenus",
-    ...{ class: "p-4 rounded-lg bg-gray-50 shadow-md max-w-md mx-auto" },
+    ...{ class: "max-w-md mx-auto" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-sm text-gray-700 mb-3" },
+    ...{ class: "text-sm mb-3" },
 });
 (__VLS_ctx.message);
 if (__VLS_ctx.menus?.length) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "flex flex-col gap-2" },
+        ...{ class: "flex flex-wrap gap-2" },
     });
     for (const [menu] of __VLS_getVForSourceType((__VLS_ctx.menus))) {
         const __VLS_0 = {}.ElButton;
@@ -33,20 +33,18 @@ if (__VLS_ctx.menus?.length) {
         const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
             ...{ 'onClick': {} },
             key: (menu.id),
-            type: "primary",
             size: "small",
-            ...{ class: "justify-start" },
             plain: true,
-            borderPrimary: true,
+            ...{ class: " rounded-full bg-white border border-primary text-primary hover:bg-primary hover:text-white transition" },
+            ...{ style: {} },
         }));
         const __VLS_2 = __VLS_1({
             ...{ 'onClick': {} },
             key: (menu.id),
-            type: "primary",
             size: "small",
-            ...{ class: "justify-start" },
             plain: true,
-            borderPrimary: true,
+            ...{ class: " rounded-full bg-white border border-primary text-primary hover:bg-primary hover:text-white transition" },
+            ...{ style: {} },
         }, ...__VLS_functionalComponentArgsRest(__VLS_1));
         let __VLS_4;
         let __VLS_5;
@@ -60,28 +58,29 @@ if (__VLS_ctx.menus?.length) {
         };
         __VLS_3.slots.default;
         __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-            ...{ class: "text-lg mr-2" },
+            ...{ class: "text-md text-black" },
         });
-        (menu.menuName);
         (menu.menuName);
         var __VLS_3;
     }
 }
-/** @type {__VLS_StyleScopedClasses['p-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-gray-50']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-md']} */ ;
 /** @type {__VLS_StyleScopedClasses['max-w-md']} */ ;
 /** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['mb-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
-/** @type {__VLS_StyleScopedClasses['flex-col']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex-wrap']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['justify-start']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['mr-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:bg-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['transition']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-md']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-black']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

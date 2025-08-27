@@ -24,10 +24,8 @@ let __VLS_directives;
 // CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.section, __VLS_intrinsicElements.section)({
     id: "BubbleMessage",
-    ...{ class: "" },
 });
 (__VLS_ctx.message);
-/** @type {__VLS_StyleScopedClasses['']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

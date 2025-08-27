@@ -19,7 +19,6 @@ declare module 'vue' {
     Header: typeof import('./src/components/header-section/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconEpArrowLeftBold: typeof import('~icons/ep/arrow-left-bold')['default']
-    IconEpBell: typeof import('~icons/ep/bell')['default']
     IconEpChatDotRound: typeof import('~icons/ep/chat-dot-round')['default']
     IconEpClock: typeof import('~icons/ep/clock')['default']
     IconEpDocument: typeof import('~icons/ep/document')['default']

@@ -1,14 +1,12 @@
 import { useOrderStore } from '@/store/order';
 import { useUserStore } from '@/store/user';
 import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { importImage } from '@/utils/helper';
 import { Status } from '@/enums/status';
 //----------------------------------------
 // 🧩 State Variables & Stores
 //----------------------------------------
 const orderStore = useOrderStore();
-const route = useRoute();
 const userStore = useUserStore();
 //----------------------------------------
 // 🔍 Computed Properties
@@ -27,9 +25,9 @@ onMounted(() => {
 //----------------------------------------
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
-const getOrderDetail = () => {
+const getOrderDetail = async () => {
     if (userInfo.value.email) {
-        orderStore.getAllOrdersByEmail(userInfo.value.email);
+        await orderStore.getAllActiveOrdersByEmail(userInfo.value.email);
     }
 };
 debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
@@ -85,7 +83,7 @@ for (const [order] of __VLS_getVForSourceType((__VLS_ctx.orderList))) {
         ...{ class: "flex-1" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3)({
-        ...{ class: "text-lg font-semibold text-black" },
+        ...{ class: "text-base font-semibold text-black" },
     });
     (order.name);
     (order.id);
@@ -94,7 +92,7 @@ for (const [order] of __VLS_getVForSourceType((__VLS_ctx.orderList))) {
     });
     (order.status === __VLS_ctx.Status.PAID
         ? 'Restoran sedang menyiapkan pesananmu.'
-        : 'Pesanan kamu telah dibatalkan.');
+        : 'Pesanan kamu telah selesai.');
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
         ...{ class: "text-base text-primary font-semibold" },
     });
@@ -137,7 +135,7 @@ for (const [order] of __VLS_getVForSourceType((__VLS_ctx.orderList))) {
 /** @type {__VLS_StyleScopedClasses['object-cover']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-black']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-base']} */ ;

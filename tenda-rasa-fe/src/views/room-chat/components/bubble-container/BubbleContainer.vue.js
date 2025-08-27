@@ -26,7 +26,7 @@ const bubbleClass = computed(() => {
         'transition-shadow',
         'duration-200',
         'cursor-pointer',
-        props.chat.role === Role.USER ? 'bg-primary text-white' : 'bg-white text-black  '
+        props.chat.role === Role.USER ? 'bg-primary text-white' : 'bg-gray-100 text-black'
     ];
 });
 const bubbleComponent = computed(() => {
@@ -54,10 +54,11 @@ debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
 const __VLS_ctx = {};
 let __VLS_components;
 let __VLS_directives;
+// CSS variable injection 
+// CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.section, __VLS_intrinsicElements.section)({
     id: "BubbleContainer",
     ...{ class: "relative" },
-    ...{ style: {} },
     ...{ class: (__VLS_ctx.bubbleClass) },
 });
 const __VLS_0 = ((__VLS_ctx.bubbleComponent));

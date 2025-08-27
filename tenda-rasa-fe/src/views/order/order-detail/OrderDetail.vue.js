@@ -11,12 +11,26 @@ const orderStore = useOrderStore();
 const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
-const orderId = ref('');
+const orderId = ref();
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
-const orderItems = computed(() => orderStore.orderItems);
-const total = computed(() => orderItems.value.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 0)), 0));
+const order = computed(() => orderStore.orderDetail);
+const orderItems = computed(() => {
+    return orderId.value && order.value?.orderItems
+        ? order.value.orderItems
+        : orderStore.orderItems;
+});
+const total = computed(() => {
+    if (orderId.value && order.value?.totalPrice != null) {
+        return order.value.totalPrice;
+    }
+    return orderItems.value?.reduce((sum, item) => {
+        const price = item.price ?? 0;
+        const quantity = item.quantity ?? 0;
+        return sum + price * quantity;
+    }, 0) ?? 0;
+});
 //----------------------------------------
 // 🎯 Watchers
 //----------------------------------------
@@ -25,7 +39,8 @@ const total = computed(() => orderItems.value.reduce((sum, item) => sum + ((item
 //----------------------------------------
 onMounted(() => {
     if (route.params?.orderId) {
-        orderId.value = route.params?.orderId;
+        orderId.value = +route.params?.orderId;
+        getOrder();
     }
 });
 //----------------------------------------
@@ -42,6 +57,11 @@ const createOrder = async () => {
     }).catch((error) => {
         console.error('Error creating order:', error);
     });
+};
+const getOrder = async () => {
+    if (orderId.value) {
+        await orderStore.getOrderById(orderId.value);
+    }
 };
 debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
 const __VLS_ctx = {};

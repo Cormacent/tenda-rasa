@@ -26,21 +26,21 @@ export const useOrderStore = defineStore('order', () => {
         }
     };
     const getAllActiveOrdersByEmail = async (email) => {
-        loading.value = true
-        error.value = null
+        loading.value = true;
+        error.value = null;
         try {
-            const res = await axios.post(`${url}/get-by-email`, { email })
-            orderList.value = res.data || []
-            return orderList.value
-        } catch (err) {
-            error.value = err.message || 'Failed to fetch orders'
-            return []
-        } finally {
-            loading.value = false
+            const res = await axios.post(`${url}/get-by-email`, { email });
+            orderList.value = res.data || [];
+            return orderList.value;
         }
-    }
-
-
+        catch (err) {
+            error.value = err.message || 'Failed to fetch orders';
+            return [];
+        }
+        finally {
+            loading.value = false;
+        }
+    };
     const createOrder = async (order) => {
         loading.value = true;
         error.value = null;

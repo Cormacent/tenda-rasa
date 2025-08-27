@@ -60,7 +60,11 @@ let __VLS_components;
 let __VLS_directives;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.section, __VLS_intrinsicElements.section)({
     id: "Checkout",
-    ...{ class: "flex flex-col h-full bg-gradient-to-b from-white/20 to-white container mx-auto px-4" },
+    ...{ class: "flex flex-col h-full container mx-auto px-4" },
+});
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
+    ...{ class: "absolute top-0 right-0 w-full h-full pointer-events-none -z-10" },
+    ...{ style: {} },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "flex-1 overflow-y-auto space-y-4" },
@@ -232,12 +236,16 @@ if (__VLS_ctx.total > 0) {
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-col']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-gradient-to-b']} */ ;
-/** @type {__VLS_StyleScopedClasses['from-white/20']} */ ;
-/** @type {__VLS_StyleScopedClasses['to-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['container']} */ ;
 /** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['absolute']} */ ;
+/** @type {__VLS_StyleScopedClasses['top-0']} */ ;
+/** @type {__VLS_StyleScopedClasses['right-0']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['pointer-events-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['-z-10']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-y-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-4']} */ ;
