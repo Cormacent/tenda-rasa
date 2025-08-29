@@ -1,0 +1,36 @@
+UPDATE menu_booth SET image_url = CASE id
+  WHEN 14 THEN 'https://cdn0-production-images-kly.akamaized.net/KyJ7UC64CIR9EyZQzGWkG9owM9E=/0x0:996x561/1200x675/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/4673383/original/036578000_1701677882-shutterstock_2255920105.jpg'
+  WHEN 15 THEN 'https://asset.kompas.com/crops/hsrnlGnJjSvQmAEyoV_dmwBbUi4=/120x80:1000x667/1200x800/data/photo/2023/10/18/652fcf5eb1b28.jpg'
+  WHEN 11 THEN 'https://www.masakapahariini.com/wp-content/uploads/2023/07/shutterstock_1938503506-500x300.jpg'
+  WHEN 17 THEN 'https://i1.wp.com/resepkoki.id/wp-content/uploads/2020/09/Resep-Susu-Kurma.jpg?fit=1078%2C1210&ssl=1'
+  WHEN 18 THEN 'https://salimahfood.com/wp-content/uploads/2018/11/beef-kebab-turki.jpg'
+  WHEN 20 THEN 'https://downtown.dosacrepecafe.com/wp-content/uploads/2023/07/Thai-iced-tea-2-1.jpg'
+  WHEN 24 THEN 'https://i.ytimg.com/vi/tMGD_B4uZ50/maxresdefault.jpg'
+  WHEN 13 THEN 'https://i.pinimg.com/736x/cc/25/23/cc25236a216e164e3e0bc953af7f7baf.jpg'
+  WHEN 19 THEN 'https://filebroker-cdn.lazada.co.id/kf/S3f3376a422324e5e996c7db4a86134da0.jpg'
+  WHEN 12 THEN 'https://hellovriends.wordpress.com/wp-content/uploads/2018/04/es.jpg'
+  WHEN 1 THEN 'https://hypeabis.id/assets/content/20220704122907000000IMG20220704122600.jpg'
+  WHEN 2 THEN 'https://asset.kompas.com/crops/EiIRBPZK28_qqbeh2eI5oQKoIS8=/0x0:1000x667/1200x800/data/photo/2024/02/24/65d8e2ad58d9e.jpg'
+  WHEN 3 THEN 'https://asset.kompas.com/crops/5ITcLtggdvRZwC1yJmXDHhAuDnU=/0x0:1000x667/1200x800/data/photo/2021/05/23/60aa371ed27a5.jpg'
+  WHEN 4 THEN 'https://awsimages.detik.net.id/community/media/visual/2022/06/22/resep-martabak-manis-mini_43.jpeg?w=650'
+  WHEN 8 THEN 'https://cdn.yummy.co.id/content-images/images/20231027/VD3wxKMBhpt05i79g3UfT9feWXI8Ala3-31363938333838363730d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_388,h_388,m_fixed,x-oss-process=image/format,webp'
+  WHEN 9 THEN 'https://cnc-magazine.oramiland.com/parenting/original_images/ayam_geprek_sambal_matah.png'
+  WHEN 16 THEN 'https://img.inews.co.id/media/822/files/inews_new/2020/09/04/resep_seblak_ceker_karamel.jpg'
+  WHEN 21 THEN 'https://cdn0-production-images-kly.akamaized.net/rl0GlFoa1g1FUqnI_qwRh1AmYNE=/1x132:1000x695/1200x675/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/4234617/original/080341700_1669089263-shutterstock_69727759.jpg'
+  WHEN 22 THEN 'https://asset.kompas.com/crops/mVnCI4bJp7d-HHETQtFEQf4akqY=/18x9:670x444/1200x800/data/photo/2021/03/12/604b5acbc3075.jpg'
+  WHEN 23 THEN 'https://www.astronauts.id/blog/wp-content/uploads/2023/11/Resep-Cilok-Bumbu-Kacang-Pedas-Spesial-Favorit-Semua-Orang.jpg'
+  WHEN 7 THEN 'https://img.freepik.com/foto-premium/burger-amerika-klasik-dengan-daging-sapi_23-2148290632.jpg'
+  WHEN 6 THEN 'https://www.masakapahariini.com/wp-content/uploads/2018/12/shutterstock_338815997.jpg'
+  WHEN 10 THEN 'https://img-global.cpcdn.com/recipes/f4fb310258bf2061/680x781f0.501118_0.5_1.0q80/creamy-avocado-juice-foto-resep-utama.jpg'
+  WHEN 5 THEN 'https://i0.wp.com/resepkoki.id/wp-content/uploads/2020/10/Resep-Bakso-Mercon.jpg?fit=1079%2C1207&ssl=1'
+  WHEN 25 THEN 'https://tastythriftytimely.com/wp-content/uploads/2023/01/Dairy-Free-Strawberry-Banana-Smoothie-Featured.jpg'
+  WHEN 26 THEN 'https://assets.unileversolutions.com/recipes-v2/230919.jpg'
+  WHEN 27 THEN 'https://amazingfoodanddrink.com/wp-content/uploads/2024/08/a-photo-of-a-plate-of-freshly-fried-spanish-churro-M7H8zV2PRdiTuwnTd80E4A-XHil3RwTQsu66Hz4DkFJ0w-1.jpeg'
+  WHEN 28 THEN 'https://asset.kompas.com/crops/9684qBzBCTcGFRS_IW9WNLMVKjc=/0x0:940x626/1200x800/data/photo/2021/06/18/60cc1f2da64db.jpg'
+  WHEN 29 THEN 'https://www.astronauts.id/blog/wp-content/uploads/2023/03/Daftar-Resep-Es-Buah-yang-Mudah-dan-Enak.jpg'
+  WHEN 30 THEN 'https://asset.kompas.com/crops/GLtNe54eeZHCZkBFnlO6-zKm7bU=/0x292:1000x959/1200x800/data/photo/2021/08/02/61081f8d3a20b.jpg'
+END
+WHERE id IN (
+  1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+  21,22,23,24,25,26,27,28,29,30
+);

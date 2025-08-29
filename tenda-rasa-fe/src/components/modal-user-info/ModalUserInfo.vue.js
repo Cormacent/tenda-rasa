@@ -45,6 +45,8 @@ debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
 const __VLS_ctx = {};
 let __VLS_components;
 let __VLS_directives;
+// CSS variable injection 
+// CSS variable injection end 
 const __VLS_0 = {}.ElDialog;
 /** @type {[typeof __VLS_components.ElDialog, typeof __VLS_components.elDialog, typeof __VLS_components.ElDialog, typeof __VLS_components.elDialog, ]} */ ;
 // @ts-ignore
@@ -53,80 +55,87 @@ const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
     width: "400px",
     closeOnClickModal: (true),
     showClose: (true),
-    ...{ class: "rounded-lg" },
+    ...{ class: "rounded-lg relative bg-dialog" },
 }));
 const __VLS_2 = __VLS_1({
     modelValue: (__VLS_ctx.dialogVisible),
     width: "400px",
     closeOnClickModal: (true),
     showClose: (true),
-    ...{ class: "rounded-lg" },
+    ...{ class: "rounded-lg relative bg-dialog" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_1));
 var __VLS_4 = {};
 __VLS_3.slots.default;
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div)({
+    ...{ class: "bg-mask" },
+});
 {
     const { header: __VLS_thisSlot } = __VLS_3.slots;
     __VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3)({
-        ...{ class: "text-lg font-bold text-center text-gray-800" },
+        ...{ class: "text-lg font-bold text-start text-gray-700" },
     });
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "space-y-4 mt-2" },
 });
-__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "flex items-center gap-3" },
-});
-const __VLS_5 = {}.IconEpUser;
-/** @type {[typeof __VLS_components.IconEpUser, typeof __VLS_components.iconEpUser, ]} */ ;
+const __VLS_5 = {}.ElInput;
+/** @type {[typeof __VLS_components.ElInput, typeof __VLS_components.elInput, typeof __VLS_components.ElInput, typeof __VLS_components.elInput, ]} */ ;
 // @ts-ignore
 const __VLS_6 = __VLS_asFunctionalComponent(__VLS_5, new __VLS_5({
-    ...{ class: "text-xl text-primary" },
+    modelValue: (__VLS_ctx.userInfo.name),
+    placeholder: "Masukkan Nama",
+    size: "large",
+    ...{ class: "w-full" },
 }));
 const __VLS_7 = __VLS_6({
-    ...{ class: "text-xl text-primary" },
+    modelValue: (__VLS_ctx.userInfo.name),
+    placeholder: "Masukkan Nama",
+    size: "large",
+    ...{ class: "w-full" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_6));
-const __VLS_9 = {}.ElInput;
-/** @type {[typeof __VLS_components.ElInput, typeof __VLS_components.elInput, ]} */ ;
-// @ts-ignore
-const __VLS_10 = __VLS_asFunctionalComponent(__VLS_9, new __VLS_9({
-    modelValue: (__VLS_ctx.userInfo.name),
-    placeholder: "Masukkan Nama",
-    size: "large",
-    ...{ class: "flex-1" },
-}));
-const __VLS_11 = __VLS_10({
-    modelValue: (__VLS_ctx.userInfo.name),
-    placeholder: "Masukkan Nama",
-    size: "large",
-    ...{ class: "flex-1" },
-}, ...__VLS_functionalComponentArgsRest(__VLS_10));
-__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "flex items-center gap-3" },
-});
-const __VLS_13 = {}.IconEpMessage;
-/** @type {[typeof __VLS_components.IconEpMessage, typeof __VLS_components.iconEpMessage, ]} */ ;
+__VLS_8.slots.default;
+{
+    const { prefix: __VLS_thisSlot } = __VLS_8.slots;
+    const __VLS_9 = {}.IconEpUser;
+    /** @type {[typeof __VLS_components.IconEpUser, typeof __VLS_components.iconEpUser, ]} */ ;
+    // @ts-ignore
+    const __VLS_10 = __VLS_asFunctionalComponent(__VLS_9, new __VLS_9({
+        ...{ class: "text-xl text-primary" },
+    }));
+    const __VLS_11 = __VLS_10({
+        ...{ class: "text-xl text-primary" },
+    }, ...__VLS_functionalComponentArgsRest(__VLS_10));
+}
+var __VLS_8;
+const __VLS_13 = {}.ElInput;
+/** @type {[typeof __VLS_components.ElInput, typeof __VLS_components.elInput, typeof __VLS_components.ElInput, typeof __VLS_components.elInput, ]} */ ;
 // @ts-ignore
 const __VLS_14 = __VLS_asFunctionalComponent(__VLS_13, new __VLS_13({
-    ...{ class: "text-xl text-primary" },
+    modelValue: (__VLS_ctx.userInfo.email),
+    placeholder: "Masukkan Email",
+    size: "large",
+    ...{ class: "w-full" },
 }));
 const __VLS_15 = __VLS_14({
-    ...{ class: "text-xl text-primary" },
+    modelValue: (__VLS_ctx.userInfo.email),
+    placeholder: "Masukkan Email",
+    size: "large",
+    ...{ class: "w-full" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_14));
-const __VLS_17 = {}.ElInput;
-/** @type {[typeof __VLS_components.ElInput, typeof __VLS_components.elInput, ]} */ ;
-// @ts-ignore
-const __VLS_18 = __VLS_asFunctionalComponent(__VLS_17, new __VLS_17({
-    modelValue: (__VLS_ctx.userInfo.email),
-    placeholder: "Masukkan Email",
-    size: "large",
-    ...{ class: "flex-1" },
-}));
-const __VLS_19 = __VLS_18({
-    modelValue: (__VLS_ctx.userInfo.email),
-    placeholder: "Masukkan Email",
-    size: "large",
-    ...{ class: "flex-1" },
-}, ...__VLS_functionalComponentArgsRest(__VLS_18));
+__VLS_16.slots.default;
+{
+    const { prefix: __VLS_thisSlot } = __VLS_16.slots;
+    const __VLS_17 = {}.IconEpMessage;
+    /** @type {[typeof __VLS_components.IconEpMessage, typeof __VLS_components.iconEpMessage, ]} */ ;
+    // @ts-ignore
+    const __VLS_18 = __VLS_asFunctionalComponent(__VLS_17, new __VLS_17({
+        ...{ class: "text-xl text-primary" },
+    }));
+    const __VLS_19 = __VLS_18({
+        ...{ class: "text-xl text-primary" },
+    }, ...__VLS_functionalComponentArgsRest(__VLS_18));
+}
+var __VLS_16;
 {
     const { footer: __VLS_thisSlot } = __VLS_3.slots;
     const __VLS_21 = {}.ElButton;
@@ -157,24 +166,21 @@ const __VLS_19 = __VLS_18({
 }
 var __VLS_3;
 /** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['relative']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-dialog']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-mask']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-start']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['flex']} */ ;
-/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['gap-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
-/** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
-/** @type {__VLS_StyleScopedClasses['flex']} */ ;
-/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['gap-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
-/** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({

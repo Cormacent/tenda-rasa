@@ -89,11 +89,11 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.orderItems))) {
         ...{ class: "flex-1" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3)({
-        ...{ class: "text-lg font-semibold text-gray-800" },
+        ...{ class: "text-lg font-semibold text-gray-700" },
     });
     (item.boothName);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-base text-gray-300" },
+        ...{ class: "text-base text-gray-700" },
     });
     (item.menuName);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -198,7 +198,7 @@ if (__VLS_ctx.total > 0) {
         ...{ class: "shrink-0 py-4 border-t bg-white space-y-4" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "text-sm text-gray-700 max-w-md mx-auto sm:mx-0" },
+        ...{ class: "text-sm text-gray-700 " },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         ...{ class: "flex justify-between font-bold text-primary text-base" },
@@ -207,7 +207,7 @@ if (__VLS_ctx.total > 0) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
     (__VLS_ctx.formatPrice(__VLS_ctx.total ?? 0));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "max-w-md mx-auto sm:mx-0" },
+        ...{ class: "" },
     });
     const __VLS_28 = {}.ElButton;
     /** @type {[typeof __VLS_components.ElButton, typeof __VLS_components.elButton, typeof __VLS_components.ElButton, typeof __VLS_components.elButton, ]} */ ;
@@ -266,9 +266,9 @@ if (__VLS_ctx.total > 0) {
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-base']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-3']} */ ;

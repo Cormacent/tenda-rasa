@@ -36,8 +36,8 @@
 
         <!-- Total -->
         <div class="flex justify-between items-center border-t pt-4">
-            <span class="text-sm text-gray-600">Total Pesanan</span>
-            <span class="text-lg font-bold text-gray-800">
+            <span class="text-sm text-gray-700">Total Pesanan</span>
+            <span class="text-lg font-bold text-gray-700">
                 Rp {{ formatPrice(order?.totalPrice ?? 0) }}
             </span>
         </div>

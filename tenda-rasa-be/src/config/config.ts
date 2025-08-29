@@ -8,6 +8,12 @@ type DBConfig = {
   host: string;
   port: number;
   dialect: Dialect;
+  pool?: {
+    max: number;
+    min: number;
+    idle: number;
+    acquire: number;
+  };
 };
 
 const commonConfig: DBConfig = {
@@ -17,6 +23,12 @@ const commonConfig: DBConfig = {
   host: process.env.POSTGRES_HOST || 'localhost',
   port: Number(process.env.PG_PORT) || 5432,
   dialect: 'postgres',
+  pool: {
+    max: 10,
+    min: 1,
+    idle: 10000,
+    acquire: 30000,
+  },
 };
 
 export default {

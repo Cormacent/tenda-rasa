@@ -35,11 +35,11 @@
                     }">
                         <img :src="menu.imageUrl ? menu.imageUrl : importImage('default.jpg')" alt="menu image"
                             class="w-24 h-24 object-cover rounded-lg mb-4" />
-                        <h3 class="text-lg font-semibold text-gray-800 text-center w-full line-clamp-2">
+                        <h3 class="text-lg font-semibold text-gray-700 text-center w-full line-clamp-2">
                             {{ menu.menuName }}
                         </h3>
 
-                        <p class="text-sm text-gray-500 text-center mt-2">
+                        <p class="text-sm text-gray-700 text-center mt-2">
                             {{ menu.estimatedMinutes }} menit
                         </p>
                     </el-card>

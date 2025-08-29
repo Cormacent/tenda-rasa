@@ -37,10 +37,10 @@
                 </div>
 
                 <div class="flex-1 bg-white rounded-lg p-2">
-                    <h3 class="text-sm font-semibold text-gray-800">
+                    <h3 class="text-sm font-semibold text-gray-700">
                         {{ item.boothName }}
                     </h3>
-                    <p class="text-sm text-gray-300">{{ item.menuName }}</p>
+                    <p class="text-sm text-gray-700">{{ item.menuName }}</p>
                     <div class="flex justify-between gap-3">
                         <div class="text-sm">
                             <p>{{ item.quantity }}x</p>

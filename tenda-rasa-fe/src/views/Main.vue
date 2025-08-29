@@ -14,7 +14,7 @@
 
     <Teleport to="#footer-section" v-if="!$route.meta?.noFooter">
         <footer class="text-center py-4">
-            <p class="text-sm text-gray-500">© 2023 Tenda Rasa. All rights reserved.</p>
+            <p class="text-sm text-gray-700">© 2023 Tenda Rasa. All rights reserved.</p>
         </footer>
 
     </Teleport>

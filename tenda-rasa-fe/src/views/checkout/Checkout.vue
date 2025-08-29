@@ -8,16 +8,16 @@
     <!-- Scrollable Daftar Item -->
     <div class="flex-1 overflow-y-auto space-y-4">
       <div v-for="item in orderItems" :key="item.id" class="bg-white shadow-md rounded-lg p-4 flex gap-4 w-full">
-        <div class="flex gap-2">
+        <div class="flex gap-2 w-full">
           <div class="flex">
             <img :src="item.imageUrl ? item.imageUrl : importImage('default.jpg')" alt="menu image"
               class="w-20 h-20 object-cover rounded-lg" />
           </div>
           <div class="flex-1">
-            <h3 class="text-lg font-semibold text-gray-800">
+            <h3 class="text-lg font-semibold text-gray-700">
               {{ item.boothName }}
             </h3>
-            <p class="text-base text-gray-300">{{ item.menuName }}</p>
+            <p class="text-base text-gray-700">{{ item.menuName }}</p>
             <div class="flex justify-between gap-3">
               <p class="text-lg font-medium text-primary">
                 Rp {{ formatPrice(item.price ?? 0) }}
@@ -49,18 +49,25 @@
 
     <!-- Ringkasan & Tombol -->
     <div class="shrink-0 py-4 border-t bg-white space-y-4" v-if="total > 0">
-      <div class="text-sm text-gray-700 max-w-md mx-auto sm:mx-0">
+      <div class="text-sm text-gray-700 ">
         <div class="flex justify-between font-bold text-primary text-base">
           <span>Total</span>
           <span>Rp {{ formatPrice(total ?? 0) }}</span>
         </div>
       </div>
 
-      <div class="max-w-md mx-auto sm:mx-0">
-        <el-button type="primary" size="large" class="w-full" @click="createOrder">
-          Buat Pesanan
-        </el-button>
-      </div>
+
+      <el-button :class="[
+        'w-full',
+        'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+        'bg-primary text-white border border-primary shadow-none',
+        'hover:bg-white hover:text-primary hover:border-primary',
+        'focus:bg-white focus:text-primary focus:border-primary',
+        'active:bg-white active:text-primary active:border-primary'
+      ]" size="large" round @click="createOrder">
+        Buat Pesanan
+        Masukkan ke Keranjang
+      </el-button>
     </div>
   </section>
 </template>

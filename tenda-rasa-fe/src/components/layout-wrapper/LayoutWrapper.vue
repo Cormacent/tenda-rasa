@@ -1,8 +1,8 @@
 <template>
-    <section id="LayoutWrapper" class="flex flex-col h-screen">
+    <section id="LayoutWrapper" class="flex flex-col h-[100dvh]">
         <Teleport to="#background">
             <div v-if="showBackground && isMounted" class="bg-fade"
-                :style="{ backgroundImage: `url(${importImage('bg-tenda-rasa.svg')})` }"></div>
+                :style="{ backgroundImage: 'url(/bg-tenda-rasa.svg)' }"></div>
         </Teleport>
 
         <Header v-if="showHeader">
@@ -10,7 +10,7 @@
                 <!-- Header content -->
             </div>
         </Header>
-        <main class="flex-1 overflow-y-auto">
+        <main class="flex-1 overflow-y-auto  pb-[env(safe-area-inset-bottom)]">
             <slot />
         </main>
 
@@ -30,7 +30,6 @@ import Footer from '../footer-section/Footer.vue';
 //----------------------------------------
 const route = useRoute();
 const isMounted = ref<boolean>(false);
-
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------

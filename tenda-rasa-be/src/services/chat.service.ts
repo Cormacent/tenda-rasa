@@ -89,8 +89,6 @@ INTENT: [GREETING | ORDER_STATUS | RECOMMENDATION | EXPLANATION | OTHER]
 menuIds: [1, 2, ...] ← hanya isi jika INTENT adalah RECOMMENDATION
 `;
   const geminiResponse = await callGemini(prompt)
-  console.log("🚀 ~ generateChatResponse ~ prompt:", prompt)
-  console.log("🚀 ~ generateChatResponse ~ geminiResponse:", geminiResponse)
   const { chat: responseChat, intent, menuIds } = parseGeminiResponse(geminiResponse)
 
   return {

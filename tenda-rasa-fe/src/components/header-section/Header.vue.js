@@ -20,12 +20,12 @@ const useTransparentHeader = computed(() => route.meta?.useTransparentHeader);
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
 const goToParent = () => {
-    const segments = route.path.split('/').filter(Boolean); // remove empty segments
-    if (window.history.length > 1 || segments.length > 0) {
-        router.back(); // go to previous history
+    const backPath = window.history.state?.back;
+    if (backPath) {
+        router.back();
     }
     else {
-        router.replace({ name: 'explore-booths' }); // fallback
+        router.replace({ name: 'explore-booths' });
     }
 };
 debugger; /* PartiallyEnd: #3632/scriptSetup.vue */

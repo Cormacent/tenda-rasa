@@ -1,23 +1,28 @@
 <template>
-    <el-dialog v-model="dialogVisible" width="400px" :close-on-click-modal="true" :show-close="true" class="rounded-lg">
+    <el-dialog v-model="dialogVisible" width="400px" :close-on-click-modal="true" :show-close="true"
+        class="rounded-lg relative bg-dialog">
+        <div class="bg-mask" />
+
         <template #header>
-            <h3 class="text-lg font-bold text-center text-gray-800">
+            <h3 class="text-lg font-bold text-start text-gray-700">
                 Masukkan data diri kamu sebelum melanjutkan ke pembayaran yaa!
             </h3>
         </template>
 
         <div class="space-y-4 mt-2">
             <!-- Nama -->
-            <div class="flex items-center gap-3">
-                <icon-ep-user class="text-xl text-primary" />
-                <el-input v-model="userInfo.name" placeholder="Masukkan Nama" size="large" class="flex-1" />
-            </div>
+            <el-input v-model="userInfo.name" placeholder="Masukkan Nama" size="large" class="w-full">
+                <template #prefix>
+                    <icon-ep-user class="text-xl text-primary" />
+                </template>
+            </el-input>
 
-            <!-- No. Telepon -->
-            <div class="flex items-center gap-3">
-                <icon-ep-message class="text-xl text-primary" />
-                <el-input v-model="userInfo.email" placeholder="Masukkan Email" size="large" class="flex-1" />
-            </div>
+            <!-- Email -->
+            <el-input v-model="userInfo.email" placeholder="Masukkan Email" size="large" class="w-full">
+                <template #prefix>
+                    <icon-ep-message class="text-xl text-primary" />
+                </template>
+            </el-input>
         </div>
 
         <template #footer>
@@ -92,3 +97,26 @@ const submit = () => {
 
 
 </script>
+<style lang="scss">
+.bg-dialog {
+    background-image: url('/bg-tenda-rasa.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 0;
+}
+
+.bg-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    background-color: white;
+    mask-image: linear-gradient(to bottom left, transparent 0%, white 45%, white 100%);
+    mask-mode: alpha;
+}
+</style>

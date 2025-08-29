@@ -19,7 +19,7 @@
                         <p class="text-sm font-semibold text-primary">
                             #{{ order.name }}-{{ order.id }}
                         </p>
-                        <p class="text-base text-gray-500">
+                        <p class="text-base text-gray-700">
                             {{
                                 order.status === Status.PAID
                                     ? 'Restoran sedang menyiapkan pesananmu.'
@@ -33,7 +33,7 @@
                             </template>
 
                             <div v-if="order.orderItems.length > 3"
-                                class="w-10 h-10 flex items-center justify-center rounded bg-gray-100 text-xs text-gray-600">
+                                class="w-10 h-10 flex items-center justify-center rounded bg-gray-100 text-xs text-gray-700">
                                 +{{ order.orderItems.length - 3 }}
                             </div>
                         </div>

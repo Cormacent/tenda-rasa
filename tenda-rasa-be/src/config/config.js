@@ -1,13 +1,22 @@
 require('dotenv').config();
 
-module.exports = {
-  development: {
-    username: process.env.POSTGRES_USER || 'root',
-    password: process.env.POSTGRES_PASSWORD || null,
-    database: process.env.POSTGRES_DB || 'tenda_rasa_dev',
-    host: process.env.POSTGRES_HOST || 'localhost',
-    port: process.env.PG_PORT || 5432, // <== tambahin ini
-    dialect: 'postgres'
+const baseConfig = {
+  username: process.env.POSTGRES_USER || 'postgres',
+  password: process.env.POSTGRES_PASSWORD || 'password',
+  database: process.env.POSTGRES_DB || 'postgres',
+  host: process.env.POSTGRES_HOST || 'localhost',
+  port: Number(process.env.PG_PORT) || 5432,
+  dialect: 'postgres',
+  pool: {
+    max: 10,
+    min: 1,
+    idle: 10000,
+    acquire: 30000,
   },
-  // ... test & production tambahin juga ya
+};
+
+module.exports = {
+  development: baseConfig,
+  test: baseConfig,
+  production: baseConfig,
 };

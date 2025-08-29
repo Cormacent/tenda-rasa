@@ -20,7 +20,7 @@ onMounted(() => {
 
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -36,9 +36,9 @@ onMounted(() => {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
 
- :deep(.el-input__inner:focus) {
-     border: none !important;
-     box-shadow: none !important;
-     outline: none !important;
- }
+:deep(.el-input__inner:focus) {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
 </style>

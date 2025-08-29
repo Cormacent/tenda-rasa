@@ -95,11 +95,11 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.orderItems))) {
         ...{ class: "flex-1" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3)({
-        ...{ class: "text-lg font-semibold text-gray-800" },
+        ...{ class: "text-lg font-semibold text-gray-700" },
     });
     (item.boothName);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-base text-gray-300" },
+        ...{ class: "text-base text-gray-700" },
     });
     (item.menuName);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -118,7 +118,7 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.orderItems))) {
     (__VLS_ctx.formatPrice(item.subtotal ?? 0));
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "shrink-0 pt-6 space-y-4 max-w-md mx-auto sm:mx-0 w-full bg-primary rounded-lg p-4" },
+    ...{ class: "shrink-0 pt-6 space-y-4  w-full bg-primary rounded-lg p-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "text-sm text-white" },
@@ -188,9 +188,9 @@ if (!__VLS_ctx.orderId) {
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-base']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-3']} */ ;

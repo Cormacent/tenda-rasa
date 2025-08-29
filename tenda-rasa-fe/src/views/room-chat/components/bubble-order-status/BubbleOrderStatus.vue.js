@@ -19,7 +19,7 @@ const targetTimestamp = computed(() => {
     if (!order.value || !order.value?.createdAt || !order.value?.status)
         return null;
     const created = new Date(order.value.createdAt).getTime();
-    const durationMinutes = order.value.status === Status.PENDING ? 2 :
+    const durationMinutes = order.value.status === Status.PENDING ? 1 :
         order.value.status === Status.PAID ? 1 : 0;
     return created + durationMinutes * 60 * 1000;
 });
@@ -130,11 +130,11 @@ if (__VLS_ctx.order?.orderItems && __VLS_ctx.order?.orderItems.length > 0) {
             ...{ class: "flex-1 bg-white rounded-lg p-2" },
         });
         __VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3)({
-            ...{ class: "text-sm font-semibold text-gray-800" },
+            ...{ class: "text-sm font-semibold text-gray-700" },
         });
         (item.boothName);
         __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-            ...{ class: "text-sm text-gray-300" },
+            ...{ class: "text-sm text-gray-700" },
         });
         (item.menuName);
         __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -218,9 +218,9 @@ if (__VLS_ctx.order?.orderItems && __VLS_ctx.order?.orderItems.length > 0) {
 /** @type {__VLS_StyleScopedClasses['p-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-3']} */ ;

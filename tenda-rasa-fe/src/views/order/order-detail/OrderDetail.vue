@@ -14,10 +14,10 @@
             class="w-20 h-20 object-cover rounded-lg " />
         </div>
         <div class="flex-1">
-          <h3 class="text-lg font-semibold text-gray-800">
+          <h3 class="text-lg font-semibold text-gray-700">
             {{ item.boothName }}
           </h3>
-          <p class="text-base text-gray-300">{{ item.menuName }}</p>
+          <p class="text-base text-gray-700">{{ item.menuName }}</p>
           <div class="flex justify-between gap-3">
             <div class="text-base">
               <p>{{ item.quantity }}x</p>
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Ringkasan & Tombol -->
-    <div class="shrink-0 pt-6 space-y-4 max-w-md mx-auto sm:mx-0 w-full bg-primary rounded-lg p-4">
+    <div class="shrink-0 pt-6 space-y-4  w-full bg-primary rounded-lg p-4">
       <div class="text-sm text-white">
         <div class="flex justify-between font-bold text-white text-lg">
           <span>Total</span>
@@ -41,7 +41,14 @@
       </div>
 
       <div v-if="!orderId">
-        <el-button type="primary" size="large" class="w-full bg-white text-primary rounded-lg" @click="createOrder">
+        <el-button :class="[
+          'w-full',
+          'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+          'bg-white text-primary border border-primary shadow-none',
+          'hover:bg-primary hover:text-white hover:border-white',
+          'focus:bg-primary focus:text-white focus:border-white',
+          'active:bg-primary active:text-white active:border-white'
+        ]" size="large" round @click="createOrder">
           Lanjut Pembayaran
         </el-button>
       </div>

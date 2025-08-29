@@ -54,12 +54,12 @@ const useTransparentHeader = computed(() => route.meta?.useTransparentHeader)
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
 const goToParent = () => {
-  const segments = route.path.split('/').filter(Boolean); // remove empty segments
+  const backPath = window.history.state?.back;
 
-  if (window.history.length > 1 || segments.length > 0) {
-    router.back(); // go to previous history
+  if (backPath) {
+    router.back();
   } else {
-    router.replace({ name: 'explore-booths' as RouteRecordName }); // fallback
+    router.replace({ name: 'explore-booths' as RouteRecordName });
   }
 };
 </script>

@@ -1,6 +1,5 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { importImage } from '@/utils/helper';
 import Header from '../header-section/Header.vue';
 import Footer from '../footer-section/Footer.vue';
 //----------------------------------------
@@ -35,7 +34,7 @@ let __VLS_directives;
 // CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.section, __VLS_intrinsicElements.section)({
     id: "LayoutWrapper",
-    ...{ class: "flex flex-col h-screen" },
+    ...{ class: "flex flex-col h-[100dvh]" },
 });
 const __VLS_0 = {}.Teleport;
 /** @type {[typeof __VLS_components.Teleport, typeof __VLS_components.Teleport, ]} */ ;
@@ -50,7 +49,7 @@ __VLS_3.slots.default;
 if (__VLS_ctx.showBackground && __VLS_ctx.isMounted) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         ...{ class: "bg-fade" },
-        ...{ style: ({ backgroundImage: `url(${__VLS_ctx.importImage('bg-tenda-rasa.svg')})` }) },
+        ...{ style: ({ backgroundImage: 'url(/bg-tenda-rasa.svg)' }) },
     });
 }
 var __VLS_3;
@@ -66,7 +65,7 @@ if (__VLS_ctx.showHeader) {
     var __VLS_6;
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.main, __VLS_intrinsicElements.main)({
-    ...{ class: "flex-1 overflow-y-auto" },
+    ...{ class: "flex-1 overflow-y-auto  pb-[env(safe-area-inset-bottom)]" },
 });
 var __VLS_7 = {};
 if (__VLS_ctx.showFooter) {
@@ -86,18 +85,18 @@ if (__VLS_ctx.showFooter) {
 }
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-col']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-screen']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-[100dvh]']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-fade']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-y-auto']} */ ;
+/** @type {__VLS_StyleScopedClasses['pb-[env(safe-area-inset-bottom)]']} */ ;
 // @ts-ignore
 var __VLS_8 = __VLS_7;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
         return {
-            importImage: importImage,
             Header: Header,
             Footer: Footer,
             isMounted: isMounted,

@@ -18,14 +18,18 @@
                             <img :src="menu.imageUrl ? menu.imageUrl : importImage('default.jpg')" :alt="menu.menuName"
                                 class="w-full h-40 md:h-60 object-cover rounded-t-xl mb-4" />
 
-                            <h3 class="text-xl font-semibold text-gray-900 mb-1">{{ menu.menuName }}</h3>
-                            <p class="text-sm text-gray-500 mb-3">{{ menu.description }}</p>
+                            <div class="items-center px-4">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-1">{{ menu.menuName }}</h3>
+                                <p class="text-sm text-gray-700 mb-3">{{ menu.description }}</p>
+                            </div>
                         </div>
                     </SwiperSlide>
                 </Swiper>
                 <div class="flex align-center justify-center background-transparent mt-4">
                     <RouterLink :to="{ name: 'explore-booths' }">
-                        <el-button class="btn-gradient" size="large">Jelajahi</el-button>
+                        <el-button
+                            class="px-3 py-2 rounded focus:outline-none active:outline-none bg-primary text-white border-none shadow-none hover:bg-primary focus:bg-primary active:bg-primary"
+                            size="large">Jelajahi</el-button>
                     </RouterLink>
 
                 </div>
@@ -35,7 +39,7 @@
 
         <!-- Footer Description -->
         <div class="relative z-10 text-center pt-3  container mx-auto px-4">
-            <p class="text-sm text-gray-600 max-w-md mx-auto">Perut mulai keroncongan? Haus menyerang?
+            <p class="text-sm text-gray-700 max-w-md mx-auto">Perut mulai keroncongan? Haus menyerang?
                 <span class="text-primary hover:underline" @click="openLink('room-chat')">
                     Tanya chatbot
                     aja!
