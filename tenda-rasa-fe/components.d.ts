@@ -13,6 +13,7 @@ declare module 'vue' {
     ElCard: typeof import('element-plus/es')['ElCard']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElLoading: typeof import('element-plus/es')['ElLoading']
     ElTag: typeof import('element-plus/es')['ElTag']
     Example: typeof import('./src/components/example/Example.vue')['default']
     Footer: typeof import('./src/components/footer-section/Footer.vue')['default']

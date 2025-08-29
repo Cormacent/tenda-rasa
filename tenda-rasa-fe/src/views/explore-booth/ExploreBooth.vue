@@ -74,7 +74,7 @@ const menuList = computed(() => menuStore.pageInfo.data)
 // 🚀 Lifecycle Hooks
 //----------------------------------------
 onMounted(async () => {
-    menupageInfo.value.limit = 10
+    menupageInfo.value.limit = 1000
     await getMenuPage()
 })
 const getMenuPage = async () => {

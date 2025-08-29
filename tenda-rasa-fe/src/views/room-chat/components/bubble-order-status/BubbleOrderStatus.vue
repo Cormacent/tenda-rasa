@@ -29,7 +29,7 @@
                 <span class="px-5">Estimated {{ formattedCountdown }}</span>
             </el-tag>
         </div>
-        <div v-if="order?.orderItems&& order?.orderItems.length > 0">
+        <div v-if="order?.orderItems && order?.orderItems.length > 0">
             <div v-for="item in order.orderItems" :key="item.id" class="p-2 flex justify-between gap-2 w-full">
                 <div class="flex">
                     <img :src="item.imageUrl ? item.imageUrl : importImage('default.jpg')" alt="menu image"
@@ -92,7 +92,7 @@ const targetTimestamp = computed(() => {
 
     const created = new Date(order.value.createdAt).getTime();
     const durationMinutes =
-        order.value.status === Status.PENDING ? 2 :
+        order.value.status === Status.PENDING ? 1 :
             order.value.status === Status.PAID ? 1 : 0;
 
     return created + durationMinutes * 60 * 1000;

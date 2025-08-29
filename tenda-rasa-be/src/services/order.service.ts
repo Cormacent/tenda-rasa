@@ -18,14 +18,14 @@ export const getAllOrdersByEmail = async (email: string): Promise<ResponseOrderD
     include: [
       {
         model: OrderItems,
-        as: 'orderItems'
-      }
-    ]
+        as: 'orderItems',
+      },
+    ],
+    order: [['createdAt', 'DESC']], // ⬅️ ini yang bikin urutan dari terbaru
   });
 
   return orders.map((order: any) => normalizeSequelizeData(order.get({ plain: true })));
 };
-
 export const getAllActiveOrdersByEmail = async (
   email: string
 ): Promise<ResponseOrderDto[]> => {
@@ -42,6 +42,7 @@ export const getAllActiveOrdersByEmail = async (
         as: 'orderItems',
       },
     ],
+    order: [['createdAt', 'DESC']], // ⬅️ ini yang bikin urutan dari terbaru
   });
 
   return orders.map((order: any) =>

@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,12 +15,11 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      // Auto-import APIs seperti ref, reactive, computed, dll
       imports: ['vue', 'vue-router', 'pinia'],
       dts: './auto-imports.d.ts',
       resolvers: [
         ElementPlusResolver(),
-        IconsResolver({ prefix: 'icon' }), // ⬅️ misal <icon-ep-edit />
+        IconsResolver({ prefix: 'icon' }),
       ],
     }),
     Components({
@@ -32,8 +32,35 @@ export default defineConfig({
     Icons({
       autoInstall: true,
     }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['logo.svg'],
+      manifest: {
+        name: 'Tenda Rasa',
+        short_name: 'TendaRasa',
+        start_url: '/',
+        display: 'standalone',
+        background_color: '#ffffff',
+        theme_color: '#FEF6ED',
+        icons: [
+          {
+            src: 'logo.svg',
+            sizes: '192x192',
+            type: 'image/svg+xml',
+          },
+          {
+            src: 'logo.svg',
+            sizes: '512x512',
+            type: 'image/svg+xml',
+          },
+        ],
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module',
+      },
+    }),
   ],
-
 
   resolve: {
     alias: {

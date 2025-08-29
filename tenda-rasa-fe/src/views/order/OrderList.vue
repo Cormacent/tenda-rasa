@@ -5,25 +5,20 @@
     mask-mode: alpha;
     background-color: white;
   "></div>
-        <!-- Header -->
-        <div class="shrink-0 mb-4">
-            <h1 class="text-2xl font-bold">Status Pesanan</h1>
-        </div>
-
         <!-- Scrollable Order List -->
         <div class="flex-1 overflow-y-auto px-4 space-y-4 py-2">
             <router-link v-for="order in orderList" :key="order.id"
                 class="bg-white shadow-md rounded-lg p-4 flex gap-4 w-full"
                 :to="{ name: 'order-detail-by-id', params: { orderId: order.id } }">
-                <div class="flex gap-2">
+                <div class="flex gap-4 items-center">
                     <div class="flex">
                         <img :src="importImage(`order-${order.status}.svg`)" alt="menu image"
                             class="w-20 h-20 object-cover rounded-lg" />
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-base font-semibold text-black">
-                            ID Pesanan #{{ order.name }}-{{ order.id }}
-                        </h3>
+                        <p class="text-sm font-semibold text-primary">
+                            #{{ order.name }}-{{ order.id }}
+                        </p>
                         <p class="text-base text-gray-500">
                             {{
                                 order.status === Status.PAID
@@ -31,8 +26,20 @@
                                     : 'Pesanan kamu telah selesai.'
                             }}
                         </p>
-                        <p class="text-base text-primary font-semibold">Cek Pesanan</p>
+                        <div class="flex gap-2 mt-2" v-if="order.orderItems">
+                            <template v-for="(item, index) in order.orderItems.slice(0, 3)" :key="index">
+                                <img :src="item.imageUrl || importImage('default.jpg')" :alt="item.menuName"
+                                    class="w-10 h-10 object-cover rounded" />
+                            </template>
+
+                            <div v-if="order.orderItems.length > 3"
+                                class="w-10 h-10 flex items-center justify-center rounded bg-gray-100 text-xs text-gray-600">
+                                +{{ order.orderItems.length - 3 }}
+                            </div>
+                        </div>
+
                     </div>
+
                 </div>
             </router-link>
         </div>
