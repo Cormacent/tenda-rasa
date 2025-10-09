@@ -85,7 +85,9 @@ const __VLS_8 = {}.IconEpHouse;
 const __VLS_9 = __VLS_asFunctionalComponent(__VLS_8, new __VLS_8({}));
 const __VLS_10 = __VLS_9({}, ...__VLS_functionalComponentArgsRest(__VLS_9));
 if (__VLS_ctx.isActive('explore-booths')) {
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
+        ...{ class: "text-base font-base" },
+    });
 }
 var __VLS_3;
 const __VLS_12 = {}.ElButton;
@@ -128,7 +130,9 @@ const __VLS_20 = {}.IconEpDocument;
 const __VLS_21 = __VLS_asFunctionalComponent(__VLS_20, new __VLS_20({}));
 const __VLS_22 = __VLS_21({}, ...__VLS_functionalComponentArgsRest(__VLS_21));
 if (__VLS_ctx.isActive('order-list')) {
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
+        ...{ class: "text-base font-base" },
+    });
 }
 var __VLS_15;
 const __VLS_24 = {}.ElButton;
@@ -171,7 +175,9 @@ const __VLS_32 = {}.IconEpShoppingCart;
 const __VLS_33 = __VLS_asFunctionalComponent(__VLS_32, new __VLS_32({}));
 const __VLS_34 = __VLS_33({}, ...__VLS_functionalComponentArgsRest(__VLS_33));
 if (__VLS_ctx.isActive('checkout')) {
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
+        ...{ class: "text-base font-base" },
+    });
 }
 var __VLS_27;
 const __VLS_36 = {}.ElButton;
@@ -214,7 +220,9 @@ const __VLS_44 = {}.IconEpChatDotRound;
 const __VLS_45 = __VLS_asFunctionalComponent(__VLS_44, new __VLS_44({}));
 const __VLS_46 = __VLS_45({}, ...__VLS_functionalComponentArgsRest(__VLS_45));
 if (__VLS_ctx.isActive('room-chat')) {
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
+        ...{ class: "text-base font-base" },
+    });
 }
 var __VLS_39;
 /** @type {[typeof ModalUserInfo, ]} */ ;
@@ -259,6 +267,8 @@ var __VLS_50;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-base']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
@@ -270,6 +280,8 @@ var __VLS_50;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-base']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
@@ -281,6 +293,8 @@ var __VLS_50;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-base']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
@@ -292,6 +306,8 @@ var __VLS_50;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-base']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

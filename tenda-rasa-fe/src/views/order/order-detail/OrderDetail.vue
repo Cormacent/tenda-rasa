@@ -32,24 +32,37 @@
     </div>
 
     <!-- Ringkasan & Tombol -->
-    <div class="shrink-0 pt-6 space-y-4  w-full bg-primary rounded-lg p-4">
-      <div class="text-sm text-white">
+    <div class="shrink-0 pt-6 space-y-4  w-full bg-primary rounded-lg p-4 relative">
+      <div class=" bg-fade opacity-50" :style="{
+        backgroundImage: 'url(/bg-tenda-rasa-white.svg)',
+        backgroundSize: 'inherit',
+        backgroundPosition: 'center',
+        width: '100%',
+        height: '100%',
+        position: 'fixed',
+        inset: 0
+      }">
+      </div>
+
+      <div class="text-base font-medium text-white">
         <div class="flex justify-between font-bold text-white text-lg">
           <span>Total</span>
           <span>Rp {{ formatPrice(total ?? 0) }}</span>
         </div>
       </div>
 
-      <div v-if="!orderId">
+      <div v-if="!orderId && orderItems.length > 0">
         <el-button :class="[
           'w-full',
-          'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+          'flex items-center px-3 py-2 rounded focus:outline-none',
           'bg-white text-primary border border-primary shadow-none',
-          'hover:bg-primary hover:text-white hover:border-white',
-          'focus:bg-primary focus:text-white focus:border-white',
-          'active:bg-primary active:text-white active:border-white'
+          'hover:bg-white hover:text-primary hover:border-primary',
+          'focus:bg-white focus:text-primary focus:border-primary',
+          'active:bg-white active:text-primary active:border-primary'
         ]" size="large" round @click="createOrder">
-          Lanjut Pembayaran
+          <span class="text-base font-base">
+            Lanjut Pembayaran
+          </span>
         </el-button>
       </div>
     </div>

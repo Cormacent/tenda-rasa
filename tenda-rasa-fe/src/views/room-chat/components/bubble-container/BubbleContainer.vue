@@ -1,11 +1,31 @@
 <template>
-    <section id="BubbleContainer" class="relative" :class="bubbleClass">
-        <!-- Dynamic Bubble Content -->
-        <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
-        <!-- Timestamp -->
-        <p class="text-xs mt-2 text-right">
-            {{ formatDate(chat?.createdAt ?? '') }}
-        </p>
+    <section id="BubbleContainer" class="relative mb-4">
+        <div v-if="[Intent.ORDER_PAYMENT, Intent.ORDER_STATUS].includes(intent)">
+            <div :class="bubbleClass" class="mb-6">
+                <!-- Dynamic Bubble Content -->
+                <BubbleMessage :chat="{ message: { chat: chat.message?.chat } }" />
+                <!-- Timestamp -->
+                <p class="text-sm font-base mt-2 text-right">
+                    {{ formatDate(chat?.createdAt ?? '') }}
+                </p>
+            </div>
+            <div :class="bubbleClass" v-if="chat.message?.orders && chat.message?.orders?.length > 0">
+                <!-- Dynamic Bubble Content -->
+                <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
+                <!-- Timestamp -->
+                <p class="text-sm font-base mt-2 text-right">
+                    {{ formatDate(chat?.createdAt ?? '') }}
+                </p>
+            </div>
+        </div>
+        <div v-else :class="bubbleClass">
+            <!-- Dynamic Bubble Content -->
+            <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
+            <!-- Timestamp -->
+            <p class="text-sm font-base mt-2 text-right">
+                {{ formatDate(chat?.createdAt ?? '') }}
+            </p>
+        </div>
     </section>
 </template>
 
@@ -21,6 +41,7 @@ import BubbleMenus from '../bubble-menus/BubbleMenus.vue';
 import type { IMenu } from '@/models/IMenu';
 import { formatDate } from '@/utils/helper';
 import BubbleOrderStatus from '../bubble-order-status/BubbleOrderStatus.vue';
+import OrderDetail from '@/views/order/order-detail/OrderDetail.vue';
 
 const props = defineProps<{ chat: IChatbot }>()
 const emit = defineEmits<{
@@ -33,9 +54,9 @@ const emit = defineEmits<{
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
+const intent = computed(() => props.chat.intent as Intent)
 const bubbleClass = computed(() => {
     return [
-        'mb-4',
         'p-4',
         'rounded-lg',
         'shadow-md',
@@ -73,5 +94,4 @@ const bubbleComponent = computed(() => {
 //----------------------------------------
 
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

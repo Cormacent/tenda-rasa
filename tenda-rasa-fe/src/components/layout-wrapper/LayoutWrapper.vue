@@ -1,7 +1,7 @@
 <template>
     <section id="LayoutWrapper" class="flex flex-col h-[100dvh]">
         <Teleport to="#background">
-            <div v-if="showBackground && isMounted" class="bg-fade"
+            <div v-if="showBackground && isMounted" class="bg-fade opacity-50"
                 :style="{ backgroundImage: 'url(/bg-tenda-rasa.svg)' }"></div>
         </Teleport>
 

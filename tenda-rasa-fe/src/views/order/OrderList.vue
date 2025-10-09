@@ -16,7 +16,7 @@
                             class="w-20 h-20 object-cover rounded-lg" />
                     </div>
                     <div class="flex-1">
-                        <p class="text-sm font-semibold text-primary">
+                        <p class="text-base font-semibold text-primary">
                             #{{ order.name }}-{{ order.id }}
                         </p>
                         <p class="text-base text-gray-700">
@@ -33,7 +33,7 @@
                             </template>
 
                             <div v-if="order.orderItems.length > 3"
-                                class="w-10 h-10 flex items-center justify-center rounded bg-gray-100 text-xs text-gray-700">
+                                class="w-10 h-10 flex items-center justify-center rounded bg-gray-100 text-base font-medium text-gray-700">
                                 +{{ order.orderItems.length - 3 }}
                             </div>
                         </div>

@@ -19,7 +19,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.section, __VLS_intrinsicElemen
     ...{ class: "max-w-md mx-auto" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-sm mb-3" },
+    ...{ class: "text-base font-base mb-3" },
 });
 (__VLS_ctx.message);
 if (__VLS_ctx.menus?.length) {
@@ -58,7 +58,7 @@ if (__VLS_ctx.menus?.length) {
         };
         __VLS_3.slots.default;
         __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-            ...{ class: "text-md text-black" },
+            ...{ class: "text-base font-medium text-black" },
         });
         (menu.menuName);
         var __VLS_3;
@@ -66,7 +66,8 @@ if (__VLS_ctx.menus?.length) {
 }
 /** @type {__VLS_StyleScopedClasses['max-w-md']} */ ;
 /** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-base']} */ ;
 /** @type {__VLS_StyleScopedClasses['mb-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-wrap']} */ ;
@@ -79,7 +80,8 @@ if (__VLS_ctx.menus?.length) {
 /** @type {__VLS_StyleScopedClasses['hover:bg-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:text-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['transition']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-md']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-black']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({

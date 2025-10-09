@@ -2,8 +2,8 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
- import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import 'element-plus/dist/index.css'
 
 import '@/styles/index.scss'; // SCSS global
 import '@/styles/tailwind.css';

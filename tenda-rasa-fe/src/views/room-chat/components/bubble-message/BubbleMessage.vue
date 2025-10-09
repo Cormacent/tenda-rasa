@@ -1,5 +1,5 @@
 <template>
-    <section id="BubbleMessage">
+    <section id="BubbleMessage" class="text-base font-base">
         {{ message }}
     </section>
 </template>

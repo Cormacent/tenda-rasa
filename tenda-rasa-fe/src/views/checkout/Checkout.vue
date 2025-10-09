@@ -18,30 +18,37 @@
               {{ item.boothName }}
             </h3>
             <p class="text-base text-gray-700">{{ item.menuName }}</p>
-            <div class="flex justify-between gap-3">
-              <p class="text-lg font-medium text-primary">
-                Rp {{ formatPrice(item.price ?? 0) }}
-              </p>
-              <div class="flex justify-center">
-                <div class="flex items-center gap-5 justify-center w-full">
-                  <el-button
-                    style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary);"
-                    size="small" @click="removeFromCart(item)" class="rounded-lg text-primary">
-                    <icon-ep-minus />
-                  </el-button>
+            <div class="flex items-center gap-3 justify-start w-full">
+              <el-button size="small" @click="removeFromCart(item)" :class="[
+                'flex items-center px-3 py-2 rounded focus:outline-none',
+                'bg-white text-primary border border-primary shadow-none',
+                'hover:bg-white hover:text-primary hover:border-primary',
+                'focus:bg-white focus:text-primary focus:border-primary',
+                'active:bg-white active:text-primary active:border-primary'
+              ]">
 
-                  <span class="text-lg font-semibold">{{ item.quantity }}</span>
+                <icon-ep-minus />
+              </el-button>
 
-                  <el-button style="background-color: var(--el-color-primary); border-color: var(--el-color-primary);"
-                    size="small" :disabled="isMaxQuantity(item)" @click="addToCart(item)" class="rounded-lg text-white">
-                    <icon-ep-plus />
-                  </el-button>
+              <span class="text-lg font-semibold">{{ item.quantity }}</span>
 
-                </div>
-              </div>
+              <el-button size="small" :disabled="isMaxQuantity(item)" @click="addToCart(item)" :class="[
+                'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+                'bg-primary text-white border border-primary shadow-none',
+                'hover:bg-primary hover:text-white hover:border-primary',
+                'focus:bg-primary focus:text-white focus:border-primary',
+                'active:bg-primary active:text-white active:border-primary'
+              ]">
+                <icon-ep-plus />
+              </el-button>
+
             </div>
-            <el-input v-model="item.remarks" placeholder="Masukkan Catatan (optional)" class="mt-2 w-full text-sm"
-              size="small" clearable />
+            <p class="text-lg font-medium text-primary text-end">
+              Rp {{ formatPrice(item.price ?? 0) }}
+            </p>
+
+            <el-input v-model="item.remarks" placeholder="Masukkan Catatan (optional)"
+              class="mt-2 w-full text-base font-medium text-primary" size="small" clearable />
           </div>
         </div>
       </div>
@@ -49,8 +56,8 @@
 
     <!-- Ringkasan & Tombol -->
     <div class="shrink-0 py-4 border-t bg-white space-y-4" v-if="total > 0">
-      <div class="text-sm text-gray-700 ">
-        <div class="flex justify-between font-bold text-primary text-base">
+      <div class=" ">
+        <div class="flex justify-between text-primary text-base font-bold text-gray-700">
           <span>Total</span>
           <span>Rp {{ formatPrice(total ?? 0) }}</span>
         </div>
@@ -65,8 +72,9 @@
         'focus:bg-white focus:text-primary focus:border-primary',
         'active:bg-white active:text-primary active:border-primary'
       ]" size="large" round @click="createOrder">
-        Buat Pesanan
-        Masukkan ke Keranjang
+        <span class="text-base font-base">
+          Buat Pesanan
+        </span>
       </el-button>
     </div>
   </section>
@@ -140,3 +148,24 @@ const createOrder = async () => {
 
 
 </script>
+
+<style lang="scss" scoped>
+:deep(.el-input__wrapper) {
+  @apply bg-white rounded;
+  @apply bg-white rounded shadow-[0_0_0_1px_var(--el-color-primary)];
+}
+
+:deep(.el-input__inner::placeholder) {
+  color: var(--el-color-primary);
+  opacity: 0.6;
+}
+
+:deep(.el-input__inner) {
+  color: var(--el-color-primary);
+  opacity: 1;
+}
+
+:deep(.el-input__prefix-inner) {
+  @apply text-primary;
+}
+</style>

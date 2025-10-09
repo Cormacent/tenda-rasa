@@ -10,7 +10,7 @@
                 <div class="flex items-center gap-2"
                     :class="isActive('explore-booths') ? 'text-white' : 'text-primary'">
                     <icon-ep-house />
-                    <span v-if="isActive('explore-booths')">Home</span>
+                    <span class="text-base font-base" v-if="isActive('explore-booths')">Home</span>
                 </div>
             </el-button>
 
@@ -22,7 +22,7 @@
             ]">
                 <div class="flex items-center gap-2" :class="isActive('order-list') ? 'text-white' : 'text-primary'">
                     <icon-ep-document />
-                    <span v-if="isActive('order-list')">Orders</span>
+                    <span class="text-base font-base" v-if="isActive('order-list')">Orders</span>
                 </div>
             </el-button>
 
@@ -34,7 +34,7 @@
             ]">
                 <div class="flex items-center gap-2" :class="isActive('checkout') ? 'text-white' : 'text-primary'">
                     <icon-ep-shopping-cart />
-                    <span v-if="isActive('checkout')">Cart</span>
+                    <span class="text-base font-base" v-if="isActive('checkout')">Cart</span>
                 </div>
             </el-button>
 
@@ -46,7 +46,7 @@
             ]">
                 <div class="flex items-center gap-2" :class="isActive('room-chat') ? 'text-white' : 'text-primary'">
                     <icon-ep-chat-dot-round />
-                    <span v-if="isActive('room-chat')">Chat</span>
+                    <span class="text-base font-base" v-if="isActive('room-chat')">Chat</span>
                 </div>
             </el-button>
         </nav>

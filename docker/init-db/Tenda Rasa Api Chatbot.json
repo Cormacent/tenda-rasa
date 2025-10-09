@@ -1,0 +1,779 @@
+{
+  "name": "Tenda Rasa Api Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const geminiReply = $item(0).$node[\"Extract Intent\"].json.replyClean;\nconst menuIds = $item(0).$node[\"Extract Intent\"].json.menuIds ?? [];\n\nconst menus = $items(\"Get All Menu\");\n\nconst matchedMenus = menus\n  .map(i => i.json)\n  .filter(menu => menuIds.includes(menu.id));\n\nreturn [{\n  json: {\n    reply: geminiReply,\n    menu: matchedMenus\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2620,
+        -940
+      ],
+      "id": "b6a4aaa6-c957-4799-8f0d-7e352fd37de3",
+      "name": "Res Menu"
+    },
+    {
+      "parameters": {
+        "jsCode": "const geminiReply = $item(0).$node[\"Extract Intent\"].json.replyClean;\nconst menuIds = $item(0).$node[\"Extract Intent\"].json.menuIds ?? [];\nconst menus = $items(\"Get All Menu\");\n\nconst matchedMenus = menus\n  .filter(i => menuIds.includes(i.json.id))\n  .map(i => i.json);\n\nconst deskripsi = matchedMenus.map(m => `**${m.menu_name}**: ${m.description}`).join('\\n');\n\nreturn [{\n  json: {\n    reply: `${geminiReply}\\n\\n${deskripsi}`\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2620,
+        -740
+      ],
+      "id": "8ee08827-7a78-428c-8401-84b2466696c4",
+      "name": "Res Explanation"
+    },
+    {
+      "parameters": {
+        "jsCode": "const geminiReply = $item(0).$node[\"Extract Intent\"].json.replyClean;\nreturn [\n  {\n    json: {\n      reply: geminiReply,\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2620,
+        -540
+      ],
+      "id": "73e4e5ee-b80c-4283-bd6d-71d3158aa4ae",
+      "name": "Res Others"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "v1/ai-chat",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook Input",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        -640
+      ],
+      "id": "8e066278-be5b-4f78-8a62-e70e312704ac",
+      "webhookId": "7a26e951-5225-4cf9-80d8-c4c78b16540c"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b6fec29f-6f9b-48c9-be12-b88db3d538c4",
+              "name": "prompt",
+              "value": "={{ $json.body.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "e2baceb6-213f-466e-a222-116837b64794",
+              "name": "name",
+              "value": "={{ $json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "fc20f506-d72f-404a-9e37-ca0730a8efb4",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        -640
+      ],
+      "id": "b946dad1-6b60-4528-ba4c-2fc35351aafe",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM menu_booth;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1300,
+        -640
+      ],
+      "id": "241ee045-67ff-4924-8e60-02985f3cc343",
+      "name": "Get All Menu",
+      "credentials": {
+        "postgres": {
+          "id": "aJ03o7luU32NjI5k",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const userName = $item(0).$node[\"Edit Fields\"].json.user ?? 'Pengguna';\nconst userEmail = $item(0).$node[\"Edit Fields\"].json.email ?? '';\nconst promptUserRaw = $item(0).$node[\"Edit Fields\"].json.prompt ?? '';\nconst menus = $items(\"Get All Menu\");\n\nconst daftarMenu = menus.map(i => {\n  const id = i.json.id;\n  const name = i.json.menu_name;\n  const tags = i.json.tags?.join(', ') ?? '';\n  return `- [ID:${id}] ${name} [${tags}]`;\n}).join('\\n');\n\nconst promptGabungan = \n`User bernama ${userName} (${userEmail}) bertanya: '${promptUserRaw}'\n\nBerikut adalah daftar menu yang tersedia (beserta ID dan tag):\n${daftarMenu}\n\nTentukan apakah permintaan user termasuk:\n- INTENT: GREETING → jika user hanya menyapa (seperti 'halo', 'hai', 'Selamat Pagi', dll)\n- INTENT: ORDER_STATUS → jika user bertanya tentang status pesanannya\n- INTENT: RECOMMENDATION → jika user meminta saran makanan\n- INTENT: EXPLANATION → jika user ingin penjelasan menu tertentu\n- INTENT: OTHER → jika tidak berkaitan dengan daftar menu\n\nInstruksi:\n- Jika respon kamu memberikan judul menu, gausah kirim beserta ID\n- Jika intent GREETING, balas ramah dan akrab seperti bot menyapa kembali.\n- Jika intent ORDER_STATUS, cukup beri respon singkat bahwa akan dicek, dan jangan berikan data status apapun (itu akan ditangani sistem).\n- Jika intent RECOMMENDATION, berikan saran menu dari daftar secara singkat dan menarik, seperti penjual yang ramah.\n- Jika intent EXPLANATION, cukup beri jawaban untuk menjelaskan menu yang ditanya user.\n- Jika intent OTHER, berikan semacam kalimat maaf pertanyaan hanya seputar Menu Tenda Rasa.\n- Gunakan nama user agar lebih akrab.\n- Jangan pernah tambahkan menu yang tidak ada di daftar.\n\nFormat hasil akhir:\n- Jawaban utama di atas.\n- Baris baru, lalu:\nINTENT: EXPLANATION\nmenuIds: [1, 2] ← array ID menu yang cocok, kosongkan jika tidak ada.\n\nTidak perlu penjelasan tambahan setelah itu. Jangan ubah format ini.`;\n\nreturn [{\n  json: {\n    finalPrompt: promptGabungan\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        -640
+      ],
+      "id": "0bb62d78-b8e2-425e-91e2-cf6d170afc99",
+      "name": "create gemini prompt"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyD7eZFpT3MC7hKOs9Wps1TeEh6wEkhO4bY",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text",
+        "body": "={   \"contents\": [     {       \"role\": \"user\",       \"parts\": [         {           \"text\": \"{{ $json.finalPrompt }}\"         }       ]     }   ] }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1740,
+        -640
+      ],
+      "id": "8b5832e1-4319-413e-829c-ea8e625e61a1",
+      "name": "Ask Gemini"
+    },
+    {
+      "parameters": {
+        "jsCode": "const reply = $json.candidates?.[0]?.content?.parts?.[0]?.text ?? '';\n\nconst intentMatch = reply.match(/INTENT:\\s*(RECOMMENDATION|EXPLANATION|GREETING|ORDER_STATUS|OTHER)/i);\nconst intent = intentMatch?.[1] ?? null;\n\nconst menuIdsMatch = reply.match(/menuIds:\\s*\\[([^\\]]*)\\]/i);\nconst menuIds = menuIdsMatch\n  ? menuIdsMatch[1]\n      .split(',')\n      .map(id => parseInt(id.trim()))\n      .filter(id => !isNaN(id))\n  : [];\n\nconst replyClean = reply\n  .replace(/INTENT:\\s*(RECOMMENDATION|EXPLANATION|GREETING|ORDER_STATUS|OTHER)/i, '')\n  .replace(/menuIds:\\s*\\[[^\\]]*\\]/i, '')\n  .trim();\n\nreturn [{\n  json: {\n    replyClean,\n    intent,\n    menuIds\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        -640
+      ],
+      "id": "ae80e1f6-4836-4513-8139-dad65943873f",
+      "name": "Extract Intent"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "RECOMMENDATION",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8b9e94ca-b939-4d23-87e4-154af38fb161"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c6c3a83a-0125-436a-8775-f29aae6537c1",
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "EXPLANATION",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4f1f0cf9-a73d-405b-95f8-aa46479910c0",
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "OTHER",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "60d1d316-4879-4815-a74c-ceca6bdc0563",
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "GREETING",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a6bf8d93-a777-4379-b713-a6037db4b30d",
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "ORDER_STATUS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2180,
+        -680
+      ],
+      "id": "b7d40422-8e93-43cf-b5b3-580e5fd40483",
+      "name": "Decision Gemini"
+    },
+    {
+      "parameters": {
+        "functionCode": "const reply = $json.reply;\nconst menu = $json.menu ?? [];\nconst orders = $json.orders ?? [];\nreturn {\n  json: {\n    prompt: $node[\"Edit Fields\"].json.prompt,\n    reply: reply,\n    menu: menu,\n    orders: orders\n  },\n};\n\n"
+      },
+      "name": "Prepare Output",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        2840,
+        -640
+      ],
+      "id": "81869758-5d29-4a5e-9dec-ba4f58ba396a"
+    },
+    {
+      "parameters": {
+        "jsCode": " \n\nreturn {\n  json: {\n    message: \"success\",\n  },\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3720,
+        -640
+      ],
+      "id": "14713d8c-b878-4535-a803-1ded85ce2fdc",
+      "name": "Output"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO chat_history (email, name, message, role, timestamp)\nVALUES (\n  '{{ $json.email }}',\n  '{{ $json.name }}',\n  '{{ JSON.stringify($json.message) }}',\n  'user',\n  NOW()\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        640,
+        -640
+      ],
+      "id": "3cd37967-daa1-437e-b6af-0b868535fab5",
+      "name": "Insert History User",
+      "credentials": {
+        "postgres": {
+          "id": "aJ03o7luU32NjI5k",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://tenda_rasa_socket:3000/user-chat",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($items(\"Get Last History User\")[0].json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        -640
+      ],
+      "id": "5086eb65-b324-4d6b-88cd-e54f9c1abc37",
+      "name": "Push Socket User"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO chat_history (\n  email,\n  name,\n  message,\n  role,\n  timestamp\n)\nVALUES (\n  '{{ $node[\"Edit Fields\"].json.email }}',\n  '{{ $node[\"Edit Fields\"].json.name }}',\n  '{{ JSON.stringify($json) }}',\n  'assistant',\n  NOW()\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3060,
+        -640
+      ],
+      "id": "f12ba6b4-0e17-42c3-ad83-3e008552f298",
+      "name": "Insert History Assistant",
+      "credentials": {
+        "postgres": {
+          "id": "aJ03o7luU32NjI5k",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json: {\n    email: $json.email,\n    name: $json.name,\n    message: {\n      menu: [],\n      reply: \"\",\n      prompt: $json.prompt,\n    },\n  },\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        -640
+      ],
+      "id": "1fb7a4f3-2035-4b6c-92d5-09e919f24f00",
+      "name": "Prepare for input history"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://tenda_rasa_socket:3000/push-response",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($items(\"Get Last History\")[0].json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3500,
+        -640
+      ],
+      "id": "127f4b2c-c9ce-448f-a2f9-af015ccd9bbf",
+      "name": "Push Socket dari Assistant"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM chat_history\nWHERE email = '{{ $node[\"Edit Fields\"].json.email }}' AND role = 'assistant'\nORDER BY timestamp DESC\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3280,
+        -640
+      ],
+      "id": "bfbf1490-e3aa-4acf-a9ae-9659be713e84",
+      "name": "Get Last History",
+      "credentials": {
+        "postgres": {
+          "id": "aJ03o7luU32NjI5k",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM chat_history\nWHERE email = '{{ $node[\"Edit Fields\"].json.email }}' AND role = 'user'\nORDER BY timestamp DESC\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        860,
+        -640
+      ],
+      "id": "940d79a9-f643-43f1-a8f9-0ea69bc25b7e",
+      "name": "Get Last History User",
+      "credentials": {
+        "postgres": {
+          "id": "aJ03o7luU32NjI5k",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const geminiReply = $item(0).$node[\"Extract Intent\"].json.replyClean;\nconst orders = $items(\"Get Active Order\");\nreturn [\n  {\n    json: {\n      reply: geminiReply,\n      orders\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2620,
+        -340
+      ],
+      "id": "8f43ff48-644b-4793-9922-63f1c49ebc15",
+      "name": "Res Order"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM orders o JOIN order_items i ON o.id = i.order_id\nWHERE o.status = 'pending' AND i.quantity > 0  AND o.email = '{{ $node[\"Edit Fields\"].json.email }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2400,
+        -340
+      ],
+      "id": "3cea627e-d841-47eb-af6f-e7cecb3402f1",
+      "name": "Get Active Order",
+      "credentials": {
+        "postgres": {
+          "id": "aJ03o7luU32NjI5k",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Res Menu": {
+      "main": [
+        [
+          {
+            "node": "Prepare Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Res Explanation": {
+      "main": [
+        [
+          {
+            "node": "Prepare Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Res Others": {
+      "main": [
+        [
+          {
+            "node": "Prepare Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Input": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Prepare for input history",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Menu": {
+      "main": [
+        [
+          {
+            "node": "create gemini prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create gemini prompt": {
+      "main": [
+        [
+          {
+            "node": "Ask Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ask Gemini": {
+      "main": [
+        [
+          {
+            "node": "Extract Intent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Intent": {
+      "main": [
+        [
+          {
+            "node": "Decision Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision Gemini": {
+      "main": [
+        [
+          {
+            "node": "Res Menu",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Res Explanation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Res Others",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Res Others",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Active Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Output": {
+      "main": [
+        [
+          {
+            "node": "Insert History Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert History User": {
+      "main": [
+        [
+          {
+            "node": "Get Last History User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Push Socket User": {
+      "main": [
+        [
+          {
+            "node": "Get All Menu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert History Assistant": {
+      "main": [
+        [
+          {
+            "node": "Get Last History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare for input history": {
+      "main": [
+        [
+          {
+            "node": "Insert History User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Push Socket dari Assistant": {
+      "main": [
+        [
+          {
+            "node": "Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Last History": {
+      "main": [
+        [
+          {
+            "node": "Push Socket dari Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Last History User": {
+      "main": [
+        [
+          {
+            "node": "Push Socket User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Res Order": {
+      "main": [
+        [
+          {
+            "node": "Prepare Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Active Order": {
+      "main": [
+        [
+          {
+            "node": "Res Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2374c77c-2125-49ff-a9a5-ae378cc8c96e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "58701b2ce9f3a093931319dc512f3f91994a0de707d4b0e9291b5d117c8842c1"
+  },
+  "id": "uEJRMMch59lHfehE",
+  "tags": []
+}

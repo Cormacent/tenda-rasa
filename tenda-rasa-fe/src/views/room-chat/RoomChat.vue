@@ -12,12 +12,12 @@
         <img :src="importImage('robot.svg')" alt="Robot" class="w-16 h-16 p-3" />
         <div class="flex flex-col justify-center items-center h-16">
           <h3 class="text-lg font-semibold">TerraBot</h3>
-          <p class="text-sm">
+          <p class="text-base font-medium">
             <span class="inline-block w-3 h-3 rounded-full border-2 border-white" :class="{
               'bg-success': isOnline,
               'bg-primary': !isOnline
             }" title="Online"></span>
-            <span class="ml-1 text-xs font-medium">
+            <span class="ml-1 text-sm font-bold">
               {{ isOnline ? 'Online' : 'Offline' }}
             </span>
           </p>

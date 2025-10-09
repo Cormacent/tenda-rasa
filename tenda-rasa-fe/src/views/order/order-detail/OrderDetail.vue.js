@@ -118,10 +118,22 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.orderItems))) {
     (__VLS_ctx.formatPrice(item.subtotal ?? 0));
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "shrink-0 pt-6 space-y-4  w-full bg-primary rounded-lg p-4" },
+    ...{ class: "shrink-0 pt-6 space-y-4  w-full bg-primary rounded-lg p-4 relative" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "text-sm text-white" },
+    ...{ class: " bg-fade opacity-50" },
+    ...{ style: ({
+            backgroundImage: 'url(/bg-tenda-rasa-white.svg)',
+            backgroundSize: 'inherit',
+            backgroundPosition: 'center',
+            width: '100%',
+            height: '100%',
+            position: 'fixed',
+            inset: 0
+        }) },
+});
+__VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
+    ...{ class: "text-base font-medium text-white" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "flex justify-between font-bold text-white text-lg" },
@@ -129,22 +141,36 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.d
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
 (__VLS_ctx.formatPrice(__VLS_ctx.total ?? 0));
-if (!__VLS_ctx.orderId) {
+if (!__VLS_ctx.orderId && __VLS_ctx.orderItems.length > 0) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
     const __VLS_0 = {}.ElButton;
     /** @type {[typeof __VLS_components.ElButton, typeof __VLS_components.elButton, typeof __VLS_components.ElButton, typeof __VLS_components.elButton, ]} */ ;
     // @ts-ignore
     const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
         ...{ 'onClick': {} },
-        type: "primary",
+        ...{ class: ([
+                'w-full',
+                'flex items-center px-3 py-2 rounded focus:outline-none',
+                'bg-white text-primary border border-primary shadow-none',
+                'hover:bg-white hover:text-primary hover:border-primary',
+                'focus:bg-white focus:text-primary focus:border-primary',
+                'active:bg-white active:text-primary active:border-primary'
+            ]) },
         size: "large",
-        ...{ class: "w-full bg-white text-primary rounded-lg" },
+        round: true,
     }));
     const __VLS_2 = __VLS_1({
         ...{ 'onClick': {} },
-        type: "primary",
+        ...{ class: ([
+                'w-full',
+                'flex items-center px-3 py-2 rounded focus:outline-none',
+                'bg-white text-primary border border-primary shadow-none',
+                'hover:bg-white hover:text-primary hover:border-primary',
+                'focus:bg-white focus:text-primary focus:border-primary',
+                'active:bg-white active:text-primary active:border-primary'
+            ]) },
         size: "large",
-        ...{ class: "w-full bg-white text-primary rounded-lg" },
+        round: true,
     }, ...__VLS_functionalComponentArgsRest(__VLS_1));
     let __VLS_4;
     let __VLS_5;
@@ -153,6 +179,9 @@ if (!__VLS_ctx.orderId) {
         onClick: (__VLS_ctx.createOrder)
     };
     __VLS_3.slots.default;
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
+        ...{ class: "text-base font-base" },
+    });
     var __VLS_3;
 }
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
@@ -201,14 +230,15 @@ if (!__VLS_ctx.orderId) {
 /** @type {__VLS_StyleScopedClasses['shrink-0']} */ ;
 /** @type {__VLS_StyleScopedClasses['pt-6']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['max-w-md']} */ ;
-/** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
-/** @type {__VLS_StyleScopedClasses['sm:mx-0']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['p-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['relative']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-fade']} */ ;
+/** @type {__VLS_StyleScopedClasses['opacity-50']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
@@ -216,9 +246,28 @@ if (!__VLS_ctx.orderId) {
 /** @type {__VLS_StyleScopedClasses['text-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex']} */ ;
+/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:outline-none']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-base']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

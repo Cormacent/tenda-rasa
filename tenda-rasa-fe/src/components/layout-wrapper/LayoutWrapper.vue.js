@@ -48,7 +48,7 @@ const __VLS_2 = __VLS_1({
 __VLS_3.slots.default;
 if (__VLS_ctx.showBackground && __VLS_ctx.isMounted) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "bg-fade" },
+        ...{ class: "bg-fade opacity-50" },
         ...{ style: ({ backgroundImage: 'url(/bg-tenda-rasa.svg)' }) },
     });
 }
@@ -87,6 +87,7 @@ if (__VLS_ctx.showFooter) {
 /** @type {__VLS_StyleScopedClasses['flex-col']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-[100dvh]']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-fade']} */ ;
+/** @type {__VLS_StyleScopedClasses['opacity-50']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-y-auto']} */ ;

@@ -5,6 +5,11 @@
 
 :deep(.el-input__inner::placeholder) {
     color: var(--el-color-primary);
+    opacity: 0.6;
+}
+
+:deep(.el-input__inner) {
+    color: var(--el-color-primary);
     opacity: 1;
 }
 

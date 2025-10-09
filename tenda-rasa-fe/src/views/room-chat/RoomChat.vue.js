@@ -110,7 +110,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3
     ...{ class: "text-lg font-semibold" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-sm" },
+    ...{ class: "text-base font-medium" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
     ...{ class: "inline-block w-3 h-3 rounded-full border-2 border-white" },
@@ -121,7 +121,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.
     title: "Online",
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-    ...{ class: "ml-1 text-xs font-medium" },
+    ...{ class: "ml-1 text-sm font-bold" },
 });
 (__VLS_ctx.isOnline ? 'Online' : 'Offline');
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -243,7 +243,8 @@ var __VLS_18;
 /** @type {__VLS_StyleScopedClasses['h-16']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['inline-block']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-3']} */ ;
@@ -253,8 +254,8 @@ var __VLS_18;
 /** @type {__VLS_StyleScopedClasses['bg-success']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['ml-1']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-y-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-4']} */ ;

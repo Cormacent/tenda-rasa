@@ -29,6 +29,7 @@ declare module 'vue' {
     IconEpPosition: typeof import('~icons/ep/position')['default']
     IconEpSearch: typeof import('~icons/ep/search')['default']
     IconEpShoppingCart: typeof import('~icons/ep/shopping-cart')['default']
+    IconEpSwitchButton: typeof import('~icons/ep/switch-button')['default']
     IconEpUser: typeof import('~icons/ep/user')['default']
     LayoutWrapper: typeof import('./src/components/layout-wrapper/LayoutWrapper.vue')['default']
     ModalUserInfo: typeof import('./src/components/modal-user-info/ModalUserInfo.vue')['default']

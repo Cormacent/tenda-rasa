@@ -13,7 +13,7 @@
     <!-- Center title -->
     <div class="flex-1 text-center">
       <p class="text-2xl font-bold">
-        <span class="ml-[-3rem]">
+        <span :class="!hasUser ? 'ml-[-3rem]' : ''">
           {{ headerTitle }}
         </span>
       </p>
@@ -21,12 +21,18 @@
 
     <!-- Right slot -->
     <div class="flex-shrink-0">
-      <slot name="right" />
+      <slot name="right">
+        <el-button v-if="hasUser" @click="logout()" class="rounded-lg"
+          style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary-light-3);">
+          <icon-ep-switch-button class="text-primary" />
+        </el-button>
+      </slot>
     </div>
   </header>
 </template>
 
 <script lang="ts" setup>
+import { useUserStore, } from '@/store/user';
 import { computed } from 'vue';
 import { useRoute, useRouter, RouteRecordName } from 'vue-router';
 
@@ -36,12 +42,13 @@ import { useRoute, useRouter, RouteRecordName } from 'vue-router';
 //----------------------------------------
 const route = useRoute();
 const router = useRouter();
+const { confirmLogout, userInfo } = useUserStore();
 
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
 const headerTitle = computed(() => route.meta?.title);
-const useTransparentHeader = computed(() => route.meta?.useTransparentHeader)
+const hasUser = computed(() => !!userInfo.email)
 //----------------------------------------
 // 🎯 Watchers
 //----------------------------------------
@@ -62,5 +69,11 @@ const goToParent = () => {
     router.replace({ name: 'explore-booths' as RouteRecordName });
   }
 };
+
+
+const logout = () => {
+  console.log("🚀 ~ logout ~ userInfo:", userInfo)
+  confirmLogout(router)
+}
 </script>
 <style lang="scss" scoped src="./Header.scss" />

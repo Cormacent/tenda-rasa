@@ -17,16 +17,16 @@
         <h2 class="text-xl font-bold text-primary">{{ menuDetail.boothName }}</h2>
         <h3 class="text-base font-semibold text-secondary mb-2">{{ menuDetail.menuName }}</h3>
 
-        <div class="flex items-center text-sm text-gray-700 mb-4">
+        <div class="flex items-center text-base font-medium text-gray-700 mb-4">
           <icon-ep-clock class="mr-1" />
           <span>{{ menuDetail.estimatedMinutes }} Menit</span>
         </div>
 
-        <p class="text-gray-700 text-sm mb-4">
+        <p class="text-gray-700 text-base font-medium mb-4">
           {{ menuDetail.description }}
         </p>
 
-        <ul class="text-sm text-gray-700 space-y-1 mb-6">
+        <ul class="text-base font-medium text-gray-700 space-y-1 mb-6">
           <li>🍽️ Cocok untuk {{ menuDetail.category === 'makanan' ? 'makan' : 'minum' }} siang atau malam</li>
           <li v-if="menuDetail.category === 'makanan'">🌶️ Pedas: {{ menuDetail.spicinessLevel }}/5</li>
         </ul>
@@ -35,22 +35,37 @@
       <!-- Sticky CTA -->
       <div class="shrink-0 px-4 py-5 border-t">
         <div class="flex items-center gap-5 justify-center w-full" v-if="menuInOrderItemsCount > 0 && menuDetail.stock">
-          <el-button style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary);"
-            size="small" @click="removeFromCart" class="rounded-lg text-primary">
+          <el-button size="small" @click="removeFromCart" :class="[
+            'flex items-center px-3 py-2 rounded focus:outline-none',
+            'bg-white text-primary border border-primary shadow-none',
+            'hover:bg-white hover:text-primary hover:border-primary',
+            'focus:bg-white focus:text-primary focus:border-primary',
+            'active:bg-white active:text-primary active:border-primary'
+          ]">
             <icon-ep-minus />
           </el-button>
 
           <span class="text-lg font-semibold">{{ menuInOrderItemsCount }}</span>
 
-          <el-button
-            style="background-color: var(--el-color-primary); border-color: var(--el-color-primary) !important;"
-            size="small" :disabled="menuInOrderItemsCount >= (menuDetail.stock ?? 0)" @click="addToCart"
-            class="rounded-lg text-white">
+          <el-button size="small" :disabled="menuInOrderItemsCount >= (menuDetail.stock ?? 0)" @click="addToCart"
+            :class="[
+              'flex items-center px-3 py-2 rounded focus:outline-none',
+              'bg-primary text-white border border-primary shadow-none',
+              'hover:bg-primary hover:text-white hover:border-primary',
+              'focus:bg-primary focus:text-white focus:border-primary',
+              'active:bg-primary active:text-white active:border-primary'
+            ]">
             <icon-ep-plus />
           </el-button>
 
           <router-link :to="{ name: 'checkout' }" class="ml-2">
-            <el-button type="primary" size="small" class="rounded-lg text-primary">
+            <el-button type="primary" size="small" :class="[
+              'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+              'bg-primary text-white border border-primary shadow-none',
+              'hover:bg-primary hover:text-white hover:border-primary',
+              'focus:bg-primary focus:text-white focus:border-primary',
+              'active:bg-primary active:text-white active:border-primary'
+            ]">
               <icon-ep-shopping-cart class="text-white" />
             </el-button>
           </router-link>

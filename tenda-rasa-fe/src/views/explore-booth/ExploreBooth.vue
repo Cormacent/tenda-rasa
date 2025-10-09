@@ -7,13 +7,14 @@
                 <h2 class="text-3xl font-bold text-black">
                     Temukan Makanan <br /> Favorit kamu!
                 </h2>
-                <!-- <div class="rounded-2xl bg-white shadow-md p-2 ml-2">
-                    <icon-ep-bell class="text-primary text-3xl" />
-                </div> -->
+                <el-button v-if="hasUser" @click="logout()" class="rounded bg-white  py-2 px-4 ml-2"
+                    style="background-color: var(--el-color-primary-light-3); border-color: var(--el-color-primary-light-3);">
+                    <icon-ep-switch-button class="text-primary" />
+                </el-button>
             </div>
 
             <el-input v-model="menupageInfo.filters.menuName" placeholder="Apa yang mau kamu pesan?" clearable
-                @input="getMenuPage" class="w-full mt-4" input-style="color: var(--el-color-primary);">
+                @input="getMenuPage" class="w-full mt-4">
                 <template #prefix>
                     <icon-ep-search class="text-primary" />
                 </template>
@@ -36,10 +37,10 @@
                         <img :src="menu.imageUrl ? menu.imageUrl : importImage('default.jpg')" alt="menu image"
                             class="w-24 h-24 object-cover rounded-lg mb-4" />
                         <h3 class="text-lg font-semibold text-gray-700 text-center w-full line-clamp-2">
-                            {{ menu.menuName }}
+                        {{ menu.menuName }}
                         </h3>
 
-                        <p class="text-sm text-gray-700 text-center mt-2">
+                        <p class="text-base font-medium text-gray-700 text-center mt-2">
                             {{ menu.estimatedMinutes }} menit
                         </p>
                     </el-card>
@@ -53,12 +54,15 @@
 import { useMenuStore } from '@/store/menu';
 import { computed, onMounted } from 'vue';
 import { importImage } from '@/utils/helper';
+import router from '@/router';
+import { useUserStore } from '@/store/user';
 
 
 //----------------------------------------
 // 🧩 State Variables & Stores
 //----------------------------------------
 const menuStore = useMenuStore()
+const { confirmLogout, userInfo } = useUserStore();
 
 
 //----------------------------------------
@@ -66,6 +70,7 @@ const menuStore = useMenuStore()
 //----------------------------------------
 const menupageInfo = computed(() => menuStore.pageInfo)
 const menuList = computed(() => menuStore.pageInfo.data)
+const hasUser = computed(() => !!userInfo.email)
 //----------------------------------------
 // 🎯 Watchers
 //----------------------------------------
@@ -77,13 +82,16 @@ onMounted(async () => {
     menupageInfo.value.limit = 1000
     await getMenuPage()
 })
-const getMenuPage = async () => {
-    await menuStore.getMenuPage()
-}
+
 //----------------------------------------
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
-
+const logout = () => {
+    confirmLogout(router)
+}
+const getMenuPage = async () => {
+    await menuStore.getMenuPage()
+}
 </script>
 
 <style lang="scss" scoped src="./ExploreBooth.scss" />

@@ -1,13 +1,13 @@
 <template>
     <section id="BubbleOrderPayment" class="flex flex-col gap-4 w-fit max-w-full min-w-[10rem]">
         <!-- Header -->
-        <div class="flex justify-between items-center text-sm">
+        <div class="flex justify-between items-center text-base font-medium">
             <div class="flex flex-col">
-                <span>ID Pesanan</span>
+                <span class="font-base">ID Pesanan</span>
                 <span class="font-semibold">#{{ order?.name }}-{{ order?.id }}</span>
             </div>
             <div class="flex flex-col text-end">
-                <span>Tanggal</span>
+                <span class="font-base">Tanggal</span>
                 <span class="font-semibold" v-if="order?.createdAt">{{ formatDate(order?.createdAt) }}</span>
             </div>
         </div>
@@ -19,7 +19,7 @@
         </div>
 
         <!-- Status -->
-        <div v-if="order?.status">
+        <div v-if="order?.status" class="font-bold">
             <div class="flex justify-between items-center " v-if="order?.status === Status.PENDING">
                 <el-tag type="warning" size="small">Menunggu Pembayaran</el-tag>
                 <span>{{ formattedCountdown }}</span>
@@ -36,8 +36,8 @@
 
         <!-- Total -->
         <div class="flex justify-between items-center border-t pt-4">
-            <span class="text-sm text-gray-700">Total Pesanan</span>
-            <span class="text-lg font-bold text-gray-700">
+            <span class="text-base font-medium text-gray-700">Total Pesanan</span>
+            <span class="text-xl font-bold text-gray-700">
                 Rp {{ formatPrice(order?.totalPrice ?? 0) }}
             </span>
         </div>

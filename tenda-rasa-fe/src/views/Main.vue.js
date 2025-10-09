@@ -90,7 +90,7 @@ if (!__VLS_ctx.$route.meta?.noFooter) {
         ...{ class: "text-center py-4" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-sm text-gray-700" },
+        ...{ class: "text-base font-semibold text-gray-700" },
     });
     var __VLS_19;
 }
@@ -102,7 +102,8 @@ if (!__VLS_ctx.$route.meta?.noFooter) {
 /** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({

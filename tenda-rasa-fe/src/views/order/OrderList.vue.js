@@ -77,7 +77,7 @@ for (const [order] of __VLS_getVForSourceType((__VLS_ctx.orderList))) {
         ...{ class: "flex-1" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-sm font-semibold text-primary" },
+        ...{ class: "text-base font-semibold text-primary" },
     });
     (order.name);
     (order.id);
@@ -100,7 +100,7 @@ for (const [order] of __VLS_getVForSourceType((__VLS_ctx.orderList))) {
         }
         if (order.orderItems.length > 3) {
             __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-                ...{ class: "w-10 h-10 flex items-center justify-center rounded bg-gray-100 text-xs text-gray-700" },
+                ...{ class: "w-10 h-10 flex items-center justify-center rounded bg-gray-100 text-base font-medium text-gray-700" },
             });
             (order.orderItems.length - 3);
         }
@@ -141,7 +141,7 @@ for (const [order] of __VLS_getVForSourceType((__VLS_ctx.orderList))) {
 /** @type {__VLS_StyleScopedClasses['object-cover']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-1']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-base']} */ ;
@@ -160,7 +160,8 @@ for (const [order] of __VLS_getVForSourceType((__VLS_ctx.orderList))) {
 /** @type {__VLS_StyleScopedClasses['justify-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-gray-100']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({

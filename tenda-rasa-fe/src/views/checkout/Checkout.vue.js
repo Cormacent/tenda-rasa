@@ -58,6 +58,9 @@ debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
 const __VLS_ctx = {};
 let __VLS_components;
 let __VLS_directives;
+/** @type {__VLS_StyleScopedClasses['el-input__inner']} */ ;
+// CSS variable injection 
+// CSS variable injection end 
 __VLS_asFunctionalElement(__VLS_intrinsicElements.section, __VLS_intrinsicElements.section)({
     id: "Checkout",
     ...{ class: "flex flex-col h-full container mx-auto px-4" },
@@ -75,7 +78,7 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.orderItems))) {
         ...{ class: "bg-white shadow-md rounded-lg p-4 flex gap-4 w-full" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "flex gap-2" },
+        ...{ class: "flex gap-2 w-full" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         ...{ class: "flex" },
@@ -97,32 +100,32 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.orderItems))) {
     });
     (item.menuName);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "flex justify-between gap-3" },
-    });
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-lg font-medium text-primary" },
-    });
-    (__VLS_ctx.formatPrice(item.price ?? 0));
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "flex justify-center" },
-    });
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "flex items-center gap-5 justify-center w-full" },
+        ...{ class: "flex items-center gap-3 justify-start w-full" },
     });
     const __VLS_0 = {}.ElButton;
     /** @type {[typeof __VLS_components.ElButton, typeof __VLS_components.elButton, typeof __VLS_components.ElButton, typeof __VLS_components.elButton, ]} */ ;
     // @ts-ignore
     const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
         ...{ 'onClick': {} },
-        ...{ style: {} },
         size: "small",
-        ...{ class: "rounded-lg text-primary" },
+        ...{ class: ([
+                'flex items-center px-3 py-2 rounded focus:outline-none',
+                'bg-white text-primary border border-primary shadow-none',
+                'hover:bg-white hover:text-primary hover:border-primary',
+                'focus:bg-white focus:text-primary focus:border-primary',
+                'active:bg-white active:text-primary active:border-primary'
+            ]) },
     }));
     const __VLS_2 = __VLS_1({
         ...{ 'onClick': {} },
-        ...{ style: {} },
         size: "small",
-        ...{ class: "rounded-lg text-primary" },
+        ...{ class: ([
+                'flex items-center px-3 py-2 rounded focus:outline-none',
+                'bg-white text-primary border border-primary shadow-none',
+                'hover:bg-white hover:text-primary hover:border-primary',
+                'focus:bg-white focus:text-primary focus:border-primary',
+                'active:bg-white active:text-primary active:border-primary'
+            ]) },
     }, ...__VLS_functionalComponentArgsRest(__VLS_1));
     let __VLS_4;
     let __VLS_5;
@@ -148,17 +151,27 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.orderItems))) {
     // @ts-ignore
     const __VLS_13 = __VLS_asFunctionalComponent(__VLS_12, new __VLS_12({
         ...{ 'onClick': {} },
-        ...{ style: {} },
         size: "small",
         disabled: (__VLS_ctx.isMaxQuantity(item)),
-        ...{ class: "rounded-lg text-white" },
+        ...{ class: ([
+                'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+                'bg-primary text-white border border-primary shadow-none',
+                'hover:bg-primary hover:text-white hover:border-primary',
+                'focus:bg-primary focus:text-white focus:border-primary',
+                'active:bg-primary active:text-white active:border-primary'
+            ]) },
     }));
     const __VLS_14 = __VLS_13({
         ...{ 'onClick': {} },
-        ...{ style: {} },
         size: "small",
         disabled: (__VLS_ctx.isMaxQuantity(item)),
-        ...{ class: "rounded-lg text-white" },
+        ...{ class: ([
+                'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+                'bg-primary text-white border border-primary shadow-none',
+                'hover:bg-primary hover:text-white hover:border-primary',
+                'focus:bg-primary focus:text-white focus:border-primary',
+                'active:bg-primary active:text-white active:border-primary'
+            ]) },
     }, ...__VLS_functionalComponentArgsRest(__VLS_13));
     let __VLS_16;
     let __VLS_17;
@@ -175,20 +188,24 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.orderItems))) {
     const __VLS_21 = __VLS_asFunctionalComponent(__VLS_20, new __VLS_20({}));
     const __VLS_22 = __VLS_21({}, ...__VLS_functionalComponentArgsRest(__VLS_21));
     var __VLS_15;
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
+        ...{ class: "text-lg font-medium text-primary text-end" },
+    });
+    (__VLS_ctx.formatPrice(item.price ?? 0));
     const __VLS_24 = {}.ElInput;
     /** @type {[typeof __VLS_components.ElInput, typeof __VLS_components.elInput, ]} */ ;
     // @ts-ignore
     const __VLS_25 = __VLS_asFunctionalComponent(__VLS_24, new __VLS_24({
         modelValue: (item.remarks),
         placeholder: "Masukkan Catatan (optional)",
-        ...{ class: "mt-2 w-full text-sm" },
+        ...{ class: "mt-2 w-full text-base font-medium text-primary" },
         size: "small",
         clearable: true,
     }));
     const __VLS_26 = __VLS_25({
         modelValue: (item.remarks),
         placeholder: "Masukkan Catatan (optional)",
-        ...{ class: "mt-2 w-full text-sm" },
+        ...{ class: "mt-2 w-full text-base font-medium text-primary" },
         size: "small",
         clearable: true,
     }, ...__VLS_functionalComponentArgsRest(__VLS_25));
@@ -198,31 +215,42 @@ if (__VLS_ctx.total > 0) {
         ...{ class: "shrink-0 py-4 border-t bg-white space-y-4" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "text-sm text-gray-700 " },
+        ...{ class: " " },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "flex justify-between font-bold text-primary text-base" },
+        ...{ class: "flex justify-between text-primary text-base font-bold text-gray-700" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
     (__VLS_ctx.formatPrice(__VLS_ctx.total ?? 0));
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "" },
-    });
     const __VLS_28 = {}.ElButton;
     /** @type {[typeof __VLS_components.ElButton, typeof __VLS_components.elButton, typeof __VLS_components.ElButton, typeof __VLS_components.elButton, ]} */ ;
     // @ts-ignore
     const __VLS_29 = __VLS_asFunctionalComponent(__VLS_28, new __VLS_28({
         ...{ 'onClick': {} },
-        type: "primary",
+        ...{ class: ([
+                'w-full',
+                'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+                'bg-primary text-white border border-primary shadow-none',
+                'hover:bg-white hover:text-primary hover:border-primary',
+                'focus:bg-white focus:text-primary focus:border-primary',
+                'active:bg-white active:text-primary active:border-primary'
+            ]) },
         size: "large",
-        ...{ class: "w-full" },
+        round: true,
     }));
     const __VLS_30 = __VLS_29({
         ...{ 'onClick': {} },
-        type: "primary",
+        ...{ class: ([
+                'w-full',
+                'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+                'bg-primary text-white border border-primary shadow-none',
+                'hover:bg-white hover:text-primary hover:border-primary',
+                'focus:bg-white focus:text-primary focus:border-primary',
+                'active:bg-white active:text-primary active:border-primary'
+            ]) },
         size: "large",
-        ...{ class: "w-full" },
+        round: true,
     }, ...__VLS_functionalComponentArgsRest(__VLS_29));
     let __VLS_32;
     let __VLS_33;
@@ -231,6 +259,9 @@ if (__VLS_ctx.total > 0) {
         onClick: (__VLS_ctx.createOrder)
     };
     __VLS_31.slots.default;
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
+        ...{ class: "text-base font-base" },
+    });
     var __VLS_31;
 }
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
@@ -258,6 +289,7 @@ if (__VLS_ctx.total > 0) {
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-20']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-20']} */ ;
@@ -270,46 +302,97 @@ if (__VLS_ctx.total > 0) {
 /** @type {__VLS_StyleScopedClasses['text-base']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
-/** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
+/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['justify-start']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex']} */ ;
+/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:outline-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex']} */ ;
+/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
+/** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:outline-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:bg-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:bg-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:bg-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:border-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
-/** @type {__VLS_StyleScopedClasses['flex']} */ ;
-/** @type {__VLS_StyleScopedClasses['justify-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['flex']} */ ;
-/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['gap-5']} */ ;
-/** @type {__VLS_StyleScopedClasses['justify-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-end']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['shrink-0']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-t']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
-/** @type {__VLS_StyleScopedClasses['max-w-md']} */ ;
-/** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
-/** @type {__VLS_StyleScopedClasses['sm:mx-0']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-base']} */ ;
-/** @type {__VLS_StyleScopedClasses['max-w-md']} */ ;
-/** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
-/** @type {__VLS_StyleScopedClasses['sm:mx-0']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex']} */ ;
+/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
+/** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:outline-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['shadow-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-base']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

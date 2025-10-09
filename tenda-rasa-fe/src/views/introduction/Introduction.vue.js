@@ -132,12 +132,15 @@ for (const [menu] of __VLS_getVForSourceType((__VLS_ctx.menuList))) {
         alt: (menu.menuName),
         ...{ class: "w-full h-40 md:h-60 object-cover rounded-t-xl mb-4" },
     });
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
+        ...{ class: "items-center px-4" },
+    });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3)({
         ...{ class: "text-xl font-semibold text-gray-900 mb-1" },
     });
     (menu.menuName);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-sm text-gray-700 mb-3" },
+        ...{ class: "text-base font-medium text-gray-700 mb-3" },
     });
     (menu.description);
     var __VLS_7;
@@ -160,21 +163,40 @@ const __VLS_16 = {}.ElButton;
 /** @type {[typeof __VLS_components.ElButton, typeof __VLS_components.elButton, typeof __VLS_components.ElButton, typeof __VLS_components.elButton, ]} */ ;
 // @ts-ignore
 const __VLS_17 = __VLS_asFunctionalComponent(__VLS_16, new __VLS_16({
-    ...{ class: "px-3 py-2 rounded focus:outline-none active:outline-none bg-primary text-white border-none shadow-none hover:bg-primary focus:bg-primary active:bg-primary" },
+    ...{ class: ([
+            'w-full',
+            'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+            'bg-primary text-white border border-primary shadow-none',
+            'hover:bg-white hover:text-primary hover:border-primary',
+            'focus:bg-white focus:text-primary focus:border-primary',
+            'active:bg-white active:text-primary active:border-primary'
+        ]) },
     size: "large",
+    round: true,
 }));
 const __VLS_18 = __VLS_17({
-    ...{ class: "px-3 py-2 rounded focus:outline-none active:outline-none bg-primary text-white border-none shadow-none hover:bg-primary focus:bg-primary active:bg-primary" },
+    ...{ class: ([
+            'w-full',
+            'flex items-center gap-2 px-3 py-2 rounded focus:outline-none',
+            'bg-primary text-white border border-primary shadow-none',
+            'hover:bg-white hover:text-primary hover:border-primary',
+            'focus:bg-white focus:text-primary focus:border-primary',
+            'active:bg-white active:text-primary active:border-primary'
+        ]) },
     size: "large",
+    round: true,
 }, ...__VLS_functionalComponentArgsRest(__VLS_17));
 __VLS_19.slots.default;
+__VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
+    ...{ class: "text-base font-medium" },
+});
 var __VLS_19;
 var __VLS_15;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "relative z-10 text-center pt-3  container mx-auto px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-sm text-gray-700 max-w-md mx-auto" },
+    ...{ class: "text-base font-medium text-gray-700 max-w-md mx-auto" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
     ...{ onClick: (...[$event]) => {
@@ -238,11 +260,14 @@ var __VLS_22;
 /** @type {__VLS_StyleScopedClasses['object-cover']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded-t-xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['mb-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-900']} */ ;
 /** @type {__VLS_StyleScopedClasses['mb-1']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['mb-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
@@ -250,18 +275,30 @@ var __VLS_22;
 /** @type {__VLS_StyleScopedClasses['justify-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['background-transparent']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['flex']} */ ;
+/** @type {__VLS_StyleScopedClasses['items-center']} */ ;
+/** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['focus:outline-none']} */ ;
-/** @type {__VLS_StyleScopedClasses['active:outline-none']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-white']} */ ;
-/** @type {__VLS_StyleScopedClasses['border-none']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-primary']} */ ;
 /** @type {__VLS_StyleScopedClasses['shadow-none']} */ ;
-/** @type {__VLS_StyleScopedClasses['hover:bg-primary']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:bg-primary']} */ ;
-/** @type {__VLS_StyleScopedClasses['active:bg-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:text-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['active:border-primary']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['relative']} */ ;
 /** @type {__VLS_StyleScopedClasses['z-10']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
@@ -269,7 +306,8 @@ var __VLS_22;
 /** @type {__VLS_StyleScopedClasses['container']} */ ;
 /** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-base']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-gray-700']} */ ;
 /** @type {__VLS_StyleScopedClasses['max-w-md']} */ ;
 /** @type {__VLS_StyleScopedClasses['mx-auto']} */ ;

@@ -1,6 +1,6 @@
 <template>
     <section id="BubbleMenus" class="max-w-md mx-auto">
-        <p class="text-sm mb-3">
+        <p class="text-base font-base mb-3">
             {{ message }}
         </p>
 
@@ -8,7 +8,7 @@
             <el-button v-for="menu in menus" :key="menu.id" size="small" plain
                 class=" rounded-full bg-white border border-primary text-primary hover:bg-primary hover:text-white transition"
                 style="margin-left: 0 !important;" @click="onSelect(menu)">
-                <span class="text-md text-black">{{ menu.menuName }}</span>
+                <span class="text-base font-medium text-black">{{ menu.menuName }}</span>
             </el-button>
         </div>
     </section>

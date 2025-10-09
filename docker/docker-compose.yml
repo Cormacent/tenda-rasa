@@ -47,20 +47,20 @@ services:
   #     - postgres_n8n
   #   restart: unless-stopped
 
-  tenda-rasa-be:
-    build:
-      context: ../tenda-rasa-be  # Pastikan folder ini punya Dockerfile & source code
-    container_name: tenda_rasa_be
-    env_file:
-      - .env
-    ports:
-      - "${BE_PORT}:${BE_PORT}"
-    volumes:
-      - ../tenda-rasa-be:/app
-    environment:
-      NODE_ENV: development
-      POSTGRES_HOST: ${POSTGRES_HOST}
-    restart: unless-stopped
+  # tenda-rasa-be:
+  #   build:
+  #     context: ../tenda-rasa-be  # Pastikan folder ini punya Dockerfile & source code
+  #   container_name: tenda_rasa_be
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "${BE_PORT}:${BE_PORT}"
+  #   volumes:
+  #     - ../tenda-rasa-be:/app
+  #   environment:
+  #     NODE_ENV: development
+  #     POSTGRES_HOST: ${POSTGRES_HOST}
+  #   restart: unless-stopped
   
   redis:
     image: redis:7
@@ -75,6 +75,6 @@ services:
 
 volumes:
   postgres-data:
-  postgres-n8n-data:
-  n8n-data:
+  # postgres-n8n-data:
+  # n8n-data:
   redis-data:
