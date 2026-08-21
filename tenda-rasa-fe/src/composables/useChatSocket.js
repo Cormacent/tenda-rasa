@@ -53,9 +53,7 @@ export function useChatSocket() {
             if (msg.message?.orders) {
                 for (let i = 0; i < msg.message.orders.length; i++) {
                     if (msg.message.orders[i].id === updatedOrder.id) {
-                        console.log("🚀 ~ BEFORE ~ msg.message.orders[i]:", msg.message.orders[i]);
                         msg.message.orders[i] = { ...msg.message.orders[i], ...updatedOrder };
-                        console.log("🚀 ~ AFTER ~ msg.message.orders[i]:", msg.message.orders[i]);
                     }
                 }
             }

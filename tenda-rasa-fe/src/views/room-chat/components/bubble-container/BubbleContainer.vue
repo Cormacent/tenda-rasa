@@ -66,6 +66,7 @@ const bubbleClass = computed(() => {
         'transition-shadow',
         'duration-200',
         'cursor-pointer',
+        'w-fit',
         props.chat.role === Role.USER ? 'bg-primary text-white' : 'bg-gray-100 text-black'
     ]
 })

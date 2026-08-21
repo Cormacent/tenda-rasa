@@ -46,6 +46,7 @@ export const useOrderStore = defineStore('order', () => {
 
 
     const createOrder = async (order: IOrder) => {
+        console.log("🚀 ~ createOrder ~ order:", order)
         loading.value = true
         error.value = null
         try {

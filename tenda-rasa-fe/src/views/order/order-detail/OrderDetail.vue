@@ -32,26 +32,27 @@
     </div>
 
     <!-- Ringkasan & Tombol -->
-    <div class="shrink-0 pt-6 space-y-4  w-full bg-primary rounded-lg p-4 relative">
-      <div class=" bg-fade opacity-50" :style="{
+    <div class="shrink-0 pt-6 space-y-4 w-full bg-primary rounded-lg p-4 relative">
+
+      <div class="bg-fade opacity-50" :style="{
         backgroundImage: 'url(/bg-tenda-rasa-white.svg)',
         backgroundSize: 'inherit',
         backgroundPosition: 'center',
         width: '100%',
         height: '100%',
-        position: 'fixed',
-        inset: 0
+        position: 'absolute', /* DIUBAH DARI 'fixed' */
+        inset: 0,
+        zIndex: 0           /* DITAMBAHKAN AGAR PASTI DI BELAKANG */
       }">
       </div>
-
-      <div class="text-base font-medium text-white">
+      <div class="relative z-10 text-base font-medium text-white">
         <div class="flex justify-between font-bold text-white text-lg">
           <span>Total</span>
           <span>Rp {{ formatPrice(total ?? 0) }}</span>
         </div>
       </div>
 
-      <div v-if="!orderId && orderItems.length > 0">
+      <div v-if="!orderId && orderItems.length > 0" class="relative z-10">
         <el-button :class="[
           'w-full',
           'flex items-center px-3 py-2 rounded focus:outline-none',
@@ -59,7 +60,7 @@
           'hover:bg-white hover:text-primary hover:border-primary',
           'focus:bg-white focus:text-primary focus:border-primary',
           'active:bg-white active:text-primary active:border-primary'
-        ]" size="large" round @click="createOrder">
+        ]" size="large" round @click="createOrder()">
           <span class="text-base font-base">
             Lanjut Pembayaran
           </span>
@@ -125,6 +126,7 @@ onMounted(() => {
 // 🛠️ Utility / Custom Functions
 //----------------------------------------
 const createOrder = async () => {
+  console.log("🚀 ~ createOrder ~ createOrder:",)
   await orderStore.createOrder({
     orderItems: orderItems.value,
     totalPrice: total.value,

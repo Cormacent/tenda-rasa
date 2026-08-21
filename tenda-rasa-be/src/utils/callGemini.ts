@@ -1,19 +1,42 @@
 // utils/callGemini.ts
+
+interface GeminiResponse {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{
+        text?: string;
+      }>;
+    };
+  }>;
+  error?: {
+    message: string;
+  };
+}
+
+interface CallGeminiOptions {
+  timeoutMs?: number;
+  retries?: number;
+  backoffBase?: number;
+}
+
 export async function callGemini(
   prompt: string,
   {
-    timeoutMs = 30000, // total waktu tunggu per attempt
-    retries = 2,       // jumlah retry kalau gagal koneksi
-    backoffBase = 500  // jeda awal antar retry (ms)
-  } = {}
+    timeoutMs = 30000,
+    retries = 2,
+    backoffBase = 500
+  }: CallGeminiOptions = {}
 ): Promise<string> {
-  const url =
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' +
-    process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error('💀 GEMINI_API_KEY is not set.');
+    return '';
+  }
+  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    const timeout = setTimeout(() => controller.abort('timeout'), timeoutMs);
 
     const start = Date.now();
     try {
@@ -22,39 +45,37 @@ export async function callGemini(
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          contents: [
-            { role: 'user', parts: [{ text: prompt }] }
-          ]
+          contents: [{ parts: [{ text: prompt }] }]
         }),
         signal: controller.signal
       });
 
-      const elapsed = Date.now() - start;
-      console.log(`⏱ [Gemini] Fetch completed in ${elapsed}ms`);
-
       clearTimeout(timeout);
-
-      const data = await response.json();
+      const data: GeminiResponse = await response.json();
+      const elapsed = Date.now() - start;
 
       if (!response.ok) {
-        console.error('❌ Gemini API error:', {
-          status: response.status,
-          statusText: response.statusText,
-          body: data
-        });
-        throw new Error(`Gemini API failed: ${response.status} ${response.statusText}`);
+        const errorMessage = data.error?.message || response.statusText;
+        console.error(`❌ Gemini API error on attempt ${attempt + 1} (${response.status}):`, errorMessage);
+        throw new Error(`API Error: ${errorMessage}`);
       }
 
-      return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      console.log(`✅ [Gemini] Attempt ${attempt + 1} successful in ${elapsed}ms`);
+
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
     } catch (err: any) {
       clearTimeout(timeout);
-
       const elapsed = Date.now() - start;
-      console.error(`🔥 [Gemini] Attempt ${attempt + 1} failed after ${elapsed}ms:`, err?.message || err);
+
+      if (err.name === 'AbortError') {
+        console.error(`🔥 [Gemini] Attempt ${attempt + 1} timed out after ${elapsed}ms.`);
+      } else {
+        console.error(`🔥 [Gemini] Attempt ${attempt + 1} failed after ${elapsed}ms:`, err.message || err);
+      }
 
       if (attempt < retries) {
         const delay = backoffBase * Math.pow(2, attempt);

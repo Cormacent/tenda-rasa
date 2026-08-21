@@ -13,20 +13,25 @@
     <!-- Card Wrapper -->
     <div class="flex flex-col flex-1 bg-white rounded-t-2xl shadow-lg -mt-12 overflow-hidden">
       <!-- Scrollable Content -->
-      <div class="overflow-y-auto px-4 pt-6 pb-4 flex-1">
+      <div class="overflow-y-auto px-4 pt-6 pb-4 flex-1 flex flex-col gap-3">
         <h2 class="text-xl font-bold text-primary">{{ menuDetail.boothName }}</h2>
-        <h3 class="text-base font-semibold text-secondary mb-2">{{ menuDetail.menuName }}</h3>
+        <h3 class="text-base font-semibold text-secondary">{{ menuDetail.menuName }}</h3>
 
-        <div class="flex items-center text-base font-medium text-gray-700 mb-4">
-          <icon-ep-clock class="mr-1" />
-          <span>{{ menuDetail.estimatedMinutes }} Menit</span>
+        <div>
+          <div class="flex items-center text-base font-medium text-gray-700">
+            <icon-ep-clock class="mr-1" />
+            <span>{{ menuDetail.estimatedMinutes }} Menit</span>
+          </div>
+          <div class="flex items-center text-base font-medium text-gray-700">
+            <span>Sisa :</span> <span>{{ menuDetail.stock ?? 0 }}</span>
+          </div>
         </div>
 
-        <p class="text-gray-700 text-base font-medium mb-4">
+        <p class="text-gray-700 text-base font-medium">
           {{ menuDetail.description }}
         </p>
 
-        <ul class="text-base font-medium text-gray-700 space-y-1 mb-6">
+        <ul class="text-base font-medium text-gray-700 space-y-1">
           <li>🍽️ Cocok untuk {{ menuDetail.category === 'makanan' ? 'makan' : 'minum' }} siang atau malam</li>
           <li v-if="menuDetail.category === 'makanan'">🌶️ Pedas: {{ menuDetail.spicinessLevel }}/5</li>
         </ul>

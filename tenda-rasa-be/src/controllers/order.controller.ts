@@ -40,7 +40,7 @@ export const getAllActiveOrdersByEmail = async (req: Request, res: Response) => 
 export const createOrder = async (req: Request, res: Response) => {
   const orderDto: CreateOrderDto = req.body;
   orderDto.status = Status.PENDING;
-  orderDto.estimatedMinutes = 2
+  orderDto.estimatedMinutes = 1
 
   try {
     const order = await OrderService.createOrder(orderDto);

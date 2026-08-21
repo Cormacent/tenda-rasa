@@ -1,6 +1,6 @@
 <template>
-    <el-dialog v-model="dialogVisible" width="400px" :close-on-click-modal="true" :show-close="true"
-        class="rounded-lg relative bg-dialog">
+    <el-dialog v-model="dialogVisible" width="350px" :close-on-click-modal="true" :show-close="true"
+        class="rounded-lg relative bg-dialog overflow-hidden">
         <div class="bg-mask" />
 
         <template #header>

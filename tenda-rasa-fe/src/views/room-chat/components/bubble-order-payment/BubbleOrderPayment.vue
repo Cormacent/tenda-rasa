@@ -1,5 +1,5 @@
 <template>
-    <section id="BubbleOrderPayment" class="flex flex-col gap-4 w-fit max-w-full min-w-[10rem]">
+    <section id="BubbleOrderPayment" class="flex flex-col gap-4 w-full max-w-full min-w-[10rem]">
         <!-- Header -->
         <div class="flex justify-between items-center text-base font-medium">
             <div class="flex flex-col">
@@ -69,8 +69,8 @@ const targetTimestamp = computed(() => {
 
     const created = new Date(order.value.createdAt).getTime();
     const durationMinutes =
-        order.value.status === Status.PENDING ? 2 :
-            order.value.status === Status.PAID ? 3 : 0;
+        order.value.status === Status.PENDING ? 1 :
+            order.value.status === Status.PAID ? 1 : 0;
 
     return created + durationMinutes * 60 * 1000;
 });
@@ -119,8 +119,3 @@ const updateCountdown = () => {
 };
 
 </script>
-<style lang="scss" scoped>
-#BubbleOrderPayment {
-    width: 70vw;
-}
-</style>

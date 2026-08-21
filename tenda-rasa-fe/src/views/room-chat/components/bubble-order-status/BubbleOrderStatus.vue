@@ -1,7 +1,6 @@
 <template>
     <section id="BubbleOrderStatus" class="flex flex-col gap-2 pt-5">
-        <div class="-mt-[3rem] -ml-[1rem]"
-            v-if="[Status.PAID, Status.COMPLETED, Status.CANCELLED].includes(order?.status as Status)">
+        <div class="-mt-[3rem] -ml-[1rem]" v-if="order?.status">
             <div v-if="order?.status == Status.PAID">
                 <span class="bg-warning text-base font-medium px-2 py-1 rounded text-white">
                     Pesananmu sedang di
@@ -24,7 +23,6 @@
             <span>ID Pesanan</span>
             <span class="font-semibold">#{{ order?.name }}-{{ order?.id }}</span>
         </div>
-
         <div class="text-base text-center font-semibold w-100" v-if="countdown > 0">
             <el-tag type="danger" class="text-info text-primary">
                 <span class="px-5">Estimated {{ formattedCountdown }}</span>
@@ -80,8 +78,7 @@ const intervalId = ref<number | null>(null);
 //----------------------------------------
 // 🔍 Computed Properties
 //----------------------------------------
-const order = computed(() => props.chat?.message?.orders?.[props.chat?.message?.orders.length - 1] ?? null)
-
+const order = computed(() => props.chat?.message?.orders?.[props.chat?.message?.orders?.length - 1] ?? null)
 // Format ke MM:SS
 const formattedCountdown = computed(() => {
     const minutes = Math.floor(countdown.value / 60).toString().padStart(2, '0');
@@ -90,7 +87,6 @@ const formattedCountdown = computed(() => {
 });
 const targetTimestamp = computed(() => {
     if (!order.value || !order.value?.createdAt || !order.value?.status) return null;
-
     const created = new Date(order.value.createdAt).getTime();
     const durationMinutes =
         order.value.status === Status.PENDING ? 1 :
