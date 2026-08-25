@@ -62,7 +62,9 @@ services:
     build:
       context: ../tenda-rasa-be  # Pastikan folder ini punya Dockerfile & source code
     container_name: tenda_rasa_be
-    command: npm run dev
+    # --legacy-watch: bind mount dari Windows host sering tidak kirim event file-change
+    # ke inotify di container, jadi nodemon perlu polling supaya auto-reload beneran jalan
+    command: npx nodemon --legacy-watch src/app.ts
     env_file:
       - .env
     ports:

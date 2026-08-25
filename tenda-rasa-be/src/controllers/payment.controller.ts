@@ -56,6 +56,9 @@ export const handlePayment = async (req: Request, res: Response) => {
         });
     }
 
+    // Order sudah dibayar, batalkan job "expire" supaya tidak race dengan pembayaran ini
+    await orderQueue.remove(`expire-order-${order.id}`);
+
     // Tambahkan job ke queue (tanpa await)
     orderQueue.add(OrderStatus.ON_PROGRESS, { orderId: order.id }, {
       delay: 1000 * 60 * progressOrderMinutes,

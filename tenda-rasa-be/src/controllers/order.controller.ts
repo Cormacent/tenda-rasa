@@ -47,6 +47,7 @@ export const createOrder = async (req: Request, res: Response) => {
 
     // Progress JOB (gapake await karna biar barengan)
     orderQueue.add(OrderStatus.EXPIRED_PAYMENT, { orderId: order.id }, {
+      jobId: `expire-order-${order.id}`,
       delay: 1000 * 60 * orderDto.estimatedMinutes,
       removeOnComplete: true,
       removeOnFail: true,

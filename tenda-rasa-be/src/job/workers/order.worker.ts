@@ -1,6 +1,6 @@
 import { Worker } from 'bullmq';
 import { redisClient } from '../../utils/redisClient';
-import { getOrderById, updateOrder } from '../../services/order.service';
+import { getOrderById, updateOrder, cancelPendingOrder } from '../../services/order.service';
 import { Status } from '../../enumeration/status.enum';
 import { getClientByEmail } from '../../socket/socketServer';
 import { OrderStatus } from '../../enumeration/order.enum';
@@ -37,32 +37,17 @@ orderWorker.on('active', job => {
 console.log('🎯 Order worker is running and listening for jobs...');
 const orderPaymentExpired = async (job: any) => {
     const { orderId } = job.data;
-    const order = await getOrderById(orderId);
 
-    if (!order) {
-        console.warn(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} not found.`);
+    // cancelPendingOrder locks the row and re-checks status atomically, so it
+    // can't race with a payment confirmation that commits around the same time.
+    const orderUpdated = await cancelPendingOrder(orderId);
+
+    if (!orderUpdated) {
+        console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} not cancelled (already paid/completed/cancelled, or not found).`);
         return;
     }
 
-    const { status, id, email } = order;
-
-    if ([Status.PAID, Status.COMPLETED].includes(status)) {
-        console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} already paid.`);
-        return;
-    }
-
-    if (status === Status.CANCELLED) {
-        console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} cancelled.`);
-        return;
-    }
-
-    if (status !== Status.PENDING) {
-        console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} has unexpected status: ${status}`);
-        return;
-    }
-
-    const orderUpdated = await updateOrder(id, { status: Status.CANCELLED });
-    pushSocketMessage(email, orderUpdated);
+    pushSocketMessage(orderUpdated.email, orderUpdated);
     console.log(`[${OrderStatus.EXPIRED_PAYMENT}] Order ${orderId} expired and cancelled.`);
 };
 const orderCompleted = async (job: any) => {

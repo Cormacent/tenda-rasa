@@ -105,6 +105,28 @@ export const updateOrder = async (id: number, updates: Partial<CreateOrderDto>):
 
   return orderWithItems as ResponseOrderDto;
 };
+export const cancelPendingOrder = async (id: number): Promise<ResponseOrderDto | null> => {
+  return await sequelize.transaction(async (t: Transaction) => {
+    const order = await Orders.findByPk(id, {
+      transaction: t,
+      lock: t.LOCK.UPDATE,
+    });
+
+    if (!order || order.status !== Status.PENDING) {
+      return null;
+    }
+
+    await order.update({ status: Status.CANCELLED }, { transaction: t });
+
+    const orderWithItems = await Orders.findByPk(id, {
+      include: [{ model: OrderItems, as: 'orderItems' }],
+      transaction: t,
+    });
+
+    return orderWithItems as ResponseOrderDto;
+  });
+};
+
 export async function getOrderByIds(orderIds: number[]): Promise<ResponseOrderDto[]> {
   if (!orderIds || orderIds.length === 0) return []
 
