@@ -1,22 +1,25 @@
 deploy to fly.io
 fly apps create tenda-rasa-be
 
-set secret
+set secret (ganti <...> dengan value asli, jangan pernah commit value asli ke git)
 fly secrets set `
-"REDIS_HOST=premium-fox-26559.upstash.io" `
+"REDIS_HOST=<upstash-redis-host>" `
 "REDIS_PORT=6379" `
-"REDIS_USERNAME=default" `
-"REDIS_PASSWORD=AWe_AAIncDE5OTlhY2Y3YTM4Y2Y0YTVhYjJmZWM0NDk4MjNmMzk1OHAxMjY1NTk" `
+"REDIS_USERNAME=<upstash-redis-username>" `
+"REDIS_PASSWORD=<upstash-redis-password>" `
 "REDIS_TLS=true" `
 --app tenda-rasa-be
 
 fly secrets set `
 "DB_HOST=tenda-rasa-db.internal" `
 "DB_PORT=5432" `
-"DB_USER=postgres" `
-"DB_PASSWORD=postgres" `
+"DB_USER=<db-user>" `
+"DB_PASSWORD=<db-password>" `
 "DB_NAME=tenda_rasa" `
 --app tenda-rasa-be
+
+cek secret yang sudah di-set (value tidak ditampilkan)
+fly secrets list --app tenda-rasa-be
 
 pastikan ada Dockerfile, fly.toml
 
