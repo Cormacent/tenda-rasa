@@ -10,11 +10,12 @@ const { ChatHistory, MenuBooth, Intent } = models;
 
 // process.cwd() dipakai (bukan __dirname) supaya path tetap benar baik jalan lewat
 // ts-node (dev) maupun dist/app.js (production) - keduanya start dengan cwd di root project.
-const PROMPT_TEMPLATE_PATH = path.resolve(process.cwd(), 'src/prompts/terrabot.prompt.md');
+const PROMPTS_DIR = path.resolve(process.cwd(), 'src/prompts');
 
 // Sengaja dibaca ulang tiap request (bukan di-cache) supaya prompt bisa diedit
 // langsung di file .md tanpa perlu restart server.
-const loadPromptTemplate = (): string => fs.readFileSync(PROMPT_TEMPLATE_PATH, 'utf-8');
+const loadPromptFile = (fileName: string): string =>
+  fs.readFileSync(path.join(PROMPTS_DIR, fileName), 'utf-8');
 
 const fillTemplate = (template: string, vars: Record<string, string>): string =>
   Object.entries(vars).reduce(
@@ -51,6 +52,12 @@ export const saveMessage = async (chatData: ChatDTO): Promise<ChatDTO> => {
   return await ChatHistory.create(chatData);
 };
 
+// Sapaan awal untuk user yang belum pernah chat sama sekali (chat_history masih
+// kosong) - tidak lewat Gemini, supaya daftar fitur yang disebutkan selalu akurat
+// dan konsisten, bukan hasil generate LLM yang bisa berubah-ubah/salah.
+export const getWelcomeMessage = (name: string): string =>
+  fillTemplate(loadPromptFile('welcome.md'), { NAME: name });
+
 export const getConversationByEmail = async (email: string): Promise<ChatDTO[]> => {
   const chats = await ChatHistory.findAll({
     where: { email },
@@ -84,7 +91,7 @@ export async function generateChatResponse({ name, email, message }: ChatDTO): P
     .join('\n');
   const intentEnum = [...activeIntents.map(i => i.code), 'OTHER'].join(' | ');
 
-  const prompt = fillTemplate(loadPromptTemplate(), {
+  const prompt = fillTemplate(loadPromptFile('terrabot.prompt.md'), {
     NAME: name,
     EMAIL: email,
     CHAT: chat,

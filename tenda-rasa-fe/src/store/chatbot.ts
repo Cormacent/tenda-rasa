@@ -12,12 +12,12 @@ export const useChatbotStore = defineStore('chatbot', () => {
     const { userInfo } = useUserStore()
 
     const getAllChatByEmail = async (): Promise<IChatbot[]> => {
-        const { email } = userInfo
+        const { email, name } = userInfo
 
         loading.value = true
         error.value = null
         try {
-            const body = { email }
+            const body = { email, name }
             const res = await axios.post<IChatbot[]>(urlGetAllChat + '/get-by-email', body)
             return res.data
         } catch (err: any) {

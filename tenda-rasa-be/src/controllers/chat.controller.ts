@@ -9,9 +9,25 @@ import { Role } from '../enumeration/role.enum';
 import { getClientByEmail } from '../socket/socketServer';
 import { ChatType } from '../enumeration/chatType.enum';
 export const getConversation = async (req: Request, res: Response) => {
-  const { email } = req.body;
+  const { email, name } = req.body;
   try {
-    const histories = await ChatService.getConversationByEmail(email);
+    let histories = await ChatService.getConversationByEmail(email);
+
+    // User baru (belum pernah chat sama sekali) - kasih sapaan awal + penjelasan
+    // fitur, supaya tidak bingung mau chat apa. Disimpan ke chat_history juga,
+    // jadi cuma muncul sekali (panggilan berikutnya histories sudah tidak kosong).
+    if (histories.length === 0) {
+      const welcomeMessage = await ChatService.saveMessage({
+        email,
+        name: name || '',
+        message: { chat: ChatService.getWelcomeMessage(name || 'Kamu') },
+        role: Role.ASSISTANT,
+        timestamp: new Date(),
+        intent: Intent.GREETING,
+      });
+      histories = [welcomeMessage as any];
+    }
+
     const allOrders = await getAllOrdersByEmail(email);
     const allMenus = await getAvailableMenus();
 
