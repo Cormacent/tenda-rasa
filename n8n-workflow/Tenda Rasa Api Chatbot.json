@@ -115,7 +115,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const userName = $item(0).$node[\"Edit Fields\"].json.user ?? 'Pengguna';\nconst userEmail = $item(0).$node[\"Edit Fields\"].json.email ?? '';\nconst promptUserRaw = $item(0).$node[\"Edit Fields\"].json.prompt ?? '';\nconst menus = $items(\"Get All Menu\");\n\nconst daftarMenu = menus.map(i => {\n  const id = i.json.id;\n  const name = i.json.menu_name;\n  const tags = i.json.tags?.join(', ') ?? '';\n  return `- [ID:${id}] ${name} [${tags}]`;\n}).join('\\n');\n\nconst promptGabungan = \n`User bernama ${userName} (${userEmail}) bertanya: '${promptUserRaw}'\n\nBerikut adalah daftar menu yang tersedia (beserta ID dan tag):\n${daftarMenu}\n\nTentukan apakah permintaan user termasuk:\n- INTENT: GREETING → jika user hanya menyapa (seperti 'halo', 'hai', 'Selamat Pagi', dll)\n- INTENT: ORDER_STATUS → jika user bertanya tentang status pesanannya\n- INTENT: RECOMMENDATION → jika user meminta saran makanan\n- INTENT: EXPLANATION → jika user ingin penjelasan menu tertentu\n- INTENT: OTHER → jika tidak berkaitan dengan daftar menu\n\nInstruksi:\n- Jika respon kamu memberikan judul menu, gausah kirim beserta ID\n- Jika intent GREETING, balas ramah dan akrab seperti bot menyapa kembali.\n- Jika intent ORDER_STATUS, cukup beri respon singkat bahwa akan dicek, dan jangan berikan data status apapun (itu akan ditangani sistem).\n- Jika intent RECOMMENDATION, berikan saran menu dari daftar secara singkat dan menarik, seperti penjual yang ramah.\n- Jika intent EXPLANATION, cukup beri jawaban untuk menjelaskan menu yang ditanya user.\n- Jika intent OTHER, berikan semacam kalimat maaf pertanyaan hanya seputar Menu Tenda Rasa.\n- Gunakan nama user agar lebih akrab.\n- Jangan pernah tambahkan menu yang tidak ada di daftar.\n\nFormat hasil akhir:\n- Jawaban utama di atas.\n- Baris baru, lalu:\nINTENT: EXPLANATION\nmenuIds: [1, 2] ← array ID menu yang cocok, kosongkan jika tidak ada.\n\nTidak perlu penjelasan tambahan setelah itu. Jangan ubah format ini.`;\n\nreturn [{\n  json: {\n    finalPrompt: promptGabungan\n  }\n}];\n"
+        "jsCode": "const userName = $item(0).$node[\"Edit Fields\"].json.name ?? 'Pengguna';\nconst userEmail = $item(0).$node[\"Edit Fields\"].json.email ?? '';\nconst promptUserRaw = $item(0).$node[\"Edit Fields\"].json.prompt ?? '';\nconst menus = $items(\"Get All Menu\");\nconst intents = $items(\"Get Active Intents\");\n\nconst daftarMenu = menus.map(i => {\n  const id = i.json.id;\n  const name = i.json.menu_name;\n  const tags = i.json.tags?.join(', ') ?? '';\n  return `- [ID:${id}] ${name} [${tags}]`;\n}).join('\\n');\n\nconst daftarIntent = intents.map(i => {\n  return `- INTENT: ${i.json.code} → ${i.json.prompt_instruction}`;\n}).join('\\n');\n\nconst intentEnum = [...intents.map(i => i.json.code), 'OTHER'].join(' | ');\n\nconst promptGabungan =\n`User bernama ${userName} (${userEmail}) bertanya: '${promptUserRaw}'\n\nBerikut adalah daftar menu yang tersedia (beserta ID dan tag):\n${daftarMenu}\n\nTentukan apakah permintaan user termasuk salah satu intent berikut (daftar ini bisa berubah, ikuti persis instruksi yang tertulis untuk tiap intent):\n${daftarIntent}\n- INTENT: OTHER → jika tidak berkaitan dengan hal di atas. Sampaikan dengan sopan bahwa kamu hanya bisa membantu seputar menu dan pesanan Tenda Rasa.\n\nInstruksi umum:\n- Jika respon kamu memberikan judul menu, gausah kirim beserta ID\n- Gunakan nama user agar lebih akrab.\n- Jangan pernah tambahkan menu yang tidak ada di daftar.\n- Jujur soal keterbatasan aplikasi sesuai instruksi tiap intent di atas, jangan berpura-pura bisa melakukan sesuatu yang tidak didukung sistem.\n\nFormat hasil akhir:\n- Jawaban utama di atas.\n- Baris baru, lalu:\nINTENT: [${intentEnum}]\nmenuIds: [1, 2] ← array ID menu yang cocok, kosongkan jika tidak ada.\n\nTidak perlu penjelasan tambahan setelah itu. Jangan ubah format ini.`;\n\nreturn [{\n  json: {\n    finalPrompt: promptGabungan\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -129,7 +129,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyD7eZFpT3MC7hKOs9Wps1TeEh6wEkhO4bY",
+        "url": "=https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={{$env.GEMINI_API_KEY}}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -160,7 +160,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const reply = $json.candidates?.[0]?.content?.parts?.[0]?.text ?? '';\n\nconst intentMatch = reply.match(/INTENT:\\s*(RECOMMENDATION|EXPLANATION|GREETING|ORDER_STATUS|OTHER)/i);\nconst intent = intentMatch?.[1] ?? null;\n\nconst menuIdsMatch = reply.match(/menuIds:\\s*\\[([^\\]]*)\\]/i);\nconst menuIds = menuIdsMatch\n  ? menuIdsMatch[1]\n      .split(',')\n      .map(id => parseInt(id.trim()))\n      .filter(id => !isNaN(id))\n  : [];\n\nconst replyClean = reply\n  .replace(/INTENT:\\s*(RECOMMENDATION|EXPLANATION|GREETING|ORDER_STATUS|OTHER)/i, '')\n  .replace(/menuIds:\\s*\\[[^\\]]*\\]/i, '')\n  .trim();\n\nreturn [{\n  json: {\n    replyClean,\n    intent,\n    menuIds\n  }\n}];\n"
+        "jsCode": "const reply = $json.candidates?.[0]?.content?.parts?.[0]?.text ?? '';\n\nconst intents = $items(\"Get Active Intents\");\nconst validIntents = [...intents.map(i => i.json.code), 'OTHER'];\nconst intentPattern = new RegExp('INTENT:\\\\s*(' + validIntents.join('|') + ')', 'i');\n\nconst intentMatch = reply.match(intentPattern);\nconst intent = intentMatch?.[1]?.toUpperCase() ?? 'OTHER';\n\nconst menuIdsMatch = reply.match(/menuIds:\\s*\\[([^\\]]*)\\]/i);\nconst menuIds = menuIdsMatch\n  ? menuIdsMatch[1]\n      .split(',')\n      .map(id => parseInt(id.trim()))\n      .filter(id => !isNaN(id))\n  : [];\n\nconst replyClean = reply\n  .replace(intentPattern, '')\n  .replace(/menuIds:\\s*\\[[^\\]]*\\]/i, '')\n  .trim();\n\nreturn [{\n  json: {\n    replyClean,\n    intent,\n    menuIds\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -288,6 +288,98 @@
                 ],
                 "combinator": "and"
               }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "new-intent-0-cancel_order",
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "CANCEL_ORDER",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "new-intent-1-complaint",
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "COMPLAINT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "new-intent-2-help",
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "HELP",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "new-intent-3-goodbye",
+                    "leftValue": "={{$json[\"intent\"]}}",
+                    "rightValue": "GOODBYE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
             }
           ]
         },
@@ -304,7 +396,7 @@
     },
     {
       "parameters": {
-        "functionCode": "const reply = $json.reply;\nconst menu = $json.menu ?? [];\nconst orders = $json.orders ?? [];\nreturn {\n  json: {\n    prompt: $node[\"Edit Fields\"].json.prompt,\n    reply: reply,\n    menu: menu,\n    orders: orders\n  },\n};\n\n"
+        "functionCode": "const chat = $json.reply;\nconst menus = $json.menu ?? [];\nconst orders = $json.orders ?? [];\nreturn {\n  json: {\n    chat: chat,\n    menus: menus,\n    orders: orders\n  },\n};\n"
       },
       "name": "Prepare Output",
       "type": "n8n-nodes-base.function",
@@ -352,7 +444,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://tenda_rasa_socket:3000/user-chat",
+        "url": "http://tenda-rasa-be:3001/api/v1/socket/push",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -364,7 +456,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify($items(\"Get Last History User\")[0].json) }}",
+        "jsonBody": "={{ JSON.stringify({ email: $items(\"Get Last History User\")[0].json.email, type: \"chat_sent\", payload: $items(\"Get Last History User\")[0].json }) }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -399,7 +491,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return {\n  json: {\n    email: $json.email,\n    name: $json.name,\n    message: {\n      menu: [],\n      reply: \"\",\n      prompt: $json.prompt,\n    },\n  },\n};\n"
+        "jsCode": "return {\n  json: {\n    email: $json.email,\n    name: $json.name,\n    message: {\n      chat: $json.prompt,\n    },\n  },\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -413,7 +505,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://tenda_rasa_socket:3000/push-response",
+        "url": "http://tenda-rasa-be:3001/api/v1/socket/push",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -425,7 +517,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify($items(\"Get Last History\")[0].json) }}",
+        "jsonBody": "={{ JSON.stringify({ email: $items(\"Get Last History\")[0].json.email, type: \"chat_response\", payload: $items(\"Get Last History\")[0].json }) }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -506,6 +598,27 @@
       ],
       "id": "3cea627e-d841-47eb-af6f-e7cecb3402f1",
       "name": "Get Active Order",
+      "credentials": {
+        "postgres": {
+          "id": "aJ03o7luU32NjI5k",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT code, prompt_instruction FROM intents WHERE is_active = true ORDER BY sort_order;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1300,
+        -800
+      ],
+      "id": "b2f1a4d0-9c3e-4b7a-8e2f-1a2b3c4d5e6f",
+      "name": "Get Active Intents",
       "credentials": {
         "postgres": {
           "id": "aJ03o7luU32NjI5k",
@@ -651,6 +764,34 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Res Others",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Res Others",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Res Others",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Res Others",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -680,7 +821,7 @@
       "main": [
         [
           {
-            "node": "Get All Menu",
+            "node": "Get Active Intents",
             "type": "main",
             "index": 0
           }
@@ -758,6 +899,17 @@
         [
           {
             "node": "Res Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Active Intents": {
+      "main": [
+        [
+          {
+            "node": "Get All Menu",
             "type": "main",
             "index": 0
           }
