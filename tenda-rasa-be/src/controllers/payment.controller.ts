@@ -18,6 +18,13 @@ const progressOrderMinutes = 1;
 export const handlePayment = async (req: Request, res: Response) => {
   const { orderId, email } = req.params;
 
+  if (!orderId || isNaN(Number(orderId))) {
+    return res.status(400).json({ message: 'orderId tidak valid' });
+  }
+  if (!email) {
+    return res.status(400).json({ message: 'email wajib diisi' });
+  }
+
   try {
     const order = await confirmPayment(orderId, email);
     if (!order) {

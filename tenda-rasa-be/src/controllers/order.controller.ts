@@ -37,8 +37,35 @@ export const getAllActiveOrdersByEmail = async (req: Request, res: Response) => 
     });
   }
 };
+const validateCreateOrder = (orderDto: CreateOrderDto): string | null => {
+  if (!orderDto.email || typeof orderDto.email !== 'string') {
+    return 'email wajib diisi';
+  }
+  if (!orderDto.name || typeof orderDto.name !== 'string') {
+    return 'name wajib diisi';
+  }
+  if (!Array.isArray(orderDto.orderItems) || orderDto.orderItems.length === 0) {
+    return 'orderItems wajib diisi minimal 1 item';
+  }
+  for (const item of orderDto.orderItems) {
+    if (!item.menuId || typeof item.menuId !== 'number') {
+      return 'setiap orderItems wajib punya menuId yang valid';
+    }
+    if (!item.quantity || typeof item.quantity !== 'number' || item.quantity <= 0) {
+      return 'setiap orderItems wajib punya quantity lebih dari 0';
+    }
+  }
+  return null;
+};
+
 export const createOrder = async (req: Request, res: Response) => {
   const orderDto: CreateOrderDto = req.body;
+
+  const validationError = validateCreateOrder(orderDto);
+  if (validationError) {
+    return res.status(400).json({ message: validationError });
+  }
+
   orderDto.status = Status.PENDING;
   orderDto.estimatedMinutes = 1
 
