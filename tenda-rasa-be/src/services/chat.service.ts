@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { ChatDTO, ChatMessageDTO } from '../dtos/chat.dto';
 import { MenuDTO } from '../dtos/menu.dto';
 import { ResponseOrderDto } from '../dtos/order.dto';
@@ -5,6 +7,20 @@ import models from '../models';
 import { callGemini } from '../utils/callGemini';
 
 const { ChatHistory, MenuBooth } = models;
+
+// process.cwd() dipakai (bukan __dirname) supaya path tetap benar baik jalan lewat
+// ts-node (dev) maupun dist/app.js (production) - keduanya start dengan cwd di root project.
+const PROMPT_TEMPLATE_PATH = path.resolve(process.cwd(), 'src/prompts/terrabot.prompt.md');
+
+// Sengaja dibaca ulang tiap request (bukan di-cache) supaya prompt bisa diedit
+// langsung di file .md tanpa perlu restart server.
+const loadPromptTemplate = (): string => fs.readFileSync(PROMPT_TEMPLATE_PATH, 'utf-8');
+
+const fillTemplate = (template: string, vars: Record<string, string>): string =>
+  Object.entries(vars).reduce(
+    (result, [key, value]) => result.split(`{{${key}}}`).join(value),
+    template
+  );
 
 export const saveMessage = async (chatData: ChatDTO): Promise<ChatDTO> => {
   return await ChatHistory.create(chatData);
@@ -37,57 +53,14 @@ export async function generateChatResponse({ name, email, message }: ChatDTO): P
     }).join('\n')
   }
 
-  const prompt = `
-Kamu adalah TerraBot, virtual assistant untuk aplikasi Tenda Rasa, jawablah sesuai ketentuan dibawah
-
-User bernama ${name} (${email}) mengirim pesan berikut:
-'${chat}'
-
-Berikut adalah daftar menu yang tersedia (dengan ID dan tag):
-${daftarMenu}
-
-Berikut adalah daftar order milik user ${name}:
-${daftarOrder}
-
-HAS_ORDER: ${daftarOrder !== 'EMPTY'}
-
-Catatan penting:
-- Format order selalu berupa baris seperti: - [ID:123] [STATUS:PAID]
-- Jika daftar order berisi 'EMPTY' atau HAS_ORDER adalah false, berarti user belum memiliki pesanan aktif. Jangan berikan jawaban seolah ada pesanan.
-- Jangan pernah berasumsi ada order jika HAS_ORDER adalah false.
-
-Tugas kamu:
-1. Tentukan INTENT dari pesan user berdasarkan daftar intent berikut:
-   - GREETING → jika user hanya menyapa (contoh: 'halo', 'hai', 'selamat pagi', dll)
-   - ORDER_STATUS → periksa nilai HAS_ORDER:
-      - Jika false, jawab bahwa user belum memiliki pesanan aktif.
-      - Jika true, baca status dari setiap order (PAID atau PENDING), dan berikan jawaban singkat bahwa pesanan sedang diproses. Jangan sebutkan status secara eksplisit (sistem akan menangani).
-      - ⚠️ Jika INTENT adalah ORDER_STATUS, kamu wajib memeriksa daftar order dan tidak boleh menjawab seolah ada pesanan jika HAS_ORDER adalah false.
-   - RECOMMENDATION → jika user meminta saran makanan atau minuman dari daftar menu
-   - EXPLANATION → jika user ingin penjelasan tentang menu tertentu
-   - OTHER → jika pesan tidak relevan dengan daftar menu
-
-2. Berikan respon sesuai intent:
-   - GREETING → balas dengan sapaan ramah dan akrab, seolah kamu adalah bot yang menyapa kembali. Gunakan nama user.
-   - ORDER_STATUS → periksa nilai HAS_ORDER:
-     - Jika false, jawab bahwa user belum memiliki pesanan aktif.
-     - Jika true, baca status dari setiap order (PAID atau PENDING), dan berikan jawaban singkat bahwa pesanan sedang diproses. Jangan sebutkan status secara eksplisit (sistem akan menangani).
-   - RECOMMENDATION → berikan saran menu dari daftar yang tersedia. Gunakan gaya bahasa seperti penjual yang ramah. Jangan sertakan ID menu dalam jawaban.
-   - EXPLANATION → jelaskan menu yang ditanyakan user secara singkat dan jelas. Jangan sertakan ID menu.
-   - OTHER → sampaikan dengan sopan bahwa kamu hanya bisa menjawab pertanyaan seputar Menu Tenda Rasa.
-
-3. Aturan tambahan:
-   - Jangan pernah menyebut atau merekomendasikan menu yang tidak ada di daftar.
-   - Gunakan nama user dalam jawaban agar terasa lebih personal.
-   - Jika kamu menyebutkan menu dalam jawaban (RECOMMENDATION), sertakan ID-nya di bagian akhir.
-   - Jangan sebutkan ID order atau status order dalam jawaban.
-
-Format output:
-[Jawaban utama kamu di sini]
-
-INTENT: [GREETING | ORDER_STATUS | RECOMMENDATION | EXPLANATION | OTHER]  
-menuIds: [1, 2, ...] ← hanya isi jika INTENT adalah RECOMMENDATION
-`;
+  const prompt = fillTemplate(loadPromptTemplate(), {
+    NAME: name,
+    EMAIL: email,
+    CHAT: chat,
+    DAFTAR_MENU: daftarMenu,
+    DAFTAR_ORDER: daftarOrder,
+    HAS_ORDER: String(daftarOrder !== 'EMPTY'),
+  });
   const geminiResponse = await callGemini(prompt)
   const { chat: responseChat, intent, menuIds } = parseGeminiResponse(geminiResponse)
 
