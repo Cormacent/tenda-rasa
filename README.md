@@ -1,28 +1,25 @@
 # Tenda Rasa
 
-Monorepo Tenda Rasa:
+Monorepo Tenda Rasa. Saat ini **semua service jalan lewat Docker Compose secara lokal** — belum ada target deploy cloud (Fly.io/Netlify sudah tidak dipakai).
 
-| Folder | Isi | Stack | Deploy |
-|---|---|---|---|
-| `tenda-rasa-fe` | Frontend (web app) | Vue 3 + Vite + TypeScript | Netlify (manual) |
-| `tenda-rasa-be` | Backend API + Socket.IO + worker order | Node/Express + Sequelize | Fly.io |
-| `tenda-rasa-db` | Database | Postgres | Fly.io |
-| `docker` | Orkestrasi service untuk local dev | Docker Compose | - |
-| `n8n-workflow` | File export workflow n8n (chatbot) — di-import manual ke n8n, lihat bagian "Import workflow n8n" | n8n | container n8n jalan lewat `docker-compose`, terpisah dari folder ini |
+| Folder | Isi | Stack |
+|---|---|---|
+| `tenda-rasa-fe` | Frontend (web app) | Vue 3 + Vite + TypeScript |
+| `tenda-rasa-be` | Backend API + Socket.IO + worker order | Node/Express + Sequelize |
+| `docker` | Orkestrasi service untuk local dev (termasuk Postgres) | Docker Compose |
+| `n8n-workflow` | File export workflow n8n (chatbot) — di-import manual ke n8n, lihat bagian "Import workflow n8n" | n8n |
 
 ## Prasyarat
 
 - Docker Desktop (Docker Engine + Compose v2)
 - Node.js + npm
-- [Fly CLI](https://fly.io/docs/flyctl/) (`flyctl`) — hanya untuk deploy backend/db
-- [Netlify CLI](https://docs.netlify.com/cli/get-started/) (`netlify`) — hanya untuk deploy frontend
 
 ## Environment file
 
 Ada 2 jenis file env di tiap folder (`docker/`, `tenda-rasa-be/`, `tenda-rasa-fe/`), **tidak ada di git** (lihat `.gitignore`), jadi harus dibuat manual sebelum running. Tiap folder juga punya **`.env.example`** (aman di-commit, cuma daftar nama variabel tanpa value) sebagai referensi variabel apa saja yang wajib diisi — copy jadi `.env` lalu isi value asli.
 
 - **`.env`** — file yang **benar-benar dibaca** oleh docker compose, `dotenv` (backend), dan `vite` (frontend). Isi untuk **development lokal**.
-- **`.env.dev`** — referensi value **staging** (server). Tidak dibaca otomatis oleh tool manapun — isinya di-push manual ke Netlify env saat deploy FE (`deploy-fe.ps1`), atau dipakai lewat `switch-env.ps1` kalau mau tes value staging di lokal (lihat bawah).
+- **`.env.dev`** — referensi value untuk **server/environment lain di luar lokal**, kalau nanti ada. Tidak dibaca otomatis oleh tool manapun — dipakai lewat `switch-env.ps1` kalau mau tes value itu di lokal (lihat bawah).
 
 Jangan pernah menaruh value asli (password, API key) di file selain `.env`/`.env.dev`, dan jangan commit kedua file itu ke git.
 
@@ -67,7 +64,7 @@ docker compose ps
 
 **2. Frontend**
 
-Frontend **tidak** dijalankan lewat Docker (memang didesain untuk deploy ke Netlify, bukan container). Jalankan terpisah:
+Frontend **tidak** dijalankan lewat Docker. Jalankan terpisah:
 
 ```powershell
 cd tenda-rasa-fe
@@ -99,25 +96,6 @@ Workflow chatbot di-export sebagai file di [`n8n-workflow/`](n8n-workflow/). Fil
 2. Menu titik tiga (kanan atas) → **Import from File**
 3. Pilih file `.json` di `n8n-workflow/`
 4. Setelah import, **buat ulang credential** yang dipakai node-node di workflow itu (Postgres, Gemini API key, dst) langsung di n8n — credential tidak ikut ter-export di file JSON demi keamanan.
-
-## Staging & Deploy (manual, tidak otomatis saat `git push`)
-
-Deploy ke semua environment dilakukan **manual lewat CLI**, bukan continuous deployment dari git.
-
-**Frontend → Netlify**
-```powershell
-cd tenda-rasa-fe
-./deploy-fe.ps1
-```
-Script ini membaca `tenda-rasa-fe/.env.dev`, push tiap value ke Netlify environment (`netlify env:set`), build, lalu `netlify deploy --prod`.
-
-**Backend → Fly.io**
-
-Lihat [`tenda-rasa-be/readme.md`](tenda-rasa-be/readme.md) untuk langkah `fly secrets set` dan `fly deploy`.
-
-**Database → Fly.io**
-
-Lihat [`tenda-rasa-db/README.md`](tenda-rasa-db/README.md) untuk akses server & database.
 
 ## Catatan keamanan
 
