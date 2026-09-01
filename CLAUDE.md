@@ -21,7 +21,13 @@ Project ini adalah monorepo: `tenda-rasa-fe` (Vue + Vite), `tenda-rasa-be` (Node
 - **Alur payment/order**: perubahan pada logic pembayaran, status order, atau webhook payment harus dijelaskan dampaknya dan dikonfirmasi dulu sebelum diterapkan — jangan mengubah alur ini secara diam-diam sebagai "sekalian bersih-bersih".
 - Mengubah CI/CD atau `Dockerfile` walau kelihatannya kecil.
 
-## 3. Best practice & lolos SonarQube (WAJIB diikuti di setiap perubahan kode)
+## 3. Akses ke cloud/akun eksternal & transparansi kerja
+
+- Claude **tidak punya akses** ke Google Cloud Console (atau cloud provider lain), akun email, atau sistem eksternal apa pun yang butuh login/otentikasi milik user — kecuali user sendiri yang sudah login lewat CLI (misal `gcloud`, `aws`, dst) di mesin ini. Tugas seperti "buat VM", "deploy ke cloud", "buat resource" **harus dikerjakan user sendiri** lewat Console/CLI mereka; Claude cuma bisa kasih instruksi/tutorial, bukan mengeksekusi langsung — kecuali eksplisit ada akses terotentikasi yang memang bisa dipakai.
+- Kalau ragu apakah suatu tindakan butuh otoritas/kredensial milik user, **anggap tidak punya akses itu** dan tanyakan/jelaskan dulu — jangan berasumsi atau mencoba jalan sendiri.
+- Sebelum menjalankan sesuatu yang berpotensi lama atau jalan di background tanpa output langsung terlihat (build, install, download image besar, dsb), **jelaskan dulu secara singkat apa yang akan dijalankan dan kenapa** — supaya tidak terkesan diam-diam mengerjakan sesuatu di luar sepengetahuan user.
+
+## 4. Best practice & lolos SonarQube (WAJIB diikuti di setiap perubahan kode)
 
 Selalu tulis kode yang idiomatis untuk stack yang dipakai (TypeScript, Vue 3 Composition API di FE; Express + Sequelize di BE) dan pastikan lolos SonarQube dengan standar berikut:
 
@@ -36,6 +42,6 @@ Selalu tulis kode yang idiomatis untuk stack yang dipakai (TypeScript, Vue 3 Com
 - **Tidak ada duplikasi blok kode**: jika logic yang sama muncul di ≥3 tempat, pertimbangkan ekstraksi ke helper/util — tapi jangan over-engineer untuk kasus yang cuma 1-2 kali dipakai.
 - Sebelum melaporkan task selesai, jalankan lint/typecheck yang tersedia di masing-masing sub-project (`npm run lint`, `tsc --noEmit`, dsb.) jika ada, dan pastikan tidak menambah warning baru.
 
-## 4. Cara menyikapi aturan di atas
+## 5. Cara menyikapi aturan di atas
 
 Kalau sebuah permintaan user tampak akan menyentuh area di atas (baik langsung maupun sebagai efek samping), berhenti dulu dan tanyakan konfirmasi secara eksplisit ke user sebelum eksekusi — jangan asumsikan izin dari permintaan sebelumnya berlaku juga untuk permintaan baru.

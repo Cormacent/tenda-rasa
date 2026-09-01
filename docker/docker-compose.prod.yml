@@ -1,0 +1,75 @@
+# Compose untuk deploy online (VM). Beda dari docker-compose.yml (local dev):
+# - tenda-rasa-be jalan dari image hasil build (bukan bind-mount + nodemon)
+# - tenda-rasa-fe ikut di-docker-kan (build + serve via nginx), bukan `npm run dev`
+# - postgres & redis TIDAK di-expose ke luar (cuma bisa diakses antar-container)
+# - n8n sengaja tidak diikutkan (hemat RAM di VM kecil; n8n tidak dipakai flow live saat ini)
+#
+# Jalankan dari folder docker/, pakai .env.dev sebagai sumber value:
+#   docker compose -f docker-compose.prod.yml --env-file .env.dev up --build -d
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_app
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: redis_app
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  tenda-rasa-be:
+    build:
+      context: ../tenda-rasa-be
+    container_name: tenda_rasa_be
+    env_file:
+      - .env.dev
+    ports:
+      - "${BE_PORT}:${BE_PORT}"
+    environment:
+      NODE_ENV: production
+      PORT: ${BE_PORT}
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  tenda-rasa-fe:
+    build:
+      context: ../tenda-rasa-fe
+      args:
+        VITE_API_BACKEND: ${VITE_API_BACKEND}
+        VITE_API_WEBSOCKET: ${VITE_API_WEBSOCKET}
+        VITE_PUBLIC_BUILDER_KEY: ${VITE_PUBLIC_BUILDER_KEY}
+    container_name: tenda_rasa_fe
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  redis-data:

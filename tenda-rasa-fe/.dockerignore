@@ -1,0 +1,7 @@
+.env
+.env.dev
+.env.original
+node_modules
+dist
+dev-dist
+.git
