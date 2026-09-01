@@ -42,7 +42,7 @@ services:
       context: ../tenda-rasa-be
     container_name: tenda_rasa_be
     env_file:
-      - .env.dev
+      - .env.prod
     ports:
       - "${BE_PORT}:${BE_PORT}"
     environment:
