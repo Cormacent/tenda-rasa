@@ -1,11 +1,4 @@
-# Compose untuk deploy online (VM). Beda dari docker-compose.yml (local dev):
-# - tenda-rasa-be jalan dari image hasil build (bukan bind-mount + nodemon)
-# - tenda-rasa-fe ikut di-docker-kan (build + serve via nginx), bukan `npm run dev`
-# - postgres & redis TIDAK di-expose ke luar (cuma bisa diakses antar-container)
-# - n8n sengaja tidak diikutkan (hemat RAM di VM kecil; n8n tidak dipakai flow live saat ini)
-#
-# Jalankan dari folder docker/, pakai .env.dev sebagai sumber value:
-#   docker compose -f docker-compose.prod.yml --env-file .env.dev up --build -d
+version: "3.9"
 
 services:
   postgres:
@@ -38,16 +31,15 @@ services:
     restart: unless-stopped
 
   tenda-rasa-be:
-    build:
-      context: ../tenda-rasa-be
+    image: ghcr.io/cormacent/tenda-rasa/tenda-rasa-be:prod
     container_name: tenda_rasa_be
     env_file:
       - .env.prod
     ports:
-      - "${BE_PORT}:${BE_PORT}"
+      - "3000:3000"
     environment:
       NODE_ENV: production
-      PORT: ${BE_PORT}
+      PORT: 3000
       POSTGRES_HOST: postgres
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -59,12 +51,7 @@ services:
     restart: unless-stopped
 
   tenda-rasa-fe:
-    build:
-      context: ../tenda-rasa-fe
-      args:
-        VITE_API_BACKEND: ${VITE_API_BACKEND}
-        VITE_API_WEBSOCKET: ${VITE_API_WEBSOCKET}
-        VITE_PUBLIC_BUILDER_KEY: ${VITE_PUBLIC_BUILDER_KEY}
+    image: ghcr.io/cormacent/tenda-rasa/tenda-rasa-fe:prod
     container_name: tenda_rasa_fe
     ports:
       - "80:80"
