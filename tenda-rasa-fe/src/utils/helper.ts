@@ -120,12 +120,32 @@ export
     value.toLocaleString('id-ID', { minimumFractionDigits: 0 })
 
 export const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr)
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  // If parsed as Invalid Date or epoch (1970), BE likely sent a naive string like "2024-01-01 12:00:00"
+  // Assume BE stores in WIB (UTC+7), so adjust to correct local time
+  if (isNaN(date.getTime()) || date.getTime() < 0) {
+    const [datePart, timePart] = dateStr.split(' ');
+    if (datePart && timePart) {
+      const [year, month, day] = datePart.split('-').map(Number);
+      const [hour, minute, second] = timePart.split(':').map(Number);
+      // Interpret as WIB (UTC+7), then convert to local
+      const wibDate = new Date(Date.UTC(year, month - 1, day, hour - 7, minute, second || 0));
+      return wibDate.toLocaleString('id-ID', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    return dateStr;
+  }
   return date.toLocaleString('id-ID', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  })
-} 
+  });
+};

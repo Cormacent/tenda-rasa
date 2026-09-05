@@ -20,7 +20,12 @@
         </div>
         <div v-else :class="bubbleClass">
             <!-- Dynamic Bubble Content -->
-            <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
+            <component :is="bubbleComponent" :chat="chat"
+                @select-menu="emit('select-menu', $event)"
+                @checkout="emit('checkout')"
+                @request-confirm="emit('confirm-checkout')"
+                @confirm-checkout="emit('confirm-checkout')"
+                @add-more="emit('add-more')" />
             <!-- Timestamp -->
             <p class="text-sm font-base mt-2 text-right">
                 {{ formatDate(chat?.createdAt ?? '') }}
@@ -42,10 +47,15 @@ import type { IMenu } from '@/models/IMenu';
 import { formatDate } from '@/utils/helper';
 import BubbleOrderStatus from '../bubble-order-status/BubbleOrderStatus.vue';
 import OrderDetail from '@/views/order/order-detail/OrderDetail.vue';
+import BubbleCartSummary from '../bubble-cart-summary/BubbleCartSummary.vue';
+import BubbleConfirmCheckout from '../bubble-confirm-checkout/BubbleConfirmCheckout.vue';
 
 const props = defineProps<{ chat: IChatbot }>()
 const emit = defineEmits<{
     (e: 'select-menu', menu: IMenu): void
+    (e: 'checkout'): void
+    (e: 'confirm-checkout'): void
+    (e: 'add-more'): void
 }>()
 //----------------------------------------
 // 🧩 State Variables & Stores
@@ -78,6 +88,10 @@ const bubbleComponent = computed(() => {
             return BubbleOrderPayment
         case Intent.RECOMMENDATION:
             return BubbleMenus
+        case Intent.CART_SUMMARY:
+            return BubbleCartSummary
+        case Intent.CONFIRM_CHECKOUT:
+            return BubbleConfirmCheckout
         default:
             return BubbleMessage
     }

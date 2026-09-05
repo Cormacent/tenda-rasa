@@ -29,7 +29,10 @@
     <div class="flex-1 overflow-y-auto space-y-4 container mx-auto px-4" ref="RoomChatMessages">
       <div v-for="(msg, idx) in messages" :key="idx"
         :class="msg.role === 'user' ? 'flex justify-end' : 'flex justify-start'">
-        <BubbleContainer :chat="msg" @select-menu="addToCart" />
+        <BubbleContainer :chat="msg" @select-menu="addToCart"
+          @checkout="onRequestCheckout"
+          @confirm-checkout="onConfirmCheckout"
+          @add-more="onAddMore" />
       </div>
     </div>
 
@@ -65,7 +68,7 @@ import { useRouter } from 'vue-router';
 //----------------------------------------
 const { message, mounted } = useRoomChat();
 const chatbotStore = useChatbotStore()
-const { messages, sendMessage, isOnline } = useChatSocket();
+const { messages, sendMessage, requestCartSummary, isOnline, clearMessages } = useChatSocket();
 const { userInfo } = useUserStore()
 const orderStore = useOrderStore()
 const RoomChatMessages = ref<HTMLElement | null>(null);
@@ -123,6 +126,8 @@ const onSendMessage = () => {
 const getAllChat = async () => {
   const response = await chatbotStore.getAllChatByEmail();
   if (response) {
+    // Set messages directly; socket will push new messages (ORDER_PAYMENT after checkout)
+    // via chat_response event, which appends to messages array.
     messages.value = response
   } else {
     console.error("Gagal mendapatkan chat");
@@ -132,8 +137,40 @@ const getAllChat = async () => {
 const addToCart = (menu: IMenu) => {
   if (!menu.id) return
   orderStore.addToCheckoutList(menu)
-  router.push({ name: 'checkout' })
-}
+  // Request cart summary to be shown in chat bubble
+  requestCartSummary({
+    name: userInfo?.name ?? '',
+    email: userInfo.email ?? '',
+    message: {
+      chat: 'Tampilkan keranjang saya',
+      cart: orderStore.orderItems,
+      totalPrice: orderStore.orderItems.reduce((sum, item) => sum + ((item.price ?? 0) * (item.quantity ?? 0)), 0)
+    },
+    role: Role.USER,
+    intent: Intent.CART_SUMMARY
+  });
+};
+
+// Called when user clicks "Checkout Sekarang →" in Cart Summary bubble
+const onRequestCheckout = () => {
+  sendMessage({
+    name: userInfo?.name ?? '',
+    email: userInfo.email ?? '',
+    message: { chat: 'Ya, checkout sekarang', intent: Intent.CONFIRM_CHECKOUT },
+    role: Role.USER,
+    intent: Intent.CONFIRM_CHECKOUT
+  });
+};
+
+// Called when user clicks "✅ Ya, Checkout" in Confirm Checkout bubble
+const onConfirmCheckout = () => {
+  router.push({ name: 'checkout' });
+};
+
+// Called when user clicks "+ Tambah Item" in Confirm Checkout bubble
+const onAddMore = () => {
+  // Stay on chat page, user can add more items
+};
 
 </script>
 

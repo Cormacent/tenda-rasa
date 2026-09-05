@@ -79,7 +79,7 @@ Port sesuai `docker/.env` kamu saat ini (kalau kamu ubah port di `.env`, cek lag
 | Aplikasi | URL |
 |---|---|
 | **Frontend (aplikasi utama)** | http://localhost:5173 |
-| Backend API | http://localhost:3001/api/v1 |
+| Backend API | http://localhost:3000/api/v1 |
 | n8n (flow chatbot) | http://localhost:5678 |
 
 Menghentikan semua service Docker:

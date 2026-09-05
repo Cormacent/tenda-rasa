@@ -196,7 +196,7 @@ export const createOrder = async (payload: CreateOrderDto): Promise<ResponseOrde
         spicinessLevel: menu.spicinessLevel,
         imageUrl: menu.imageUrl,
         estimatedMinutes: menu.estimatedMinutes,
-        remarks: item.remarks
+        remarks: item.remarks ?? undefined
       });
     }
 

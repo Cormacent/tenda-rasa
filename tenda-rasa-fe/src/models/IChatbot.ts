@@ -1,5 +1,6 @@
 import { IMenu } from "./IMenu";
 import { IOrder } from "./IOrder";
+import { IOrderItem } from "./IOrderItem";
 
 export interface IMessage {
     chat?: any;
@@ -7,6 +8,8 @@ export interface IMessage {
     orders?: IOrder[];
     intent?: string;
     menuIds?: number[];
+    cart?: IOrderItem[];
+    totalPrice?: number;
 }
 
 export interface IChatbot {

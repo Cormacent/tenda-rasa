@@ -8,6 +8,8 @@ export enum Intent {
   COMPLAINT = 'COMPLAINT',
   HELP = 'HELP',
   GOODBYE = 'GOODBYE',
+  CART_SUMMARY = 'CART_SUMMARY',
+  CONFIRM_CHECKOUT = 'CONFIRM_CHECKOUT',
   USER = 'USER',
   OTHER = 'OTHER'
 }
@@ -21,6 +23,8 @@ export const intentLabels: Record<Intent, string> = {
   [Intent.COMPLAINT]: 'Complaint',
   [Intent.HELP]: 'Help',
   [Intent.GOODBYE]: 'Goodbye',
+  [Intent.CART_SUMMARY]: 'Cart Summary',
+  [Intent.CONFIRM_CHECKOUT]: 'Confirm Checkout',
   [Intent.USER]: 'User',
   [Intent.OTHER]: 'Other'
 };

@@ -80,28 +80,24 @@ export const createOrder = async (req: Request, res: Response) => {
       removeOnFail: true,
     });
 
-
+    // Emit ORDER_PAYMENT message via Socket.IO so it appears in chat immediately
     const chatData: ChatDTO = {
       email: orderDto.email,
       name: orderDto.name,
-      'message': {
+      message: {
         chat: 'Lanjutkan pembayaran agar order kamu bisa di proses.',
         orders: [order],
         orderIds: [order.id]
       },
       role: Role.ASSISTANT,
       timestamp: new Date(),
-      intent: Intent.ORDER_PAYMENT // Will be set after processing
-
+      intent: Intent.ORDER_PAYMENT
     };
-    const sendMessageResponse = await saveMessage(chatData);
-
-    // Push the message USER to WebSocket clients
-    const payload: ChatDTO = sendMessageResponse
-    payload.message.orders = [order]
+    const savedChat = await saveMessage(chatData);
     const socket = getClientByEmail(orderDto.email);
     if (socket) {
-      socket.emit('message', { type: ChatType.CHAT_SENT, payload });
+      // Use CHAT_RESPONSE so FE pushes to messages (not overwrites)
+      socket.emit('message', { type: ChatType.CHAT_RESPONSE, payload: savedChat });
     }
 
     res.status(201).json(order);

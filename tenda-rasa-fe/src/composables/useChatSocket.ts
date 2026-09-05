@@ -1,6 +1,7 @@
 // composables/useChatSocket.ts
 import { io, Socket } from 'socket.io-client';
 import { ref, onBeforeUnmount, watch } from 'vue';
+import { ElMessage } from 'element-plus';
 import { useUserStore } from '@/store/user';
 import { IChatbot } from '@/models/IChatbot';
 import { useRoomChat } from '@/views/room-chat/RoomChat.logic';
@@ -12,11 +13,20 @@ export function useChatSocket() {
     const { messages } = useRoomChat();
     const isOnline = ref<Boolean>(false)
 
-    // Connect when email is available
+    // Connect when email is available; clear messages on email change (logout → new login)
     watch(
         () => userStore.userInfo.email,
-        (email) => {
-            if (!email || socket.value) return;
+        (email, prevEmail) => {
+            if (!email) return;
+
+            // If switching to a different user, clear old messages
+            if (prevEmail && email !== prevEmail) {
+                messages.value = [];
+                socket.value?.disconnect();
+                socket.value = null;
+            }
+
+            if (socket.value) return;
 
             socket.value = io(import.meta.env.VITE_API_WEBSOCKET, {
                 transports: ['websocket'],
@@ -31,11 +41,18 @@ export function useChatSocket() {
             socket.value.on('message', (_data) => {
                 const { type, payload } = _data
                 if (['chat_sent', 'chat_response'].includes(type)) {
-                    messages.value.push(payload);
+                    // Prevent duplicate: skip if message already exists (from getAllChat API response)
+                    const exists = messages.value.some(m => m.id === payload.id);
+                    if (!exists) {
+                        messages.value.push(payload);
+                    }
                 }
                 if (['order_status_updated'].includes(type)) {
                     const { order } = payload
                     patchOrderInMessages(order)
+                }
+                if (type === 'ERROR') {
+                    ElMessage.error(payload?.message || 'Terjadi kesalahan, coba lagi.')
                 }
             });
 
@@ -47,12 +64,18 @@ export function useChatSocket() {
             socket.value.on('connect_error', (err) => {
                 console.error('❌ Connection error:', err.message);
                 isOnline.value = false
+                ElMessage.error('Gagal terhubung ke server, cek koneksi kamu.')
             });
         },
         { immediate: true }
     );
 
     const sendMessage = (payload: IChatbot) => {
+        if (!socket.value) return;
+        socket.value.emit('chat', payload);
+    };
+
+    const requestCartSummary = (payload: IChatbot) => {
         if (!socket.value) return;
         socket.value.emit('chat', payload);
     };
@@ -74,10 +97,16 @@ export function useChatSocket() {
     };
 
 
+    const clearMessages = () => {
+        messages.value = [];
+    };
+
     return {
         socket,
         messages,
         sendMessage,
-        isOnline
+        requestCartSummary,
+        isOnline,
+        clearMessages
     };
 }

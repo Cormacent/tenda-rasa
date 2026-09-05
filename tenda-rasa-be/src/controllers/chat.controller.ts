@@ -107,7 +107,7 @@ export async function handleChatEvent(payload: ChatDTO) {
   try {
     // validate required fields
     if (!name || !message) {
-      socket.emit('message', { type: ChatType.ERROR, message: 'Email Required.' });
+      socket.emit('message', { type: ChatType.ERROR, payload: { message: 'Email Required.' } });
       return;
     }
 
@@ -145,6 +145,15 @@ export async function handleChatEvent(payload: ChatDTO) {
     else if (intent === Intent.RECOMMENDATION && menuIds && menuIds.length > 0) {
       result.menus = menus.filter((menu: MenuDTO) => menuIds?.includes(menu.id));
     }
+    else if (intent === Intent.CART_SUMMARY) {
+      // Use cart data sent from FE
+      result.cart = sendMessageResponse.message?.cart || [];
+      result.totalPrice = sendMessageResponse.message?.totalPrice || 0;
+    }
+    else if (intent === Intent.CONFIRM_CHECKOUT) {
+      // Bot menyapa checkout: Yuk checkout! Cart data sudah ada di FE via Pinia
+      result.chat = result.chat || 'Yuk checkout! Pastikan pesanan kamu sudah benar ya 😊';
+    }
 
     const payload: ChatDTO = {
       email,
@@ -153,6 +162,8 @@ export async function handleChatEvent(payload: ChatDTO) {
         chat,
         menus: result.menus || [],
         orders: result.orders || [],
+        cart: result.cart || [],
+        totalPrice: result.totalPrice || 0,
       },
       role: Role.ASSISTANT,
       timestamp: new Date(),
@@ -180,8 +191,7 @@ export async function handleChatEvent(payload: ChatDTO) {
 
     socket.emit('message', {
       type: ChatType.ERROR,
-      message: 'Gagal memproses pesan.'
-
+      payload: { message: 'Gagal memproses pesan. Coba lagi beberapa saat.' },
     });
 
   }

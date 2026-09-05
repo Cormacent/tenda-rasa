@@ -15,7 +15,8 @@
         <!-- QR Code -->
         <div class="flex flex-col items-center">
             <p class="text-center font-semibold">QR Code</p>
-            <img :src="order?.qrcode" alt="QR Code" class="w-[15rem] h-auto object-contain rounded-md shadow" />
+            <img :src="order?.qrcode" alt="QR Code" class="w-[15rem] h-auto object-contain rounded-md shadow cursor-pointer hover:opacity-80 transition-opacity"
+              @click="onQrClick" title="Klik untuk info pembayaran" />
         </div>
 
         <!-- Status -->
@@ -49,6 +50,7 @@ import type { IChatbot } from '@/models/IChatbot';
 import { formatPrice, formatDate } from '@/utils/helper';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { Status } from '@/enums/status';
+import { ElMessage } from 'element-plus';
 
 
 //----------------------------------------
@@ -69,8 +71,8 @@ const targetTimestamp = computed(() => {
 
     const created = new Date(order.value.createdAt).getTime();
     const durationMinutes =
-        order.value.status === Status.PENDING ? 1 :
-            order.value.status === Status.PAID ? 1 : 0;
+        order.value.status === Status.PENDING ? 10 :
+            order.value.status === Status.PAID ? 10 : 0;
 
     return created + durationMinutes * 60 * 1000;
 });
@@ -116,6 +118,14 @@ const updateCountdown = () => {
     const now = Date.now();
     const remainingMs = targetTimestamp.value - now;
     countdown.value = Math.max(Math.floor(remainingMs / 1000), 0);
+};
+
+const onQrClick = () => {
+    ElMessage({
+        message: 'Silakan scan QRIS menggunakan aplikasi bank/ewallet Anda. Halaman akan otomatis memperbarui status setelah pembayaran berhasil.',
+        type: 'info',
+        duration: 5000,
+    });
 };
 
 </script>
