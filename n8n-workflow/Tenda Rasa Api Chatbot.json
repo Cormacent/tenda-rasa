@@ -444,7 +444,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://tenda-rasa-be:3001/api/v1/socket/push",
+        "url": "http://tenda-rasa-be:3000/api/v1/socket/push",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -505,7 +505,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://tenda-rasa-be:3001/api/v1/socket/push",
+        "url": "http://tenda-rasa-be:3000/api/v1/socket/push",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [

@@ -5,6 +5,11 @@
 .vscode/
 node_modules/
 dist/
+# TypeScript compiled output in src/ (should not be committed)
+src/**/*.js
+src/**/*.js.map
+# Build artifacts
+dev-dist/
 package-lock.json
 yarn-error.log
 # Local Netlify folder

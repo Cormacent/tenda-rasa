@@ -7,6 +7,7 @@ import 'element-plus/dist/index.css'
 
 import '@/styles/index.scss'; // SCSS global
 import '@/styles/tailwind.css';
+import '@/utils/axiosErrorNotifier';
 
 const app = createApp(App);
 const pinia = createPinia();
