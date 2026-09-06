@@ -6,6 +6,8 @@ import { getClientByEmail } from '../../socket/socketServer';
 import { OrderStatus } from '../../enumeration/order.enum';
 import { ResponseOrderDto } from '../../dtos/order.dto';
 import { ChatType } from '../../enumeration/chatType.enum';
+import { Intent } from '../../enumeration/intent.enum';
+import { Role } from '../../enumeration/role.enum';
 export const orderWorker = new Worker('order', async job => {
     if (job.name === OrderStatus.EXPIRED_PAYMENT) {
         await orderPaymentExpired(job);
@@ -58,13 +60,37 @@ const orderCompleted = async (job: any) => {
         return;
     }
 
-    if (order.status === Status.COMPLETED) {
-        console.log(`[${OrderStatus.ON_PROGRESS}] Order ${orderId} already completed.`);
-        return;
+    // State machine: only PAID → COMPLETED is valid
+    try {
+        const orderUpdated = await updateOrder(order.id, { status: Status.COMPLETED });
+        // Emit ORDER_STATUS_UPDATED so existing ORDER_PAYMENT bubble updates its status
+        pushSocketMessage(orderUpdated.email, orderUpdated);
+        // Also emit a CHAT_RESPONSE so a "Pesanan Selesai" bubble appears in chat
+        pushChatMessage(orderUpdated.email, orderUpdated);
+        console.log(`[${OrderStatus.ON_PROGRESS}] Order ${orderId} marked as COMPLETED.`);
+    } catch (err: any) {
+        console.warn(`[${OrderStatus.ON_PROGRESS}] Order ${orderId}: ${err.message}`);
     }
+};
 
-    const orderUpdated = await updateOrder(order.id, { status: Status.COMPLETED });
-    pushSocketMessage(order.email, orderUpdated);
+const pushChatMessage = (email: string, order: ResponseOrderDto) => {
+    const socket = getClientByEmail(email);
+    if (!socket) return;
+
+    const chatPayload = {
+        email,
+        name: order.name || '',
+        message: {
+            chat: 'Pesanan kamu sudah selesai! Silakan diambil di booth ya 😊',
+            orders: [order],
+            orderIds: [order.id]
+        },
+        role: Role.ASSISTANT,
+        timestamp: new Date(),
+        intent: Intent.ORDER_STATUS
+    };
+
+    socket.emit('message', { type: ChatType.CHAT_RESPONSE, payload: chatPayload });
 };
 
 const pushSocketMessage = (email: string, order: ResponseOrderDto) => {

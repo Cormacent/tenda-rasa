@@ -27,14 +27,14 @@
                             }}
                         </p>
                         <div class="flex gap-2 mt-2" v-if="order.orderItems">
-                            <template v-for="(item, index) in order.orderItems.slice(0, 3)" :key="index">
+                            <template v-for="(item, index) in order.orderItems.slice(0, 5)" :key="index">
                                 <img :src="item.imageUrl || importImage('default.jpg')" :alt="item.menuName"
                                     class="w-10 h-10 object-cover rounded" />
                             </template>
 
-                            <div v-if="order.orderItems.length > 3"
+                            <div v-if="order.orderItems.length > 5"
                                 class="w-10 h-10 flex items-center justify-center rounded bg-gray-100 text-base font-medium text-gray-700">
-                                +{{ order.orderItems.length - 3 }}
+                                +{{ order.orderItems.length - 5 }}
                             </div>
                         </div>
 

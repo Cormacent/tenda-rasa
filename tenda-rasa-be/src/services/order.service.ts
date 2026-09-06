@@ -10,6 +10,37 @@ import { Op } from 'sequelize'
 import { normalizeSequelizeData } from '../utils/sequelizeNormalizer';
 import { Status } from '../enumeration/status.enum';
 
+// ============================================================
+// Strict Order State Machine
+// ============================================================
+// Valid transitions:
+//   PENDING  → PAID        (payment confirmed)
+//   PENDING  → CANCELLED    (expired or manual cancel)
+//   PAID     → COMPLETED    (food ready, staff-triggered)
+//   PAID     → CANCELLED    (admin cancel, rare)
+// Invalid transitions are BLOCKED and throw an error.
+// ============================================================
+
+type ValidStatus = Status.PENDING | Status.PAID | Status.COMPLETED | Status.CANCELLED | Status.ALREADY_PAID;
+
+const VALID_TRANSITIONS: Record<Status, ValidStatus[]> = {
+  [Status.PENDING]:    [Status.PAID, Status.CANCELLED],
+  [Status.PAID]:       [Status.COMPLETED, Status.CANCELLED],
+  [Status.COMPLETED]:   [],           // terminal — no further transitions
+  [Status.CANCELLED]:   [],           // terminal — no further transitions
+  [Status.ALREADY_PAID]: [],          // terminal — no further transitions
+};
+
+function assertStatusTransition(current: Status, next: Status): void {
+  const allowed = VALID_TRANSITIONS[current];
+  if (!allowed || !allowed.includes(next as ValidStatus)) {
+    throw new Error(
+      `Invalid order status transition: ${current} → ${next}. ` +
+      `Allowed transitions from ${current}: [${allowed?.join(', ') || 'none'}]`
+    );
+  }
+}
+
 
 
 export const getAllOrdersByEmail = async (email: string): Promise<ResponseOrderDto[]> => {
@@ -91,6 +122,11 @@ export const getOrderById = async (id: number): Promise<ResponseOrderDto> => {
 export const updateOrder = async (id: number, updates: Partial<CreateOrderDto>): Promise<ResponseOrderDto> => {
   const order = await Orders.findByPk(id);
   if (!order) throw new Error('Order not found');
+
+  // Enforce state machine if status is being changed
+  if (updates.status) {
+    assertStatusTransition(order.status as Status, updates.status);
+  }
 
   await order.update(updates);
 

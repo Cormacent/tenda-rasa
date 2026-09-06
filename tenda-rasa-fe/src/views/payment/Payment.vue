@@ -68,8 +68,10 @@ const confirmPaymentOrder = async () => {
     const _email = decodeURIComponent(email.value.toString())
 
     await handlePayment(+orderId.value, _email).then(() => {
-        userInfo.email = email.value?.toString()
-        userInfo.name = name.value?.toString()
+        // Invalidate stale session cache — set userInfo immediately
+        // so that RoomChat (which reads from Pinia persist) uses correct email on mount
+        userInfo.email = _email
+        userInfo.name = decodeURIComponent(name.value.toString())
         showButton.value = true
     }).catch(() => {
         showButton.value = false

@@ -40,9 +40,9 @@
         backgroundPosition: 'center',
         width: '100%',
         height: '100%',
-        position: 'absolute', /* DIUBAH DARI 'fixed' */
+        position: 'absolute',
         inset: 0,
-        zIndex: 0           /* DITAMBAHKAN AGAR PASTI DI BELAKANG */
+        zIndex: 0
       }">
       </div>
       <div class="relative z-10 text-base font-medium text-white">
@@ -52,6 +52,7 @@
         </div>
       </div>
 
+      <!-- Tombol Lanjut Pembayaran (hanya untuk order baru, bukan dari riwayat) -->
       <div v-if="!orderId && orderItems.length > 0" class="relative z-10">
         <el-button :class="[
           'w-full',
@@ -63,6 +64,22 @@
         ]" size="large" round @click="createOrder()">
           <span class="text-base font-base">
             Lanjut Pembayaran
+          </span>
+        </el-button>
+      </div>
+
+      <!-- Tombol Beli Lagi (hanya untuk order dari riwayat) -->
+      <div v-if="orderId && order?.status === 'COMPLETED'" class="relative z-10">
+        <el-button :class="[
+          'w-full',
+          'flex items-center px-3 py-2 rounded focus:outline-none',
+          'bg-white text-primary border border-primary shadow-none',
+          'hover:bg-white hover:text-primary hover:border-primary',
+          'focus:bg-white focus:text-primary focus:border-primary',
+          'active:bg-white active:text-primary active:border-primary'
+        ]" size="large" round @click="reorder()">
+          <span class="text-base font-base">
+            🔄 Beli Lagi
           </span>
         </el-button>
       </div>
@@ -143,6 +160,28 @@ const getOrder = async () => {
   if (orderId.value) {
     await orderStore.getOrderById(orderId.value)
   }
+}
+
+// FEAT-001: Extract order items and add back to cart, then redirect to checkout
+const reorder = async () => {
+  const items = order.value?.orderItems ?? [];
+  if (items.length === 0) return;
+
+  // Clear existing cart and add items from the completed order
+  for (const item of items) {
+    orderStore.addToCheckoutList({
+      id: item.menuId,
+      menuName: item.menuName,
+      boothName: item.boothName,
+      price: item.price,
+      category: item.menuCategory,
+      menuType: item.menuType,
+      spicinessLevel: item.spicinessLevel,
+      imageUrl: item.imageUrl,
+      estimatedMinutes: item.estimatedMinutes,
+    });
+  }
+  router.push({ name: 'checkout' });
 }
 
 </script>
