@@ -97,7 +97,7 @@ const submit = () => {
 
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bg-dialog {
     background-image: url('/bg-tenda-rasa.svg');
     background-size: cover;
@@ -118,5 +118,29 @@ const submit = () => {
     background-color: white;
     mask-image: linear-gradient(to bottom left, transparent 0%, white 45%, white 100%);
     mask-mode: alpha;
+}
+
+:deep(.el-input__wrapper) {
+    background-color: #ffffff !important;
+    border-radius: 8px;
+    border: 1px solid var(--el-color-primary);
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
+    padding: 10px 12px;
+    min-height: 48px;
+}
+
+:deep(.el-input__inner) {
+    color: var(--el-color-primary);
+    -webkit-text-fill-color: var(--el-color-primary);
+    font-size: 16px;
+    min-height: 24px;
+    line-height: 24px;
+}
+
+:deep(.el-input__inner::placeholder) {
+    color: var(--el-color-primary);
+    opacity: 0.6;
 }
 </style>

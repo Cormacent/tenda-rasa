@@ -1,6 +1,6 @@
 <template>
     <section id="BubbleCartSummary" class="max-w-md mx-auto">
-        <p class="text-base font-base mb-3">
+        <p class="text-base font-semibold mb-3">
             {{ message }}
         </p>
 
@@ -9,16 +9,16 @@
             <div v-for="(item, idx) in cart" :key="idx"
                 class="flex justify-between items-center bg-white rounded-lg px-3 py-2 border border-gray-100">
                 <div class="flex flex-col">
-                    <span class="text-sm font-medium text-gray-800">{{ item.menuName }}</span>
-                    <span class="text-xs text-gray-500">{{ item.quantity }}x · Rp {{ formatPrice(item.price ?? 0) }}</span>
+                    <span class="text-sm font-semibold text-gray-900">{{ item.menuName }}</span>
+                    <span class="text-xs text-gray-700 font-semibold">{{ item.quantity }}x · Rp {{ formatPrice(item.price ?? 0) }}</span>
                 </div>
-                <span class="text-sm font-semibold text-primary">Rp {{ formatPrice(item.subtotal ?? 0) }}</span>
+                <span class="text-sm font-bold text-primary">Rp {{ formatPrice(item.subtotal ?? 0) }}</span>
             </div>
         </div>
 
         <!-- Total -->
         <div v-if="totalPrice" class="flex justify-between items-center mb-3 px-3 py-2 bg-primary/10 rounded-lg">
-            <span class="text-sm font-semibold text-gray-700">Total</span>
+            <span class="text-sm font-bold text-gray-900">Total</span>
             <span class="text-base font-bold text-primary">Rp {{ formatPrice(totalPrice) }}</span>
         </div>
 

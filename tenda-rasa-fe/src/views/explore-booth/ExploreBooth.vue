@@ -36,11 +36,15 @@
                     }">
                         <img :src="menu.imageUrl ? menu.imageUrl : importImage('default.jpg')" alt="menu image"
                             class="w-24 h-24 object-cover rounded-lg mb-4" />
-                        <h3 class="text-lg font-semibold text-gray-700 text-center w-full line-clamp-2">
+                        <h3 class="text-lg font-bold text-gray-900 text-center w-full line-clamp-2">
                         {{ menu.menuName }}
                         </h3>
 
-                        <p class="text-base font-medium text-gray-700 text-center mt-2">
+                        <p class="text-base font-medium text-primary text-center mt-1">
+                            Rp {{ formatPrice(menu.price ?? 0) }}
+                        </p>
+
+                        <p class="text-base font-semibold text-gray-800 text-center mt-1">
                             {{ menu.estimatedMinutes }} menit
                         </p>
                     </el-card>
@@ -53,7 +57,7 @@
 <script lang="ts" setup>
 import { useMenuStore } from '@/store/menu';
 import { computed, onMounted } from 'vue';
-import { importImage } from '@/utils/helper';
+import { formatPrice, importImage } from '@/utils/helper';
 import router from '@/router';
 import { useUserStore } from '@/store/user';
 

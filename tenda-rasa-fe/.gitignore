@@ -1,3 +1,15 @@
+# Environment files — JANGAN di-commit!
+.env
+.env.*
+.env.local
+.env.dev
+.env.prod
+!.env.example
+!.env.prod.example
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
 # Logs
 logs
 *.log

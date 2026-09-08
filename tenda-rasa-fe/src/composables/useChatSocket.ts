@@ -11,7 +11,7 @@ export function useChatSocket() {
     const userStore = useUserStore();
     const socket = ref<Socket | null>(null);
     const { messages } = useRoomChat();
-    const isOnline = ref<Boolean>(false)
+    const isOnline = ref<boolean>(false)
 
     // Connect when email is available; clear messages on email change (logout → new login)
     watch(

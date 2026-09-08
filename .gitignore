@@ -1,6 +1,7 @@
 .env
-.env.dev
-.env.original
+.env.*
+!.env.example
+!.env.prod.example
 .config/
 .vscode/
 node_modules/

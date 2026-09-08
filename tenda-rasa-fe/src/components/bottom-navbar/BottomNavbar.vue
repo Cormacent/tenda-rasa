@@ -1,5 +1,5 @@
 <template>
-    <div class="w-screen h-full bg-white border-t shadow z-50 align-center flex">
+    <div class="w-screen h-full bg-white border-t shadow z-50 align-center flex" style="padding-bottom: var(--safe-area-bottom);">
         <nav class="flex justify-around my-auto w-full">
             <el-button @click="openLink('explore-booths')" :class="[
                 'flex items-center gap-2 px-3 py-2 rounded focus:outline-none active:outline-none',
@@ -10,7 +10,7 @@
                 <div class="flex items-center gap-2"
                     :class="isActive('explore-booths') ? 'text-white' : 'text-primary'">
                     <icon-ep-house />
-                    <span class="text-base font-base" v-if="isActive('explore-booths')">Home</span>
+                    <span class="text-base font-semibold" v-if="isActive('explore-booths')">Home</span>
                 </div>
             </el-button>
 
@@ -22,7 +22,7 @@
             ]">
                 <div class="flex items-center gap-2" :class="isActive('order-list') ? 'text-white' : 'text-primary'">
                     <icon-ep-document />
-                    <span class="text-base font-base" v-if="isActive('order-list')">Orders</span>
+                    <span class="text-base font-semibold" v-if="isActive('order-list')">Orders</span>
                 </div>
             </el-button>
 
@@ -34,7 +34,7 @@
             ]">
                 <div class="flex items-center gap-2" :class="isActive('checkout') ? 'text-white' : 'text-primary'">
                     <icon-ep-shopping-cart />
-                    <span class="text-base font-base" v-if="isActive('checkout')">Cart</span>
+                    <span class="text-base font-semibold" v-if="isActive('checkout')">Cart</span>
                 </div>
             </el-button>
 
@@ -46,7 +46,7 @@
             ]">
                 <div class="flex items-center gap-2" :class="isActive('room-chat') ? 'text-white' : 'text-primary'">
                     <icon-ep-chat-dot-round />
-                    <span class="text-base font-base" v-if="isActive('room-chat')">Chat</span>
+                    <span class="text-base font-semibold" v-if="isActive('room-chat')">Chat</span>
                 </div>
             </el-button>
         </nav>

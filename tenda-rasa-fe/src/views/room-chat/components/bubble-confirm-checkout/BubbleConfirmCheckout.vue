@@ -1,6 +1,6 @@
 <template>
     <section id="BubbleConfirmCheckout" class="max-w-md mx-auto">
-        <p class="text-base font-base mb-3">
+        <p class="text-base font-semibold mb-3">
             {{ message }}
         </p>
 

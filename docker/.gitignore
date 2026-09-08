@@ -1,0 +1,5 @@
+# Environment files — JANGAN di-commit!
+.env
+.env.*
+!.env.example
+!.env.prod.example

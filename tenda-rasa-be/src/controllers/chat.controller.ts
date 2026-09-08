@@ -26,6 +26,18 @@ export const getConversation = async (req: Request, res: Response) => {
         intent: Intent.GREETING,
       });
       histories = [welcomeMessage as any];
+    } else {
+      // Greeting sudah ada tapi user ganti nama — update agar panggil nama baru
+      const first = histories[0] as any;
+      if (first?.intent === Intent.GREETING && first?.name !== name && name) {
+        const updatedChat = ChatService.getWelcomeMessage(name);
+        await ChatService.updateMessageById(first.id, {
+          name,
+          message: { ...first.message, chat: updatedChat },
+        });
+        first.name = name;
+        first.message.chat = updatedChat;
+      }
     }
 
     const allOrders = await getAllOrdersByEmail(email);

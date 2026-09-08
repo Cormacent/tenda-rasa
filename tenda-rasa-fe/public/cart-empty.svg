@@ -1,0 +1,19 @@
+<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Keranjang body -->
+  <path d="M30 50H16L12 120H148L144 50H30Z" stroke="url(#cartGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Garis horizontal atas keranjang -->
+  <path d="M12 40L30 40L36 20H128" stroke="url(#cartGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Roda kiri -->
+  <circle cx="50" cy="140" r="12" stroke="url(#cartGrad)" stroke-width="6" fill="none"/>
+  <!-- Roda kanan -->
+  <circle cx="110" cy="140" r="12" stroke="url(#cartGrad)" stroke-width="6" fill="none"/>
+  <!-- Tanda tanya / kosong -->
+  <path d="M80 80C80 72 87 67 94 67C101 67 105 71 105 77C105 83 101 85 94 90C88 94 80 97 80 108" stroke="url(#cartGrad)" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <circle cx="80" cy="118" r="5" fill="url(#cartGrad)"/>
+  <defs>
+    <linearGradient id="cartGrad" x1="12" y1="20" x2="148" y2="140" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E85353"/>
+      <stop offset="1" stop-color="#BE1515"/>
+    </linearGradient>
+  </defs>
+</svg>

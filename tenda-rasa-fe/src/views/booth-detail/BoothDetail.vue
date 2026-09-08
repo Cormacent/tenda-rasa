@@ -15,23 +15,24 @@
       <!-- Scrollable Content -->
       <div class="overflow-y-auto px-4 pt-6 pb-4 flex-1 flex flex-col gap-3">
         <h2 class="text-xl font-bold text-primary">{{ menuDetail.boothName }}</h2>
-        <h3 class="text-base font-semibold text-secondary">{{ menuDetail.menuName }}</h3>
+        <h3 class="text-base font-semibold text-gray-800">{{ menuDetail.menuName }}</h3>
+        <p class="text-lg font-bold text-primary">Rp {{ formatPrice(menuDetail.price ?? 0) }}</p>
 
         <div>
-          <div class="flex items-center text-base font-medium text-gray-700">
+          <div class="flex items-center text-base font-semibold text-gray-800">
             <icon-ep-clock class="mr-1" />
             <span>{{ menuDetail.estimatedMinutes }} Menit</span>
           </div>
-          <div class="flex items-center text-base font-medium text-gray-700">
+          <div class="flex items-center text-base font-semibold text-gray-800">
             <span>Sisa :</span> <span>{{ menuDetail.stock ?? 0 }}</span>
           </div>
         </div>
 
-        <p class="text-gray-700 text-base font-medium">
+        <p class="text-gray-800 text-base font-medium">
           {{ menuDetail.description }}
         </p>
 
-        <ul class="text-base font-medium text-gray-700 space-y-1">
+        <ul class="text-base font-semibold text-gray-800 space-y-1">
           <li>🍽️ Cocok untuk {{ menuDetail.category === 'makanan' ? 'makan' : 'minum' }} siang atau malam</li>
           <li v-if="menuDetail.category === 'makanan'">🌶️ Pedas: {{ menuDetail.spicinessLevel }}/5</li>
         </ul>
@@ -81,7 +82,8 @@
           'bg-primary text-white border border-primary shadow-none',
           'hover:bg-white hover:text-primary hover:border-primary',
           'focus:bg-white focus:text-primary focus:border-primary',
-          'active:bg-white active:text-primary active:border-primary'
+          'active:bg-white active:text-primary active:border-primary',
+          'font-semibold text-base'
         ]" size="large" round @click="addToCart">
           Masukkan ke Keranjang
         </el-button>
@@ -93,7 +95,7 @@
 </template>
 
 <script lang="ts" setup>
-import { importImage } from '@/utils/helper'
+import { formatPrice, importImage } from '@/utils/helper'
 import { useMenuStore } from '@/store/menu'
 import { computed, onMounted, ref } from 'vue'
 import { RouteRecordName, useRoute, useRouter } from 'vue-router'

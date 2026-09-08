@@ -2,28 +2,28 @@
     <section id="BubbleOrderStatus" class="flex flex-col gap-2 pt-5">
         <div class="-mt-[3rem] -ml-[1rem]" v-if="order?.status">
             <div v-if="order?.status == Status.PAID">
-                <span class="bg-warning text-base font-medium px-2 py-1 rounded text-white">
+                <span class="bg-warning text-base font-bold px-2 py-1 rounded text-white">
                     Pesananmu sedang di
                     siapkan!
                 </span>
             </div>
             <div v-else-if="order?.status == Status.COMPLETED">
-                <span class="bg-success text-base font-medium px-2 py-1 rounded text-white">
+                <span class="bg-success text-base font-bold px-2 py-1 rounded text-white">
                     Pesananmu telah
                     selesai!
                 </span>
             </div>
             <div v-else-if="order?.status == Status.CANCELLED">
-                <span class="bg-danger text-base font-medium px-2 py-1 rounded text-white">
+                <span class="bg-danger text-base font-bold px-2 py-1 rounded text-white">
                     Pesananmu dibatalkan!
                 </span>
             </div>
         </div>
-        <div class="flex justify-between items-center text-base font-medium">
-            <span>ID Pesanan</span>
-            <span class="font-semibold">#{{ order?.name }}-{{ order?.id }}</span>
+        <div class="flex justify-between items-center text-base font-semibold">
+            <span class="text-gray-900">ID Pesanan</span>
+            <span class="font-bold text-gray-900">#{{ order?.name }}-{{ order?.id }}</span>
         </div>
-        <div class="text-base text-center font-semibold w-100" v-if="countdown > 0">
+        <div class="text-base text-center font-bold w-100" v-if="countdown > 0">
             <el-tag type="danger" class="text-info text-primary">
                 <span class="px-5">Estimated {{ formattedCountdown }}</span>
             </el-tag>
@@ -36,23 +36,23 @@
                 </div>
 
                 <div class="flex-1 bg-white rounded-lg p-2">
-                    <h3 class="text-base font-semibold text-gray-700">
+                    <h3 class="text-base font-bold text-gray-900">
                         {{ item.boothName }}
                     </h3>
-                    <p class="text-base font-medium text-gray-700">{{ item.menuName }}</p>
+                    <p class="text-base font-semibold text-gray-900">{{ item.menuName }}</p>
                     <div class="flex justify-between gap-3">
-                        <div class="text-base font-medium">
+                        <div class="text-base font-semibold">
                             <p>{{ item.quantity }}x</p>
                             <p>{{ item.remarks }}</p>
                         </div>
-                        <p class="text-base font-medium text-primary">
+                        <p class="text-base font-bold text-primary">
                             Rp {{ formatPrice(item.subtotal ?? 0) }}
                         </p>
                     </div>
                 </div>
             </div>
 
-            <router-link :to="{ name: 'order-list', }" class="text-base text-primary text-center font-semibold">
+            <router-link :to="{ name: 'order-list', }" class="text-base text-primary text-center font-bold">
                 <p>Lihat Semua Pesanan</p>
             </router-link>
         </div>

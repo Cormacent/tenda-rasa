@@ -52,6 +52,10 @@ export const saveMessage = async (chatData: ChatDTO): Promise<ChatDTO> => {
   return await ChatHistory.create(chatData);
 };
 
+export const updateMessageById = async (id: number, updates: Partial<ChatDTO>): Promise<void> => {
+  await ChatHistory.update(updates, { where: { id } });
+};
+
 // Sapaan awal untuk user yang belum pernah chat sama sekali (chat_history masih
 // kosong) - tidak lewat Gemini, supaya daftar fitur yang disebutkan selalu akurat
 // dan konsisten, bukan hasil generate LLM yang bisa berubah-ubah/salah.

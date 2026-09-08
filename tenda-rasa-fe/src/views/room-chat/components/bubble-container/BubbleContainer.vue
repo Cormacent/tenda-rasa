@@ -5,7 +5,7 @@
                 <!-- Dynamic Bubble Content -->
                 <BubbleMessage :chat="{ message: { chat: chat.message?.chat } }" />
                 <!-- Timestamp -->
-                <p class="text-sm font-base mt-2 text-right">
+                <p class="text-sm font-semibold mt-2 text-right">
                     {{ formatDate(chat?.createdAt ?? '') }}
                 </p>
             </div>
@@ -13,7 +13,7 @@
                 <!-- Dynamic Bubble Content -->
                 <component :is="bubbleComponent" :chat="chat" @select-menu="emit('select-menu', $event)" />
                 <!-- Timestamp -->
-                <p class="text-sm font-base mt-2 text-right">
+                <p class="text-sm font-semibold mt-2 text-right">
                     {{ formatDate(chat?.createdAt ?? '') }}
                 </p>
             </div>
@@ -27,7 +27,7 @@
                 @confirm-checkout="emit('confirm-checkout')"
                 @add-more="emit('add-more')" />
             <!-- Timestamp -->
-            <p class="text-sm font-base mt-2 text-right">
+            <p class="text-sm font-semibold mt-2 text-right">
                 {{ formatDate(chat?.createdAt ?? '') }}
             </p>
         </div>

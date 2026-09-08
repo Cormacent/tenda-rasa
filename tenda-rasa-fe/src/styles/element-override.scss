@@ -1,3 +1,145 @@
+// iOS font rendering — harus di level paling atas
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+// ============================================================
+// FIX iOS Safari: Font-family SF Pro untuk semua teks (bukan icon)
+// Ganti font-family Element Plus (ada Chinese fonts) dengan SF Pro
+// yang render konsisten di iOS Safari.
+// ============================================================
+
+// Semua elemen teks umum
+body,
+p, span, div, li, td, th, a, label, strong, em, b, i,
+h1, h2, h3, h4, h5, h6,
+input, textarea, select,
+// Element Plus komponen teks
+.el-button,
+.el-button__content,
+.el-tag,
+.el-tag__content,
+.el-link,
+.el-link__inner,
+.el-card__body,
+.el-card__header,
+.el-dialog__body,
+.el-drawer__body,
+.el-form-item__label,
+.el-form-item__content,
+.el-table__cell,
+.el-table__header-cell,
+.el-collapse-item__header,
+.el-collapse-item__content,
+.el-tabs__item,
+.el-tab-pane,
+.el-descriptions__label,
+.el-descriptions__content,
+.el-message__content,
+.el-message-box__message,
+.el-popover__content,
+.el-dropdown-menu__item,
+.el-pagination,
+.el-pagination__total,
+.el-pagination__jump,
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a,
+.el-empty__description,
+.el-alert__title,
+.el-alert__description,
+.el-step__title,
+.el-steps__title,
+.el-timeline-item__content,
+.el-timeline-item__timestamp {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+// Override font rendering + weight untuk semua button (termasuk el-button) — fix tipis di iOS Safari
+button,
+.el-button,
+.el-button span,
+.el-button__content,
+.el-button__content span {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-weight: 600 !important;
+  font-smooth: always;
+}
+
+// ============================================================
+// FIX iOS Safari: Semua Element Plus text elements terlalu tipis
+// Element Plus default font-weight: 400 (normal) — di iOS Safari
+// ini render sangat tipis. Override ke 600 di semua komponen teks.
+// ============================================================
+.el-tag,
+.el-tag__content,
+.el-tag__close,
+.el-link,
+.el-link__inner,
+.el-text,
+.el-text__content,
+.el-descriptions__label,
+.el-descriptions__content,
+.el-form-item__label,
+.el-message__content,
+.el-message-box__message p,
+.el-popover__title,
+.el-popover__content,
+.el-drawer__body,
+.el-dialog__body,
+.el-card__body,
+.el-collapse-item__header,
+.el-collapse-item__content,
+.el-table__cell,
+.el-table__header-cell,
+.el-tabs__item,
+.el-tab-pane,
+.el-dropdown-menu__item,
+.el-steps__title,
+.el-step__title,
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a,
+.el-breadcrumb__inner span,
+.el-pagination,
+.el-pagination button,
+.el-pagination li,
+.el-pagination__total,
+.el-pagination__jump,
+.el-loading-mask,
+.el-empty__description,
+.el-empty__image + div,
+.el-divider__content,
+.el-calendar-table td,
+.el-calendar-table td div,
+.el-rate__text,
+.el-slider__input,
+.el-switch__label,
+.el-switch__label span,
+.el-badge__content,
+.el-avatar__string,
+.el-progress__text,
+.el-progress__label,
+.el-timeline-item__content,
+.el-timeline-item__timestamp,
+.el-skeleton__text,
+.el-skeleton__p,
+.el-alert__title,
+.el-alert__description {
+  font-weight: 600 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Pastikan teks biasa di dalam paragraph, span, label juga tidak tipis
+p, span, label, div, td, th, li, a, strong, small {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 :root {
   --el-color-primary: #E85353 !important;
   --el-color-success: #28A745 !important;
@@ -6,4 +148,35 @@
 
   --el-color-primary-light-3: #FEF6ED !important;
   --el-bg-color-page: #FFF4F4 !important;
+
+  // Safe area — untuk iPhone dengan home indicator (iPhone X+)
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-top: env(safe-area-inset-top, 0px);
+}
+
+// Minimum font-weight untuk semua teks di iOS
+body {
+  font-weight: 500;
+  // Pastikan viewport height akurat di iOS Safari
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+// Smooth scroll + momentum scrolling untuk iOS
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+// Safe area padding untuk bottom navbar
+.bottom-navbar-safe {
+  padding-bottom: var(--safe-area-bottom);
+}
+
+// el-input size="large" font-size harus 16px supaya ga zoom di iOS
+.el-input--large {
+  font-size: 16px !important;
+}
+.el-input--large .el-input__inner {
+  font-size: 16px !important;
+  -webkit-text-fill-color: initial;
 }

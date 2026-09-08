@@ -37,7 +37,8 @@ export const useOrderStore = defineStore('order', () => {
             orderList.value = res.data || []
             return orderList.value
         } catch (err: any) {
-            error.value = err.message || 'Failed to fetch orders'
+            // Tidak perlu tampilkan popup error — empty state sudah handle di UI
+            orderList.value = []
             return []
         } finally {
             loading.value = false

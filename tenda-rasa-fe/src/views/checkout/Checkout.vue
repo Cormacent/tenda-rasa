@@ -5,8 +5,19 @@
     mask-mode: alpha;
     background-color: white;
   "></div>
-    <!-- Scrollable Daftar Item -->
-    <div class="flex-1 overflow-y-auto space-y-4">
+
+    <!-- Empty State -->
+    <div v-if="orderItems.length === 0" class="flex-1 flex flex-col items-center justify-center gap-4 text-center">
+      <span class="text-7xl">🛒</span>
+      <p class="text-lg font-bold text-gray-800">Keranjang kamu kosong</p>
+      <p class="text-sm font-semibold text-gray-600">Yuk pesan lewat chat TerraBot untuk mulai!</p>
+      <el-button type="primary" size="large" @click="goToChat">
+        💬 Mulai Chat
+      </el-button>
+    </div>
+
+    <!-- Items List -->
+    <div v-else class="flex-1 overflow-y-auto space-y-4">
       <div v-for="item in orderItems" :key="item.id" class="bg-white shadow-md rounded-lg p-4 flex gap-4 w-full">
         <div class="flex gap-2 w-full">
           <div class="flex">
@@ -14,10 +25,10 @@
               class="w-20 h-20 object-cover rounded-lg" />
           </div>
           <div class="flex-1">
-            <h3 class="text-lg font-semibold text-gray-700">
+            <h3 class="text-lg font-bold text-gray-900">
               {{ item.boothName }}
             </h3>
-            <p class="text-base text-gray-700">{{ item.menuName }}</p>
+            <p class="text-base font-semibold text-gray-900">{{ item.menuName }}</p>
             <div class="flex items-center gap-3 justify-start w-full">
               <el-button size="small" @click="removeFromCart(item)" :class="[
                 'flex items-center px-3 py-2 rounded focus:outline-none',
@@ -43,7 +54,7 @@
               </el-button>
 
             </div>
-            <p class="text-lg font-medium text-primary text-end">
+            <p class="text-lg font-bold text-primary text-end">
               Rp {{ formatPrice(item.price ?? 0) }}
             </p>
 
@@ -57,7 +68,7 @@
     <!-- Ringkasan & Tombol -->
     <div class="shrink-0 py-4 border-t bg-white space-y-4" v-if="total > 0">
       <div class=" ">
-        <div class="flex justify-between text-primary text-base font-bold text-gray-700">
+        <div class="flex justify-between text-primary text-base font-bold text-gray-900">
           <span>Total</span>
           <span>Rp {{ formatPrice(total ?? 0) }}</span>
         </div>
@@ -72,7 +83,7 @@
         'focus:bg-white focus:text-primary focus:border-primary',
         'active:bg-white active:text-primary active:border-primary'
       ]" size="large" round @click="createOrder">
-        <span class="text-base font-base">
+        <span class="text-base font-semibold">
           Buat Pesanan
         </span>
       </el-button>
@@ -146,13 +157,23 @@ const createOrder = async () => {
   router.push({ name: 'order-detail' })
 }
 
+const goToChat = () => {
+  router.push({ name: 'room-chat' })
+}
+
 
 </script>
 
 <style lang="scss" scoped>
 :deep(.el-input__wrapper) {
-  @apply bg-white rounded;
-  @apply bg-white rounded shadow-[0_0_0_1px_var(--el-color-primary)];
+  background-color: #ffffff !important;
+  border: 1px solid var(--el-color-primary);
+  border-radius: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  padding: 10px 12px;
+  min-height: 48px;
 }
 
 :deep(.el-input__inner::placeholder) {
@@ -162,7 +183,10 @@ const createOrder = async () => {
 
 :deep(.el-input__inner) {
   color: var(--el-color-primary);
-  opacity: 1;
+  -webkit-text-fill-color: var(--el-color-primary);
+  font-size: 16px;
+  min-height: 24px;
+  line-height: 24px;
 }
 
 :deep(.el-input__prefix-inner) {

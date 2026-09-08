@@ -20,7 +20,7 @@
 
                             <div class="items-center px-4">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-1">{{ menu.menuName }}</h3>
-                                <p class="text-base font-medium text-gray-700 mb-3">{{ menu.description }}</p>
+                                <p class="text-base font-semibold text-gray-900 mb-3">{{ menu.description }}</p>
                             </div>
                         </div>
                     </SwiperSlide>
@@ -46,7 +46,7 @@
 
         <!-- Footer Description -->
         <div class="relative z-10 text-center pt-3  container mx-auto px-4">
-            <p class="text-base font-medium text-gray-700 max-w-md mx-auto">Perut mulai keroncongan? Haus menyerang?
+            <p class="text-base font-semibold text-gray-900 max-w-md mx-auto">Perut mulai keroncongan? Haus menyerang?
                 <span class="text-primary hover:underline" @click="openLink('room-chat')">
                     Tanya chatbot
                     aja!

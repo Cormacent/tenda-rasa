@@ -14,16 +14,16 @@
             class="w-20 h-20 object-cover rounded-lg " />
         </div>
         <div class="flex-1">
-          <h3 class="text-lg font-semibold text-gray-700">
+          <h3 class="text-lg font-bold text-gray-900">
             {{ item.boothName }}
           </h3>
-          <p class="text-base text-gray-700">{{ item.menuName }}</p>
+          <p class="text-base font-semibold text-gray-900">{{ item.menuName }}</p>
           <div class="flex justify-between gap-3">
-            <div class="text-base">
+            <div class="text-base font-semibold text-gray-900">
               <p>{{ item.quantity }}x</p>
               <p>{{ item.remarks }}</p>
             </div>
-            <p class="text-lg font-medium text-primary">
+            <p class="text-lg font-bold text-primary">
               Rp {{ formatPrice(item.subtotal ?? 0) }}
             </p>
           </div>
@@ -62,7 +62,7 @@
           'focus:bg-white focus:text-primary focus:border-primary',
           'active:bg-white active:text-primary active:border-primary'
         ]" size="large" round @click="createOrder()">
-          <span class="text-base font-base">
+          <span class="text-base font-semibold">
             Lanjut Pembayaran
           </span>
         </el-button>
@@ -78,7 +78,7 @@
           'focus:bg-white focus:text-primary focus:border-primary',
           'active:bg-white active:text-primary active:border-primary'
         ]" size="large" round @click="reorder()">
-          <span class="text-base font-base">
+          <span class="text-base font-semibold">
             🔄 Beli Lagi
           </span>
         </el-button>
