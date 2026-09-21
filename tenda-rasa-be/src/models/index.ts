@@ -23,5 +23,13 @@ Object.keys(models).forEach((modelName) => {
   }
 });
 
-export { sequelize }
+export { sequelize };
 export default models;
+
+// Named exports untuk方便 import
+export const Admin = models['Admin'];
+export const MenuBooth = models['MenuBooth'];
+export const Orders = models['Orders'];
+export const OrderItems = models['OrderItems'];
+export const ChatHistory = models['ChatHistory'];
+export const Intent = models['Intent'];

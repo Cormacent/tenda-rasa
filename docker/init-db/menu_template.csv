@@ -1,0 +1,3 @@
+booth_name,menu_name,description,price,tags,category,menu_type,spiciness_level,image_url,stock,is_available,estimated_minutes,is_favorite
+Warung Enak,Nama Menu Kamu,Deskripsi makanan/minuman,15000,"tag1,tag2,tag3",makanan,umum,0,,10,TRUE,10,FALSE
+Ngopi Dulu,Es Kopi Susu Gula Aren,Kopi susu kekinian dengan gula aren,18000,"kopi,susu,gula aren",minuman,umum,0,,15,TRUE,10,FALSE
