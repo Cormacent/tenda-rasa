@@ -108,7 +108,7 @@ onMounted(() => {
       <span>Total: <strong>{{ total }}</strong> pesanan</span>
     </div>
 
-    <el-table v-loading="loading" :data="orders" stripe class="order-table" @row-click="(row) => router.push(`/admin/orders/${row.id}`)">
+    <el-table v-loading="loading" :data="orders" stripe class="order-table" @row-click="(row: Order) => router.push(`/admin/orders/${row.id}`)">
       <el-table-column label="ID" width="70">
         <template #default="{ row }">#{{ row.id }}</template>
       </el-table-column>
