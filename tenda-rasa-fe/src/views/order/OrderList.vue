@@ -9,7 +9,7 @@
         <div v-if="orderList.length === 0" class="flex-1 flex flex-col items-center justify-center gap-3 text-center px-4">
             <span class="text-6xl">📋</span>
             <p class="text-lg font-bold text-gray-800">Belum ada pesanan</p>
-            <p class="text-sm font-semibold text-gray-600">Yuk mulai pesan lewat chat TerraBot!</p>
+            <p class="text-sm font-semibold text-gray-600">Yuk mulai pesan lewat chat KuzukaBot!</p>
         </div>
         <!-- Scrollable Order List -->
         <div v-else class="flex-1 overflow-y-auto px-4 space-y-4 py-2">

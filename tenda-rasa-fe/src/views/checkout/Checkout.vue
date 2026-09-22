@@ -10,7 +10,7 @@
     <div v-if="orderItems.length === 0" class="flex-1 flex flex-col items-center justify-center gap-4 text-center">
       <span class="text-7xl">🛒</span>
       <p class="text-lg font-bold text-gray-800">Keranjang kamu kosong</p>
-      <p class="text-sm font-semibold text-gray-600">Yuk pesan lewat chat TerraBot untuk mulai!</p>
+      <p class="text-sm font-semibold text-gray-600">Yuk pesan lewat chat KuzukaBot untuk mulai!</p>
       <el-button type="primary" size="large" @click="goToChat">
         💬 Mulai Chat
       </el-button>

@@ -36,7 +36,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['logo.svg'],
       manifest: {
-        name: 'Tenda Rasa',
+        name: 'Pizza Kuzuka',
         short_name: 'TendaRasa',
         start_url: '/',
         display: 'standalone',

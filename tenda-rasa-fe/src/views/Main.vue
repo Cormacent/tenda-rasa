@@ -14,7 +14,7 @@
 
     <Teleport to="#footer-section" v-if="!$route.meta?.noFooter">
         <footer class="text-center py-4" style="padding-bottom: var(--safe-area-bottom);">
-            <p class="text-base font-semibold text-gray-900">© 2023 Tenda Rasa. All rights reserved.</p>
+            <p class="text-base font-semibold text-gray-900">© 2025 Pizza Kuzuka. All rights reserved.</p>
         </footer>
 
     </Teleport>

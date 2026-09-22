@@ -42,7 +42,7 @@ export const handlePayment = async (req: Request, res: Response) => {
         break;
 
       case Status.CANCELLED:
-        message = '❌ Order kamu dibatalkan oleh Terrabot.';
+        message = '❌ Order kamu dibatalkan oleh KuzukaBot.';
         await pushMessagePayment(order, message);
         break;
 

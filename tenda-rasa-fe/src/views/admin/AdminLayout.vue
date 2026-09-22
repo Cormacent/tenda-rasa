@@ -24,7 +24,7 @@ const handleLogout = () => {
   <div class="admin-layout">
     <header class="admin-header">
       <div class="header-left">
-        <h1 class="header-brand">Tenda Rasa</h1>
+        <h1 class="header-brand">Pizza Kuzuka</h1>
         <span class="header-badge">Admin</span>
       </div>
       <div class="header-right">

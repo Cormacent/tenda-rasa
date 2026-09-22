@@ -96,7 +96,7 @@ router.post('/', adminAuth, upload.single('image'), async (req: AuthenticatedReq
       stock: parseInt(stock, 10) || 0,
       estimatedMinutes: parseInt(estimatedMinutes, 10) || 15,
       tags: parseTags(tags),
-      boothName: boothName || 'Tenda Rasa',
+      boothName: boothName || 'Pizza Kuzuka',
       imageUrl: finalImageUrl,
       isAvailable: true,
       isFavorite: false,

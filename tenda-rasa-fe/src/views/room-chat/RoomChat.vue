@@ -11,7 +11,7 @@
       <div class="card rounded flex gap-4 items-center bg-white shadow">
         <img :src="importImage('robot.svg')" alt="Robot" class="w-16 h-16 p-3" />
         <div class="flex flex-col justify-center items-center h-16">
-          <h3 class="text-lg font-semibold">TerraBot</h3>
+          <h3 class="text-lg font-semibold">KuzukaBot</h3>
           <p class="text-base font-medium">
             <span class="inline-block w-3 h-3 rounded-full border-2 border-white" :class="{
               'bg-success': isOnline,

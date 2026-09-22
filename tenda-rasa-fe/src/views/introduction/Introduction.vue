@@ -1,7 +1,7 @@
 <template>
     <section id="Introduction" class="flex flex-col h-full justify-center gap-5" ref="Introduction">
         <div class="shrink-0 text-center mb-2 container mx-auto px-4">
-            <h1 class="text-4xl md:text-4xl font-bold mb-6 text-black">Temukan Makanan Favorit kamu!</h1>
+            <h1 class="text-4xl md:text-4xl font-bold mb-6 text-black">Welcome to Pizza Kuzuka!</h1>
         </div>
 
         <!-- Swiper Wrapper (di luar layout konten) -->

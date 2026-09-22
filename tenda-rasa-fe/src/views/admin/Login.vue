@@ -38,7 +38,7 @@ const handleLogin = async () => {
   <div class="login-container">
     <div class="login-card">
       <div class="login-header">
-        <h1 class="login-title">Tenda Rasa</h1>
+        <h1 class="login-title">Pizza Kuzuka</h1>
         <p class="login-subtitle">Admin Panel</p>
       </div>
 
