@@ -32,7 +32,7 @@ export async function callGemini(
     console.error('💀 GEMINI_API_KEY is not set.');
     return '';
   }
-  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     const controller = new AbortController();
